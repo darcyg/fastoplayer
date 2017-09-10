@@ -16,12 +16,12 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/gui/widgets/line_edit.h"
+#include <player/gui/widgets/line_edit.h>
 
 #include <common/application/application.h>
 #include <common/time.h>
 
-#include "player/draw/draw.h"
+#include <player/draw/draw.h>
 
 namespace fastoplayer {
 

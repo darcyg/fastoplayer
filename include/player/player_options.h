@@ -20,7 +20,7 @@
 
 #include <common/draw/types.h>
 
-#include "player/types.h"
+#include <player/types.h>
 
 namespace fastoplayer {
 

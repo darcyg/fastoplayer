@@ -16,8 +16,8 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/media/app_options.h"  // for AppOptions
-#include "player_options.h"            // for PlayerOptions
+#include <player/media/app_options.h>  // for AppOptions
+#include <player/player_options.h>     // for PlayerOptions
 
 namespace fastoplayer {
 

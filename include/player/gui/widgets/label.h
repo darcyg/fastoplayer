@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "player/gui/widgets/font_window.h"
+#include <player/gui/widgets/font_window.h>
 
 namespace fastoplayer {
 namespace gui {

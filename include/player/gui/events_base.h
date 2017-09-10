@@ -46,7 +46,9 @@ enum EventsType : common::IEvent::event_id_t {
   REQUEST_VIDEO_EVENT,
   QUIT_STREAM_EVENT,
 
-  COUNT_EVENTS
+  USER_EVENTS = 128,
+
+  COUNT_EVENTS = 1024
 };
 
 namespace common {

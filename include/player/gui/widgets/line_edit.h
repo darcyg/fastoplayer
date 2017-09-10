@@ -20,9 +20,8 @@
 
 #include <common/time.h>
 
-#include "player/gui/widgets/label.h"
-
-#include "player/gui/events/key_events.h"
+#include <player/gui/widgets/label.h>
+#include <player/gui/events/key_events.h>
 
 namespace fastoplayer {
 

@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/media/video_state.h"
+#include <player/media/video_state.h>
 
 #include <errno.h>             // for ENOMEM, EINVAL, EAGAIN
 #include <inttypes.h>          // for PRIx64
@@ -58,20 +58,20 @@ extern "C" {
 #include <common/threads/thread_manager.h>  // for THREAD_MANAGER
 #include <common/utils.h>                   // for freeifnotnull
 
-#include "player/media/ffmpeg_internal.h"
+#include <player/media/ffmpeg_internal.h>
 
-#include "player/media/app_options.h"  // for ComplexOptions, AppOpt...
-#include "player/media/av_utils.h"
-#include "player/media/bandwidth_estimation.h"  // for DesireBytesPerSec
-#include "player/media/decoder.h"               // for VideoDecoder, AudioDec...
-#include "player/media/packet_queue.h"          // for PacketQueue
-#include "player/media/stream.h"  // for AudioStream, VideoStream
-#include "player/media/types.h"   // for clock64_t, IsValidClock
-#include "player/media/video_state_handler.h"
+#include <player/media/app_options.h>  // for ComplexOptions, AppOpt...
+#include <player/media/av_utils.h>
+#include <player/media/bandwidth_estimation.h>  // for DesireBytesPerSec
+#include <player/media/decoder.h>               // for VideoDecoder, AudioDec...
+#include <player/media/packet_queue.h>          // for PacketQueue
+#include <player/media/stream.h>  // for AudioStream, VideoStream
+#include <player/media/types.h>   // for clock64_t, IsValidClock
+#include <player/media/video_state_handler.h>
 
-#include "player/media/frames/audio_frame.h"  // for AudioFrame
-#include "player/media/frames/frame_queue.h"  // for VideoDecoder, AudioDec...
-#include "player/media/frames/video_frame.h"  // for VideoFrame
+#include <player/media/frames/audio_frame.h>  // for AudioFrame
+#include <player/media/frames/frame_queue.h>  // for VideoDecoder, AudioDec...
+#include <player/media/frames/video_frame.h>  // for VideoFrame
 
 /* no AV sync correction is done if below the minimum AV sync threshold */
 #define AV_SYNC_THRESHOLD_MIN_MSEC 40

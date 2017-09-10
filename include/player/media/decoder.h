@@ -27,7 +27,7 @@ extern "C" {
 #include <libavutil/rational.h>  // for AVRational
 }
 
-#include "player/media/types.h"
+#include <player/media/types.h>
 
 namespace fastoplayer {
 

@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/isimple_player.h"
+#include <player/isimple_player.h>
 
 #include <thread>
 
@@ -27,20 +27,20 @@
 #include <common/file_system.h>
 #include <common/utils.h>
 
-#include "player/av_sdl_utils.h"
-#include "player/sdl_utils.h"
+#include <player/av_sdl_utils.h>
+#include <player/sdl_utils.h>
 
-#include "player/media/frames/audio_frame.h"  // for AudioFrame
-#include "player/media/frames/video_frame.h"  // for VideoFrame
-#include "player/media/video_state.h"         // for VideoState
+#include <player/media/frames/audio_frame.h>  // for AudioFrame
+#include <player/media/frames/video_frame.h>  // for VideoFrame
+#include <player/media/video_state.h>         // for VideoState
 
-#include "player/gui/sdl2_application.h"
-#include "player/gui/widgets/label.h"
+#include <player/gui/sdl2_application.h>
+#include <player/gui/widgets/label.h>
 
-#include "player/draw/draw.h"
-#include "player/draw/font.h"
-#include "player/draw/texture_saver.h"
-#include "player/draw/types.h"
+#include <player/draw/draw.h>
+#include <player/draw/font.h>
+#include <player/draw/texture_saver.h>
+#include <player/draw/types.h>
 
 /* Step size for volume control */
 #define VOLUME_STEP 1

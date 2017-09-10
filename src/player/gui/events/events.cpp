@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/gui/events/events.h"
+#include <player/gui/events/events.h>
 
 #include <common/time.h>
 

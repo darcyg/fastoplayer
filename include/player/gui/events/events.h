@@ -20,7 +20,7 @@
 
 #include <common/types.h>  // for time64_t
 
-#include "player/gui/events_base.h"
+#include <player/gui/events_base.h>
 
 namespace fastoplayer {
 namespace gui {

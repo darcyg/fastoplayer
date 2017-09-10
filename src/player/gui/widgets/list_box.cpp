@@ -16,9 +16,9 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/gui/widgets/list_box.h"
+#include <player/gui/widgets/list_box.h>
 
-#include "player/draw/draw.h"
+#include <player/draw/draw.h>
 
 namespace fastoplayer {
 

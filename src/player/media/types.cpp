@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/media/types.h"
+#include <player/media/types.h>
 
 #include <algorithm>
 
@@ -29,7 +29,7 @@ extern "C" {
 #include <common/sprintf.h>
 #include <common/time.h>  // for current_mstime
 
-#include "player/media/ffmpeg_internal.h"
+#include <player/media/ffmpeg_internal.h>
 
 namespace fastoplayer {
 

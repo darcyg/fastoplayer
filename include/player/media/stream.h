@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "ffmpeg_config.h"
+#include <player/ffmpeg_config.h>
 
 extern "C" {
 #include <libavcodec/avcodec.h>    // for AVPacket
@@ -29,8 +29,8 @@ extern "C" {
 #include <common/macros.h>  // for DISALLOW_COPY_AND_ASSIGN
 #include <common/types.h>   // for time64_t
 
-#include "player/media/bandwidth_estimation.h"  // for DesireBytesPerSec
-#include "player/media/types.h"                 // for clock64_t
+#include <player/media/bandwidth_estimation.h>  // for DesireBytesPerSec
+#include <player/media/types.h>                 // for clock64_t
 
 namespace fastoplayer {
 

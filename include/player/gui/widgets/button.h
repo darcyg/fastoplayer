@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "player/gui/widgets/icon_label.h"
+#include <player/gui/widgets/icon_label.h>
 
 namespace fastoplayer {
 namespace gui {

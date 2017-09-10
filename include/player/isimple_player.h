@@ -22,18 +22,16 @@
 
 #include <common/uri/url.h>
 
-#include "player/player_options.h"
-#include "player/stream_handler.h"
-
-#include "player/media/app_options.h"  // for AppOptions, ComplexOp...
-#include "player/media/types.h"
-
-#include "player/gui/events/events.h"  // for PostExecEvent, PreExe...
-#include "player/gui/events/key_events.h"
-#include "player/gui/events/mouse_events.h"
-#include "player/gui/events/window_events.h"
-#include "player/gui/lirc_events.h"
-#include "player/gui/stream_events.h"
+#include <player/player_options.h>
+#include <player/stream_handler.h>
+#include <player/media/app_options.h>  // for AppOptions, ComplexOp...
+#include <player/media/types.h>
+#include <player/gui/events/events.h>  // for PostExecEvent, PreExe...
+#include <player/gui/events/key_events.h>
+#include <player/gui/events/mouse_events.h>
+#include <player/gui/events/window_events.h>
+#include <player/gui/lirc_events.h>
+#include <player/gui/stream_events.h>
 
 namespace common {
 namespace threads {

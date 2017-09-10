@@ -22,7 +22,7 @@
 
 #include <SDL2/SDL_events.h>
 
-#include "player/gui/events_base.h"  // for EventBase, EventsType::M...
+#include <player/gui/events_base.h>  // for EventBase, EventsType::M...
 
 namespace fastoplayer {
 namespace gui {

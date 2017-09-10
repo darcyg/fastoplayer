@@ -22,7 +22,7 @@ extern "C" {
 #include <libavutil/rational.h>  // for AVRational
 }
 
-#include "player/gui/events_base.h"
+#include <player/gui/events_base.h>
 
 namespace fastoplayer {
 namespace media {

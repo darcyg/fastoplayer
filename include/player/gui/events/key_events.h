@@ -20,7 +20,7 @@
 
 #include <SDL2/SDL_keyboard.h>
 
-#include "player/gui/events_base.h"
+#include <player/gui/events_base.h>
 
 namespace fastoplayer {
 namespace gui {

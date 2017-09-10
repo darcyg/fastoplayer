@@ -18,7 +18,7 @@
 
 #include <common/error.h>  // for Error
 
-#include "player/config.h"
+#include <player/config.h>
 
 namespace fastoplayer {
 

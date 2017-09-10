@@ -24,7 +24,7 @@ extern "C" {
 #include <libavutil/frame.h>
 }
 
-#include "player/media/types.h"
+#include <player/media/types.h>
 
 namespace fastoplayer {
 

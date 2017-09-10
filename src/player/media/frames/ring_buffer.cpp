@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/media/frames/ring_buffer.h"
+#include <player/media/frames/ring_buffer.h>
 
 namespace fastoplayer {
 

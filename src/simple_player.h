@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "player/isimple_player.h"
+#include <player/isimple_player.h>
 
 namespace fastoplayer {
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "player/media/types.h"  // for bandwidth_t
+#include <player/media/types.h>  // for bandwidth_t
 
 namespace fastoplayer {
 

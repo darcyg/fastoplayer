@@ -20,7 +20,7 @@
 
 #include <string>  // for string
 
-#include "player/gui/events_base.h"  // for EventBase, EventsType::L...
+#include <player/gui/events_base.h>  // for EventBase, EventsType::L...
 
 enum LircCode {
   LIRC_KEY_OK = 0,

@@ -20,9 +20,8 @@
 
 #include <common/draw/types.h>
 
-#include "player/gui/events_base.h"
-
-#include "player/draw/types.h"
+#include <player/gui/events_base.h>
+#include <player/draw/types.h>
 
 namespace fastoplayer {
 namespace gui {

@@ -6,11 +6,11 @@ extern "C" {
 #include <libavdevice/avdevice.h>  // for avdevice_register_all
 }
 
-#include "player/gui/stream_events.h"
+#include <player/gui/stream_events.h>
 
-#include "player/sdl_utils.h"
-#include "player/media/video_state.h"
-#include "player/media/video_state_handler.h"
+#include <player/sdl_utils.h>
+#include <player/media/video_state.h>
+#include <player/media/video_state_handler.h>
 
 using namespace fastoplayer;
 using namespace fastoplayer::gui;

@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/draw/surface_saver.h"
+#include <player/draw/surface_saver.h>
 
 #include <SDL2/SDL_image.h>
 

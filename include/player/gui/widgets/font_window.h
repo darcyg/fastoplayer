@@ -18,8 +18,8 @@
 
 #pragma once
 
-#include "player/draw/font.h"
-#include "player/gui/widgets/window.h"
+#include <player/draw/font.h>
+#include <player/gui/widgets/window.h>
 
 namespace fastoplayer {
 namespace gui {

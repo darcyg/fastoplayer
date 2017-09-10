@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/gui/widgets/icon_label.h"
+#include <player/gui/widgets/icon_label.h>
 
 #include <common/application/application.h>
 

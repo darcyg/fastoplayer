@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/gui/sdl2_application.h"
+#include <player/gui/sdl2_application.h>
 
 namespace fastoplayer {
 

@@ -22,10 +22,9 @@
 
 #include <SDL2/SDL_render.h>
 
-#include "player/draw/types.h"
-
-#include "player/gui/events/mouse_events.h"
-#include "player/gui/events/window_events.h"
+#include <player/draw/types.h>
+#include <player/gui/events/mouse_events.h>
+#include <player/gui/events/window_events.h>
 
 namespace fastoplayer {
 

@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/media/packet_queue.h"
+#include <player/media/packet_queue.h>
 
 #include <stddef.h>  // for NULL
 

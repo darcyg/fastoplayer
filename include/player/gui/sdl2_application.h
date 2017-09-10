@@ -25,9 +25,8 @@
 #include <common/event.h>                     // for IListener (ptr only)
 #include <common/threads/event_dispatcher.h>  // for EventDispatcher
 
-#include "player/gui/events_base.h"  // for Event, EventsType
-
-#include "player/media/types.h"
+#include <player/gui/events_base.h>  // for Event, EventsType
+#include <player/media/types.h>
 
 namespace fastoplayer {
 namespace gui {

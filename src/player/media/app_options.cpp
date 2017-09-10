@@ -16,11 +16,11 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/media/app_options.h"
+#include <player/media/app_options.h>
 
 #include <stddef.h>  // for NULL
 
-#include "player/media/ffmpeg_internal.h"  // for HWAccelID::HWACCEL_NONE
+#include <player/media/ffmpeg_internal.h>  // for HWAccelID::HWACCEL_NONE
 
 namespace fastoplayer {
 

@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/media/clock.h"
+#include <player/media/clock.h>
 
 namespace fastoplayer {
 

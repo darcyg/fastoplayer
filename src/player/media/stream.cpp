@@ -16,16 +16,16 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/media/stream.h"
+#include <player/media/stream.h>
 
 #include <stddef.h>  // for NULL
 
 #include <common/logger.h>  // for COMPACT_LOG_FILE_CRIT
 #include <common/time.h>    // for current_mstime
 
-#include "player/media/av_utils.h"
-#include "player/media/clock.h"         // for Clock
-#include "player/media/packet_queue.h"  // for PacketQueue
+#include <player/media/av_utils.h>
+#include <player/media/clock.h>         // for Clock
+#include <player/media/packet_queue.h>  // for PacketQueue
 
 namespace fastoplayer {
 

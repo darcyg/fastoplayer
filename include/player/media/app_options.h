@@ -20,7 +20,7 @@
 
 #include <string>  // for string
 
-#include "ffmpeg_config.h"
+#include <player/ffmpeg_config.h>
 
 extern "C" {
 #include <libavutil/avutil.h>  // for AVMediaType::AVMEDIA_TYPE_NB
@@ -29,7 +29,7 @@ extern "C" {
 
 #include <common/macros.h>
 
-#include "player/media/types.h"  // for AvSyncType
+#include <player/media/types.h>  // for AvSyncType
 
 #include "ffmpeg_internal.h"  // for HWAccelID
 

@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/media/audio_params.h"
+#include <player/media/audio_params.h>
 
 namespace fastoplayer {
 

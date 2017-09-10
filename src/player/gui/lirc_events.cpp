@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/gui/lirc_events.h"
+#include <player/gui/lirc_events.h>
 
 #include <common/macros.h>  // for SIZEOFMASS
 

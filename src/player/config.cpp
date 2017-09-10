@@ -16,15 +16,13 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/config.h"
+#include <player/config.h>
 
 namespace fastoplayer {
-
 
 TVConfig::TVConfig()
     : power_off_on_exit(false), loglevel(common::logging::LOG_LEVEL_INFO), app_options(), player_options() {}
 
 TVConfig::~TVConfig() {}
-
 
 }  // namespace fastoplayer

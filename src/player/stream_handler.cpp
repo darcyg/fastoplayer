@@ -16,11 +16,11 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/stream_handler.h"
+#include <player/stream_handler.h>
 
 #include <common/application/application.h>
 
-#include "player/gui/stream_events.h"
+#include <player/gui/stream_events.h>
 
 namespace fastoplayer {
 

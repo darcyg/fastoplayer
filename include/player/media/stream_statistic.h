@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "player/media/types.h"  // for clock64_t
+#include <player/media/types.h>  // for clock64_t
 
 namespace fastoplayer {
 

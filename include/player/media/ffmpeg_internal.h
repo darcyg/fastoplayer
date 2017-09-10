@@ -20,7 +20,7 @@
 
 #include <string>  // for string
 
-#include "ffmpeg_config.h"
+#include <player/ffmpeg_config.h>
 
 extern "C" {
 #include <libavcodec/avcodec.h>  // for AVCodecContext
@@ -29,7 +29,7 @@ extern "C" {
 #include <libavutil/pixfmt.h>    // for AVPixelFormat
 }
 
-#include "player/media/types.h"
+#include <player/media/types.h>
 
 typedef void hw_uninit_callback_t(AVCodecContext* s);
 typedef int hw_get_buffer_callback_t(AVCodecContext* s, AVFrame* frame, int flags);

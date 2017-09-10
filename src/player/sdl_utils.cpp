@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/sdl_utils.h"
+#include <player/sdl_utils.h>
 
 #include <SDL2/SDL_audio.h>
 
@@ -28,7 +28,7 @@ extern "C" {
 #include <common/sprintf.h>
 #include <common/macros.h>
 
-#include "player/media/audio_params.h"  // for AudioParams
+#include <player/media/audio_params.h>  // for AudioParams
 
 /* Calculate actual buffer size keeping in mind not cause too frequent audio callbacks */
 #define SDL_AUDIO_MAX_CALLBACKS_PER_SEC 10

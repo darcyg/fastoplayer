@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/media/stream_statistic.h"
+#include <player/media/stream_statistic.h>
 
 #include <common/time.h>
 

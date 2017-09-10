@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/media/decoder.h"
+#include <player/media/decoder.h>
 
 #include <errno.h>   // for EAGAIN
 #include <stddef.h>  // for NULL
@@ -29,7 +29,7 @@ extern "C" {
 #include <common/logger.h>  // for COMPACT_LOG_ERROR, COMPACT_LOG...
 #include <common/macros.h>  // for CHECK, NOTREACHED
 
-#include "player/media/packet_queue.h"  // for PacketQueue
+#include <player/media/packet_queue.h>  // for PacketQueue
 
 namespace fastoplayer {
 

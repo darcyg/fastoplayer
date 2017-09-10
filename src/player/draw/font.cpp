@@ -16,13 +16,13 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/draw/font.h"
+#include <player/draw/font.h>
 
 #include <math.h>
 
 #include <common/utils.h>
 
-#include "player/draw/draw.h"
+#include <player/draw/draw.h>
 
 namespace fastoplayer {
 

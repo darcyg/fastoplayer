@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/ffmpeg_application.h"
+#include <player/ffmpeg_application.h>
 
 #include <signal.h>
 
@@ -28,7 +28,7 @@ extern "C" {
 
 #include <common/file_system.h>
 
-#include "player/gui/events/events.h"
+#include <player/gui/events/events.h>
 
 namespace {
 

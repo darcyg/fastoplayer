@@ -1,21 +1,21 @@
-#include "player/media/ffmpeg_internal.h"
+#include <player/media/ffmpeg_internal.h>
 
 #include <stddef.h>  // for NULL
 
 #ifdef HAVE_VDPAU
-#include "player/media/hwaccels/ffmpeg_vdpau.h"
+#include <player/media/hwaccels/ffmpeg_vdpau.h>
 #endif
 #if HAVE_DXVA2_LIB
-#include "player/media/hwaccels/ffmpeg_dxva2.h"
+#include <player/media/hwaccels/ffmpeg_dxva2.h>
 #endif
 #if CONFIG_VAAPI
-#include "player/media/hwaccels/ffmpeg_vaapi.h"
+#include <player/media/hwaccels/ffmpeg_vaapi.h>
 #endif
 #if CONFIG_CUVID
-#include "player/media/hwaccels/ffmpeg_cuvid.h"
+#include <player/media/hwaccels/ffmpeg_cuvid.h>
 #endif
 #if CONFIG_VDA
-#include "player/media/hwaccels/ffmpeg_videotoolbox.h"
+#include <player/media/hwaccels/ffmpeg_videotoolbox.h>
 #endif
 
 namespace fastoplayer {

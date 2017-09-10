@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "ffmpeg_config.h"
+#include <player/ffmpeg_config.h>
 
 extern "C" {
 #include <libavcodec/avcodec.h>

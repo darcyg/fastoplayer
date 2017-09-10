@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/media/av_utils.h"
+#include <player/media/av_utils.h>
 
 extern "C" {
 #include <libavutil/display.h>

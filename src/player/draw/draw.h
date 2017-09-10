@@ -24,10 +24,9 @@
 #include <common/draw/types.h>
 #include <common/error.h>
 
-#include "player/draw/types.h"
+#include <player/draw/types.h>
 
 namespace fastoplayer {
-
 namespace draw {
 
 common::Error CreateMainWindow(const common::draw::Size& size,
@@ -50,5 +49,4 @@ common::Error DrawBorder(SDL_Renderer* render, const SDL_Rect& rect, const SDL_C
 common::Error FlushRender(SDL_Renderer* render, const SDL_Color& rgba) WARN_UNUSED_RESULT;
 
 }  // namespace draw
-
 }  // namespace fastoplayer

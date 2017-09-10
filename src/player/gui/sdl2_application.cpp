@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/gui/sdl2_application.h"
+#include <player/gui/sdl2_application.h>
 
 #include <stdlib.h>  // for EXIT_SUCCESS, EXIT_FAI...
 
@@ -32,10 +32,10 @@
 #include <common/macros.h>                  // for UNUSED, DNOTREACHED
 #include <common/threads/thread_manager.h>  // for THREAD_MANAGER
 
-#include "player/gui/events/events.h"  // for QuitEvent, QuitInfo
-#include "player/gui/events/key_events.h"
-#include "player/gui/events/mouse_events.h"
-#include "player/gui/events/window_events.h"
+#include <player/gui/events/events.h>  // for QuitEvent, QuitInfo
+#include <player/gui/events/key_events.h>
+#include <player/gui/events/mouse_events.h>
+#include <player/gui/events/window_events.h>
 
 #define FASTO_EVENT (SDL_USEREVENT)
 
