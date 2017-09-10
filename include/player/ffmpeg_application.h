@@ -18,9 +18,7 @@
 
 #include "player/gui/sdl2_application.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
 
 class FFmpegApplication : public gui::application::Sdl2Application {
  public:
@@ -37,6 +35,4 @@ class FFmpegApplication : public gui::application::Sdl2Application {
 
 int prepare_to_start(const std::string& app_directory_absolute_path);
 
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer

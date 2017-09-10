@@ -34,9 +34,8 @@ extern "C" {
 #define SDL_AUDIO_MAX_CALLBACKS_PER_SEC 10
 #define SDL_AUDIO_MIN_BUFFER_SIZE 512
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 
 int ConvertToSDLVolume(int val) {
   val = stable_value_in_range(val, 0, 100);
@@ -143,6 +142,5 @@ bool audio_open(void* opaque,
   return true;
 }
 
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

@@ -20,9 +20,8 @@
 
 #include "player/draw/draw.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace gui {
 
 FontWindow::FontWindow() : base_class(), draw_type_(WRAPPED_TEXT), text_color_(), font_(nullptr) {}
@@ -71,6 +70,5 @@ void FontWindow::DrawText(SDL_Renderer* render,
 }
 
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

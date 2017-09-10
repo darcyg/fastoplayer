@@ -26,9 +26,8 @@
 #include <common/macros.h>  // for DCHECK
 #include <common/types.h>
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 namespace frames {
 
@@ -158,6 +157,5 @@ class RingBuffer {
 
 }  // namespace frames
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

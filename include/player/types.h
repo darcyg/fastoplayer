@@ -16,20 +16,14 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/media/app_options.h"  // for AppOptions
-#include "player_options.h"            // for PlayerOptions
+#pragma once
+
+#include <common/bounded_value.h>
 
 namespace fastoplayer {
 
-struct TVConfig {
-  TVConfig();
-  ~TVConfig();
-
-  bool power_off_on_exit;
-  common::logging::LOG_LEVEL loglevel;
-
-  media::AppOptions app_options;
-  PlayerOptions player_options;
-};
+typedef common::BoundedValue<int8_t, 0, 100> audio_volume_t;
+typedef std::string stream_id;  // must be unique
+extern const stream_id invalid_stream_id;
 
 }  // namespace fastoplayer

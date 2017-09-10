@@ -20,9 +20,8 @@
 
 #include <SDL2/SDL_image.h>
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace draw {
 
 SurfaceSaver* MakeSurfaceFromPath(const std::string& img_full_path) {
@@ -35,7 +34,7 @@ SurfaceSaver* MakeSurfaceFromPath(const std::string& img_full_path) {
     return nullptr;
   }
 
-  return new player::draw::SurfaceSaver(img_surface);
+  return new SurfaceSaver(img_surface);
 }
 
 SurfaceSaver::SurfaceSaver(SDL_Surface* surface) : surface_(surface), texture_(NULL), renderer_(NULL) {}
@@ -91,6 +90,5 @@ int SurfaceSaver::GetHeightSurface() const {
 }
 
 }  // namespace draw
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

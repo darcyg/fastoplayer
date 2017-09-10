@@ -18,9 +18,8 @@
 
 #include "player/gui/stream_events.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace gui {
 namespace events {
 
@@ -31,6 +30,5 @@ QuitStreamInfo::QuitStreamInfo(media::VideoState* stream, int exit_code) : strea
 
 }  // namespace events
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

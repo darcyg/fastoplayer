@@ -29,9 +29,8 @@ extern "C" {
 
 #include "player/media/types.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 
 class PacketQueue;
@@ -89,6 +88,5 @@ class VideoDecoder : public IFrameDecoder {
 };
 
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

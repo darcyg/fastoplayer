@@ -18,9 +18,8 @@
 
 #include "player/gui/events/key_events.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace gui {
 namespace events {
 
@@ -35,6 +34,5 @@ TextEditInfo::TextEditInfo(const std::string& text, Sint32 start, Sint32 length)
 
 }  // namespace events
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

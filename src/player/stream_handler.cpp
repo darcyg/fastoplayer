@@ -22,9 +22,8 @@
 
 #include "player/gui/stream_events.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 
 StreamHandler::~StreamHandler() {}
 
@@ -49,6 +48,5 @@ void StreamHandler::HandleQuitStream(media::VideoState* stream, int exit_code, c
   fApp->PostEvent(qevent);
 }
 
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

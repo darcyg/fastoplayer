@@ -25,9 +25,7 @@ extern "C" {
 
 #include <common/error.h>  // for Error
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
 
 SDL_Rect CalculateDisplayRect(int scr_xleft,
                               int scr_ytop,
@@ -38,6 +36,4 @@ SDL_Rect CalculateDisplayRect(int scr_xleft,
                               AVRational pic_sar);
 common::Error UploadTexture(SDL_Texture* tex, const AVFrame* frame) WARN_UNUSED_RESULT;
 
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer

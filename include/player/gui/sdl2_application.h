@@ -29,9 +29,7 @@
 
 #include "player/media/types.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
 namespace gui {
 namespace application {
 
@@ -93,6 +91,4 @@ class Sdl2Application : public common::application::IApplication {
 
 }  // namespace application
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer

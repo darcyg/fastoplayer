@@ -18,9 +18,8 @@
 
 #include "player/gui/widgets/label.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace gui {
 
 Label::Label() : base_class(), text_() {}
@@ -56,6 +55,5 @@ void Label::DrawLabel(SDL_Renderer* render, SDL_Rect* text_rect) {
 }
 
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

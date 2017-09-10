@@ -22,9 +22,8 @@
 
 #include "player/media/ffmpeg_internal.h"  // for HWAccelID::HWACCEL_NONE
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 
 AppOptions::AppOptions()
@@ -116,6 +115,5 @@ ComplexOptions& ComplexOptions::operator=(const ComplexOptions& rhs) {
 }
 
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

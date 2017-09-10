@@ -20,9 +20,7 @@
 
 #include "player/gui/widgets/icon_label.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
 namespace gui {
 
 class Button : public IconLabel {
@@ -47,6 +45,4 @@ class Button : public IconLabel {
 };
 
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer

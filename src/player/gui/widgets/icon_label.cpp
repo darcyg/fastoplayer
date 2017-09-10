@@ -20,9 +20,8 @@
 
 #include <common/application/application.h>
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace gui {
 
 IconLabel::IconLabel() : base_class(), icon_img_(nullptr), icon_size_(), space_betwen_image_and_label_(default_space) {}
@@ -82,6 +81,5 @@ SDL_Texture* IconLabel::GetIconTexture() const {
 }
 
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

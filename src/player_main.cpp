@@ -50,7 +50,7 @@ int main_simple_player_application(int argc,
                                    char** argv,
                                    const common::uri::Url& stream_url,
                                    const std::string& app_directory_absolute_path) {
-  int res = fastotv::client::player::prepare_to_start(app_directory_absolute_path);
+  int res = fastoplayer::prepare_to_start(app_directory_absolute_path);
   if (res == EXIT_FAILURE) {
     return EXIT_FAILURE;
   }
@@ -62,8 +62,8 @@ int main_simple_player_application(int argc,
     return EXIT_FAILURE;
   }
 
-  fastotv::client::player::TVConfig main_options;
-  common::ErrnoError err = fastotv::client::load_config_file(config_absolute_path, &main_options);
+  fastoplayer::TVConfig main_options;
+  common::ErrnoError err = fastoplayer::load_config_file(config_absolute_path, &main_options);
   if (err) {
     return EXIT_FAILURE;
   }
@@ -75,7 +75,7 @@ int main_simple_player_application(int argc,
   INIT_LOGGER(PROJECT_NAME_TITLE, main_options.loglevel);
 #endif
 
-  fastotv::client::player::FFmpegApplication app(argc, argv);
+  fastoplayer::FFmpegApplication app(argc, argv);
 
   AVDictionary* sws_dict = NULL;
   AVDictionary* swr_opts = NULL;
@@ -83,8 +83,8 @@ int main_simple_player_application(int argc,
   AVDictionary* codec_opts = NULL;
   av_dict_set(&sws_dict, "flags", "bicubic", 0);
 
-  fastotv::client::player::media::ComplexOptions copt(swr_opts, sws_dict, format_opts, codec_opts);
-  auto player = new fastotv::client::SimplePlayer(main_options.player_options);
+  fastoplayer::media::ComplexOptions copt(swr_opts, sws_dict, format_opts, codec_opts);
+  auto player = new fastoplayer::SimplePlayer(main_options.player_options);
   player->SetUrlLocation("0", stream_url, main_options.app_options, copt);
   res = app.Exec();
   destroy(&player);

@@ -101,13 +101,12 @@
   exitonmousedown=false [true,false]
 */
 
-namespace fastotv {
-namespace client {
+namespace fastoplayer {
 
 namespace {
 
 int ini_handler_fasto(void* user, const char* section, const char* name, const char* value) {
-  player::TVConfig* pconfig = reinterpret_cast<player::TVConfig*>(user);
+  TVConfig* pconfig = reinterpret_cast<TVConfig*>(user);
   size_t value_len = strlen(value);
   if (value_len == 0) {  // skip empty fields
     return 0;
@@ -179,20 +178,20 @@ int ini_handler_fasto(void* user, const char* section, const char* name, const c
     return 1;
   } else if (MATCH(CONFIG_APP_OPTIONS, CONFIG_APP_OPTIONS_SYNC_FIELD)) {
     if (strcmp(value, "audio") == 0) {
-      pconfig->app_options.av_sync_type = fastotv::client::player::media::AV_SYNC_AUDIO_MASTER;
+      pconfig->app_options.av_sync_type = fastoplayer::media::AV_SYNC_AUDIO_MASTER;
     } else if (strcmp(value, "video") == 0) {
-      pconfig->app_options.av_sync_type = fastotv::client::player::media::AV_SYNC_VIDEO_MASTER;
+      pconfig->app_options.av_sync_type = fastoplayer::media::AV_SYNC_VIDEO_MASTER;
     } else {
       return 0;
     }
     return 1;
   } else if (MATCH(CONFIG_APP_OPTIONS, CONFIG_APP_OPTIONS_FRAMEDROP_FIELD)) {
     if (strcmp(value, "auto") == 0) {
-      pconfig->app_options.framedrop = fastotv::client::player::media::FRAME_DROP_AUTO;
+      pconfig->app_options.framedrop = fastoplayer::media::FRAME_DROP_AUTO;
     } else if (strcmp(value, "off") == 0) {
-      pconfig->app_options.framedrop = fastotv::client::player::media::FRAME_DROP_OFF;
+      pconfig->app_options.framedrop = fastoplayer::media::FRAME_DROP_OFF;
     } else if (strcmp(value, "on") == 0) {
-      pconfig->app_options.framedrop = fastotv::client::player::media::FRAME_DROP_ON;
+      pconfig->app_options.framedrop = fastoplayer::media::FRAME_DROP_ON;
     } else {
       return 0;
     }
@@ -200,11 +199,11 @@ int ini_handler_fasto(void* user, const char* section, const char* name, const c
     return 1;
   } else if (MATCH(CONFIG_APP_OPTIONS, CONFIG_APP_OPTIONS_BYTES_FIELD)) {
     if (strcmp(value, "auto") == 0) {
-      pconfig->app_options.seek_by_bytes = fastotv::client::player::media::SEEK_AUTO;
+      pconfig->app_options.seek_by_bytes = fastoplayer::media::SEEK_AUTO;
     } else if (strcmp(value, "off") == 0) {
-      pconfig->app_options.seek_by_bytes = fastotv::client::player::media::SEEK_BY_BYTES_OFF;
+      pconfig->app_options.seek_by_bytes = fastoplayer::media::SEEK_BY_BYTES_OFF;
     } else if (strcmp(value, "on") == 0) {
-      pconfig->app_options.seek_by_bytes = fastotv::client::player::media::SEEK_BY_BYTES_ON;
+      pconfig->app_options.seek_by_bytes = fastoplayer::media::SEEK_BY_BYTES_ON;
     } else {
       return 0;
     }
@@ -259,7 +258,7 @@ int ini_handler_fasto(void* user, const char* section, const char* name, const c
     pconfig->app_options.video_codec_name = value;
     return 1;
   } else if (MATCH(CONFIG_APP_OPTIONS, CONFIG_APP_OPTIONS_HWACCEL_FIELD)) {
-    player::media::HWAccelID hwid;
+    media::HWAccelID hwid;
     if (common::ConvertFromString(value, &hwid)) {
       pconfig->app_options.hwaccel_id = hwid;
     }
@@ -282,7 +281,7 @@ int ini_handler_fasto(void* user, const char* section, const char* name, const c
 }
 }  // namespace
 
-common::ErrnoError load_config_file(const std::string& config_absolute_path, player::TVConfig* options) {
+common::ErrnoError load_config_file(const std::string& config_absolute_path, TVConfig* options) {
   if (!options) {
     return common::make_errno_error_inval();
   }
@@ -299,7 +298,7 @@ common::ErrnoError load_config_file(const std::string& config_absolute_path, pla
   return common::ErrnoError();
 }
 
-common::ErrnoError save_config_file(const std::string& config_absolute_path, player::TVConfig* options) {
+common::ErrnoError save_config_file(const std::string& config_absolute_path, TVConfig* options) {
   if (!options || config_absolute_path.empty()) {
     return common::make_errno_error_inval();
   }
@@ -327,9 +326,8 @@ common::ErrnoError save_config_file(const std::string& config_absolute_path, pla
   config_save_file.WriteFormated(CONFIG_APP_OPTIONS_GENPTS_FIELD "=%s\n",
                                  common::ConvertToString(options->app_options.genpts));
   config_save_file.WriteFormated(CONFIG_APP_OPTIONS_LOWRES_FIELD "=%d\n", options->app_options.lowres);
-  config_save_file.WriteFormated(
-      CONFIG_APP_OPTIONS_SYNC_FIELD "=%s\n",
-      options->app_options.av_sync_type == player::media::AV_SYNC_AUDIO_MASTER ? "audio" : "video");
+  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_SYNC_FIELD "=%s\n",
+                                 options->app_options.av_sync_type == media::AV_SYNC_AUDIO_MASTER ? "audio" : "video");
   config_save_file.WriteFormated(CONFIG_APP_OPTIONS_FRAMEDROP_FIELD "=%d\n",
                                  static_cast<int>(options->app_options.framedrop));
   config_save_file.WriteFormated(CONFIG_APP_OPTIONS_BYTES_FIELD "=%d\n",
@@ -367,5 +365,4 @@ common::ErrnoError save_config_file(const std::string& config_absolute_path, pla
   config_save_file.Close();
   return common::ErrnoError();
 }
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer

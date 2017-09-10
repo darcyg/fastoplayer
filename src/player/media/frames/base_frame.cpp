@@ -18,9 +18,8 @@
 
 #include "player/media/frames/base_frame.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 namespace frames {
 
@@ -37,6 +36,5 @@ void BaseFrame::ClearFrame() {
 
 }  // namespace frames
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

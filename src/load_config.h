@@ -20,13 +20,9 @@
 
 #include "player/config.h"
 
-namespace fastotv {
-namespace client {
+namespace fastoplayer {
 
-common::ErrnoError load_config_file(const std::string& config_absolute_path,
-                                    player::TVConfig* options) WARN_UNUSED_RESULT;
-common::ErrnoError save_config_file(const std::string& config_absolute_path,
-                                    player::TVConfig* options) WARN_UNUSED_RESULT;
+common::ErrnoError load_config_file(const std::string& config_absolute_path, TVConfig* options) WARN_UNUSED_RESULT;
+common::ErrnoError save_config_file(const std::string& config_absolute_path, TVConfig* options) WARN_UNUSED_RESULT;
 
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer

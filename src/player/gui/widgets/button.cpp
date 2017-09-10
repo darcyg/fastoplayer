@@ -20,9 +20,8 @@
 
 #include <common/application/application.h>
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace gui {
 
 Button::Button() : base_class(), pressed_(false) {}
@@ -80,6 +79,5 @@ void Button::OnMouseReleased(Uint8 button, const SDL_Point& position) {
 }
 
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

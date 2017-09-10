@@ -22,9 +22,8 @@
 
 #include <SDL2/SDL_rect.h>
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace draw {
 
 bool IsEmptyRect(const SDL_Rect& rect);
@@ -45,6 +44,5 @@ extern const SDL_Color gray_color;
 extern const size_t invalid_row_position;
 
 }  // namespace draw
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

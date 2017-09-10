@@ -24,9 +24,7 @@
 
 #include "player/gui/events_base.h"  // for EventBase, EventsType::M...
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
 namespace gui {
 namespace events {
 
@@ -70,6 +68,4 @@ typedef EventBase<MOUSE_RELEASE_EVENT, MouseReleaseInfo> MouseReleaseEvent;
 
 }  // namespace events
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer

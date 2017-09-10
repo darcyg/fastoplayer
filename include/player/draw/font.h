@@ -22,9 +22,7 @@
 
 #include <SDL2/SDL_ttf.h>
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
 namespace draw {
 
 int CalcHeightFontPlaceByRowCount(const TTF_Font* font, int row);
@@ -48,6 +46,4 @@ void DrawImage(SDL_Renderer* render, SDL_Texture* texture, const SDL_Rect& rect)
 bool GetTextSize(TTF_Font* font, const std::string& text, int* w, int* h);
 
 }  // namespace draw
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer

@@ -20,9 +20,8 @@
 
 #include "player/media/frames/base_frame.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 namespace frames {
 
@@ -43,6 +42,5 @@ clock64_t CalcDurationBetweenVideoFrames(VideoFrame* vp, VideoFrame* nextvp, clo
 
 }  // namespace frames
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

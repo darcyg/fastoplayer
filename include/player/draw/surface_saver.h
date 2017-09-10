@@ -23,9 +23,7 @@
 
 #include <common/macros.h>
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
 namespace draw {
 
 class SurfaceSaver {
@@ -48,6 +46,4 @@ class SurfaceSaver {
 SurfaceSaver* MakeSurfaceFromPath(const std::string& img_full_path);
 
 }  // namespace draw
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer

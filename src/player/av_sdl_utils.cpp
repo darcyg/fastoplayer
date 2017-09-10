@@ -18,9 +18,8 @@
 
 #include "player/av_sdl_utils.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 
 SDL_Rect CalculateDisplayRect(int scr_xleft,
                               int scr_ytop,
@@ -84,6 +83,5 @@ common::Error UploadTexture(SDL_Texture* tex, const AVFrame* frame) {
   return common::make_error(common::MemSPrintf("Unsupported pixel format %d.", frame->format));
 }
 
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

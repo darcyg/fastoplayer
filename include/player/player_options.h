@@ -18,12 +18,12 @@
 
 #pragma once
 
-#include "player/draw/draw.h"
-#include "player/media/types.h"
+#include <common/draw/types.h>
 
-namespace fastotv {
-namespace client {
-namespace player {
+#include "player/types.h"
+
+namespace fastoplayer {
+
 
 struct PlayerOptions {
   enum { width = 640, height = 480, volume = 100 };
@@ -38,6 +38,5 @@ struct PlayerOptions {
   stream_id last_showed_channel_id;
 };
 
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

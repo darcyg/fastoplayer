@@ -20,6 +20,8 @@
 
 #include <common/event.h>
 
+#define EVENT_LOOP_ID 1
+
 enum EventsType : common::IEvent::event_id_t {
   PRE_EXEC_EVENT = 0,
   POST_EXEC_EVENT,
@@ -44,19 +46,8 @@ enum EventsType : common::IEvent::event_id_t {
   REQUEST_VIDEO_EVENT,
   QUIT_STREAM_EVENT,
 
-  CLIENT_CONNECT_EVENT,
-  CLIENT_DISCONNECT_EVENT,
-  CLIENT_AUTHORIZED_EVENT,
-  CLIENT_UNAUTHORIZED_EVENT,
-  CLIENT_CONFIG_CHANGE_EVENT,
-  CLIENT_BANDWIDTH_ESTIMATION_EVENT,
-  CLIENT_RECEIVE_CHANNELS_EVENT,
-  CLIENT_RECEIVE_RUNTIME_CHANNELS_EVENT,
-  CLIENT_CHAT_MESSAGE_SENT_EVENT,
-  CLIENT_CHAT_MESSAGE_RECEIVE_EVENT,
   COUNT_EVENTS
 };
-#define EVENT_LOOP_ID 1
 
 namespace common {
 
@@ -71,9 +62,7 @@ struct event_traits<EventsType> {
 
 }  // namespace common
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
 namespace gui {
 namespace events {
 
@@ -110,6 +99,4 @@ class EventBase<event_t, void> : public common::Event<EventsType, event_t> {
 
 }  // namespace events
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer

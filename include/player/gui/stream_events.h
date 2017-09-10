@@ -24,9 +24,7 @@ extern "C" {
 
 #include "player/gui/events_base.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
 namespace media {
 class VideoState;
 }
@@ -55,6 +53,4 @@ typedef EventBase<QUIT_STREAM_EVENT, QuitStreamInfo> QuitStreamEvent;
 
 }  // namespace events
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer

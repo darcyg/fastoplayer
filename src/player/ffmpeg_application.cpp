@@ -111,9 +111,8 @@ int lockmgr(void** mtx, enum AVLockOp op) {
 
 }  // namespace
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 
 FFmpegApplication::FFmpegApplication(int argc, char** argv) : base_class(argc, argv) {
   avformat_network_init();
@@ -169,6 +168,5 @@ int prepare_to_start(const std::string& app_directory_absolute_path) {
   return EXIT_SUCCESS;
 }
 
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

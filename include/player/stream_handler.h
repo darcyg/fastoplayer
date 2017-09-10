@@ -20,9 +20,8 @@
 
 #include "player/media/video_state_handler.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 
 class StreamHandler : public media::VideoStateHandler {
  public:
@@ -51,6 +50,5 @@ class StreamHandler : public media::VideoStateHandler {
   virtual void HandleQuitStream(media::VideoState* stream, int exit_code, common::Error err) override final;
 };
 
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

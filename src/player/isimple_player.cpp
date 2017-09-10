@@ -53,9 +53,7 @@
 
 #define MAIN_FONT_PATH_RELATIVE "share/fonts/FreeSans.ttf"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
 
 const SDL_Color ISimplePlayer::text_color = {255, 255, 255, 0};
 const AVRational ISimplePlayer::min_fps = {25, 1};
@@ -356,7 +354,7 @@ void ISimplePlayer::HandleLircPressEvent(gui::events::LircPressEvent* event) {
   } else if (inf.code == LIRC_KEY_MUTE) {
     ToggleMute();
   }
-}  // namespace player
+}
 
 void ISimplePlayer::HandleKeyPressEvent(gui::events::KeyPressEvent* event) {
   const gui::events::KeyPressInfo inf = event->GetInfo();
@@ -583,7 +581,7 @@ void ISimplePlayer::DrawFailedStatus() {
     return;
   }
 
-  draw::FlushRender(renderer_, player::draw::black_color);
+  draw::FlushRender(renderer_, draw::black_color);
   DrawInfo();
   SDL_RenderPresent(renderer_);
 }
@@ -642,7 +640,7 @@ void ISimplePlayer::DrawPlayingStatus() {
 
   bool flip_v = frame->frame->linesize[0] < 0;
 
-  draw::FlushRender(renderer_, player::draw::black_color);
+  draw::FlushRender(renderer_, draw::black_color);
 
   SDL_Rect rect = CalculateDisplayRect(xleft_, ytop_, window_size_.width, window_size_.height, frame->width,
                                        frame->height, frame->sar);
@@ -650,14 +648,14 @@ void ISimplePlayer::DrawPlayingStatus() {
 
   DrawInfo();
   SDL_RenderPresent(renderer_);
-}  // namespace client
+}
 
 void ISimplePlayer::DrawInitStatus() {
   if (!renderer_) {
     return;
   }
 
-  draw::FlushRender(renderer_, player::draw::black_color);
+  draw::FlushRender(renderer_, draw::black_color);
   DrawInfo();
   SDL_RenderPresent(renderer_);
 }
@@ -851,6 +849,4 @@ media::VideoState* ISimplePlayer::CreateStream(stream_id sid,
   return stream;
 }
 
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer

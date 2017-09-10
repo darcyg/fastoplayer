@@ -20,9 +20,8 @@
 
 #include "player/media/types.h"  // for clock64_t
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 
 class Clock {
@@ -48,6 +47,5 @@ class Clock {
 };
 
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

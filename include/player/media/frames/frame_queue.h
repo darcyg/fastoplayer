@@ -22,9 +22,8 @@
 
 #include "player/media/frames/ring_buffer.h"  // for RingBuffer
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 namespace frames {
 
@@ -73,6 +72,5 @@ class AudioFrameQueue : public BaseFrameQueue<frames::AudioFrame, buffer_size> {
 
 }  // namespace frames
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

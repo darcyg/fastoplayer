@@ -33,7 +33,6 @@ extern "C" {
 }
 
 #include <common/convert2string.h>  // for ConvertFromString
-#include <common/logger.h>          // for COMPACT_LOG_WARNING, WARNING_LOG
 #include <common/macros.h>          // for DISALLOW_COPY_AND_ASSIGN
 
 void show_license();

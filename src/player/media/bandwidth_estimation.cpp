@@ -19,9 +19,8 @@
 
 #define KOEF_BASE_TO_HIGHT 4 / 3
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 
 DesireBytesPerSec::DesireBytesPerSec() : min(0), max(0) {}
@@ -191,6 +190,5 @@ DesireBytesPerSec CalculateDesireMPEGBandwidthBytesPerSec(int width, int height)
 }
 
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

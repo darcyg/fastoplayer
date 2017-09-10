@@ -18,10 +18,9 @@
 
 #include "player/media/frames/ring_buffer.h"
 
-namespace fastotv {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
-namespace client {}
 }  // namespace media
-}  // namespace player
-}  // namespace fastotv
+
+}  // namespace fastoplayer

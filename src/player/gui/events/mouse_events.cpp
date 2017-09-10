@@ -18,9 +18,8 @@
 
 #include "player/gui/events/mouse_events.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace gui {
 namespace events {
 
@@ -55,6 +54,5 @@ SDL_Point MouseReleaseInfo::GetMousePoint() const {
 
 }  // namespace events
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

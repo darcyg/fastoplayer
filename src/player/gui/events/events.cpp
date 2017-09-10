@@ -20,9 +20,8 @@
 
 #include <common/time.h>
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace gui {
 namespace events {
 
@@ -34,6 +33,5 @@ PostExecInfo::PostExecInfo(int code) : code(code) {}
 
 }  // namespace events
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

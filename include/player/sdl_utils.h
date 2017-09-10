@@ -24,11 +24,10 @@ extern "C" {
 #include <libavutil/rational.h>  // for AVRational
 }
 
-#include "player/media/types.h"
+#include "player/types.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 
 namespace media {
 struct AudioParams;
@@ -47,6 +46,5 @@ bool audio_open(void* opaque,
                 media::AudioParams* audio_hw_params,
                 int* audio_buff_size) WARN_UNUSED_RESULT;
 
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

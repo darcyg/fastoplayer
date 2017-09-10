@@ -24,9 +24,8 @@
 
 #include "player/gui/events/key_events.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace gui {
 
 class LineEdit : public Label {
@@ -47,7 +46,7 @@ class LineEdit : public Label {
   virtual void HandleEvent(event_t* event) override;
   virtual void HandleExceptionEvent(event_t* event, common::Error err) override;
 
-  virtual void HandleMousePressEvent(player::gui::events::MousePressEvent* event) override;
+  virtual void HandleMousePressEvent(gui::events::MousePressEvent* event) override;
 
   virtual void HandleKeyPressEvent(gui::events::KeyPressEvent* event);
   virtual void HandleKeyReleaseEvent(gui::events::KeyReleaseEvent* event);
@@ -65,6 +64,5 @@ class LineEdit : public Label {
 };
 
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

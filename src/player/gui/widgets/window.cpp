@@ -22,9 +22,8 @@
 
 #include "player/draw/draw.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace gui {
 
 Window::Window() : Window(draw::white_color) {}
@@ -261,7 +260,7 @@ void Window::HandleMouseStateChangeEvent(gui::events::MouseStateChangeEvent* eve
     return;
   }
 
-  player::gui::events::MouseStateChangeInfo minf = event->GetInfo();
+  gui::events::MouseStateChangeInfo minf = event->GetInfo();
   if (!minf.IsCursorVisible()) {
     SetFocus(false);
     return;
@@ -279,7 +278,7 @@ void Window::HandleMousePressEvent(gui::events::MousePressEvent* event) {
     return;
   }
 
-  player::gui::events::MousePressInfo inf = event->GetInfo();
+  gui::events::MousePressInfo inf = event->GetInfo();
   SDL_Point point = inf.GetMousePoint();
   if (IsPointInControlArea(point)) {
     OnMouseClicked(inf.mevent.button, point);
@@ -295,7 +294,7 @@ void Window::HandleMouseReleaseEvent(events::MouseReleaseEvent* event) {
     return;
   }
 
-  player::gui::events::MouseReleaseInfo inf = event->GetInfo();
+  gui::events::MouseReleaseInfo inf = event->GetInfo();
   SDL_Point point = inf.GetMousePoint();
   if (IsPointInControlArea(point)) {
     OnMouseReleased(inf.mevent.button, point);
@@ -311,7 +310,7 @@ void Window::HandleMouseMoveEvent(gui::events::MouseMoveEvent* event) {
     return;
   }
 
-  player::gui::events::MouseMoveInfo minf = event->GetInfo();
+  gui::events::MouseMoveInfo minf = event->GetInfo();
   SetFocus(IsPointInControlArea(minf.GetMousePoint()));
 }
 
@@ -340,6 +339,5 @@ void Window::OnFocusChanged(bool focus) {
 }
 
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

@@ -22,9 +22,7 @@
 
 #include "player/gui/events_base.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
 namespace gui {
 namespace events {
 
@@ -63,6 +61,4 @@ typedef EventBase<TEXT_EDIT_EVENT, TextEditInfo> TextEditEvent;
 
 }  // namespace events
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer

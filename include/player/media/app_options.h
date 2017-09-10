@@ -33,9 +33,8 @@ extern "C" {
 
 #include "ffmpeg_internal.h"  // for HWAccelID
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 
 // 640x480
@@ -89,6 +88,5 @@ struct ComplexOptions {
 };
 
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

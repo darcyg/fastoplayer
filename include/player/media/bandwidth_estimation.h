@@ -2,9 +2,8 @@
 
 #include "player/media/types.h"  // for bandwidth_t
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 
 struct DesireBytesPerSec {
@@ -36,6 +35,5 @@ DesireBytesPerSec CalculateDesireH264BandwidthBytesPerSec(int width, int height,
 DesireBytesPerSec CalculateDesireMPEGBandwidthBytesPerSec(int width, int height);
 
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

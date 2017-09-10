@@ -18,15 +18,13 @@
 
 #include "player/config.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 
 TVConfig::TVConfig()
     : power_off_on_exit(false), loglevel(common::logging::LOG_LEVEL_INFO), app_options(), player_options() {}
 
 TVConfig::~TVConfig() {}
 
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

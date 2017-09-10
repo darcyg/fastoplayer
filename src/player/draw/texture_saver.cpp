@@ -20,9 +20,8 @@
 
 #include "player/draw/draw.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace draw {
 
 TextureSaver::TextureSaver() : texture_(NULL), renderer_(NULL) {}
@@ -82,6 +81,5 @@ TextureSaver::~TextureSaver() {
 }
 
 }  // namespace draw
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

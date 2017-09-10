@@ -18,9 +18,8 @@
 
 #include "player/player_options.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 
 PlayerOptions::PlayerOptions()
     : is_full_screen(false),
@@ -29,6 +28,5 @@ PlayerOptions::PlayerOptions()
       audio_volume(volume),
       last_showed_channel_id(invalid_stream_id) {}
 
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

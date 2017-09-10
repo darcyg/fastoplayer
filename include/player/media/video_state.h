@@ -38,6 +38,8 @@ extern "C" {
 #include <common/threads/types.h>  // for condition_variable, mutex
 #include <common/uri/url.h>        // for Uri
 
+#include "player/types.h"
+
 #include "player/media/app_options.h"   // for AppOptions, ComplexOptions
 #include "player/media/audio_params.h"  // for AudioParams
 #include "player/media/stream_statistic.h"
@@ -57,9 +59,8 @@ class Thread;
 #define VIDEO_PICTURE_QUEUE_SIZE 3
 #define SAMPLE_QUEUE_SIZE 9
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 
 class VideoStateHandler;
@@ -250,6 +251,5 @@ class VideoState {
 };
 
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

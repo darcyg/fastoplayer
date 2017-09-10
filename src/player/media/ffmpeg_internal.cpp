@@ -18,9 +18,8 @@
 #include "player/media/hwaccels/ffmpeg_videotoolbox.h"
 #endif
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 
 AVBufferRef* hw_device_ctx = NULL;
@@ -63,6 +62,5 @@ const HWAccel* get_hwaccel(enum AVPixelFormat pix_fmt) {
 }
 
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

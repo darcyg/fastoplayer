@@ -20,9 +20,8 @@
 
 #include "player/gui/widgets/font_window.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace gui {
 
 class IListBox : public FontWindow {
@@ -96,6 +95,5 @@ class ListBox : public IListBox {
 };
 
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

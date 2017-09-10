@@ -20,9 +20,7 @@
 
 #include "player/gui/widgets/font_window.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
 namespace gui {
 
 class Label : public FontWindow {
@@ -46,6 +44,4 @@ class Label : public FontWindow {
 };
 
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer

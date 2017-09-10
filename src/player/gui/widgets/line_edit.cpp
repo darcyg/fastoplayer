@@ -23,9 +23,8 @@
 
 #include "player/draw/draw.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace gui {
 
 LineEdit::LineEdit() : base_class(), active_(false), start_blink_ts_(0), show_cursor_(false) {
@@ -109,13 +108,13 @@ void LineEdit::HandleExceptionEvent(event_t* event, common::Error err) {
   UNUSED(err);
 }
 
-void LineEdit::HandleMousePressEvent(player::gui::events::MousePressEvent* event) {
+void LineEdit::HandleMousePressEvent(gui::events::MousePressEvent* event) {
   if (!IsCanDraw()) {
     base_class::HandleMousePressEvent(event);
     return;
   }
 
-  player::gui::events::MousePressInfo inf = event->GetInfo();
+  gui::events::MousePressInfo inf = event->GetInfo();
   SDL_Point point = inf.GetMousePoint();
   if (IsPointInControlArea(point)) {
     SetActived(true);
@@ -182,7 +181,7 @@ void LineEdit::HandleTextInputEvent(gui::events::TextInputEvent* event) {
   int h = 0;
   SDL_Rect r = GetRect();
   std::string can_be_text = text_ + tinf.text;
-  if (player::draw::GetTextSize(GetFont(), can_be_text, &w, &h) && w < r.w) {
+  if (draw::GetTextSize(GetFont(), can_be_text, &w, &h) && w < r.w) {
     text_ = can_be_text;
   }
 }
@@ -221,6 +220,5 @@ void LineEdit::OnActiveChanged(bool active) {
 }
 
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

@@ -25,9 +25,8 @@ extern "C" {
 }
 
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 
 int videotoolbox_init(AVCodecContext* decoder_ctx);
@@ -35,6 +34,5 @@ void videotoolbox_uninit(AVCodecContext* decoder_ctx);
 
 }  // namespace media
 }
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer
 

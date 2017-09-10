@@ -18,9 +18,8 @@
 
 #include "player/gui/events/window_events.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace gui {
 namespace events {
 
@@ -28,6 +27,5 @@ WindowResizeInfo::WindowResizeInfo(const common::draw::Size& size) : size(size) 
 
 }  // namespace events
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

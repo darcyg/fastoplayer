@@ -6,16 +6,15 @@ extern "C" {
 #include <libavdevice/avdevice.h>  // for avdevice_register_all
 }
 
-#include "client/player/gui/stream_events.h"
+#include "player/gui/stream_events.h"
 
-#include "client/player/sdl_utils.h"
-#include "client/player/media/video_state.h"
-#include "client/player/media/video_state_handler.h"
+#include "player/sdl_utils.h"
+#include "player/media/video_state.h"
+#include "player/media/video_state_handler.h"
 
-using namespace fastotv;
-using namespace fastotv::client;
-using namespace fastotv::client::player::gui;
-using namespace fastotv::client::player::media;
+using namespace fastoplayer;
+using namespace fastoplayer::gui;
+using namespace fastoplayer::media;
 
 namespace {
 struct DictionaryOptions {
@@ -47,7 +46,7 @@ class FakeHandler : public VideoStateHandler {
                                            int64_t wanted_channel_layout,
                                            int wanted_nb_channels,
                                            int wanted_sample_rate,
-                                           player::media::AudioParams* audio_hw_params,
+                                           media::AudioParams* audio_hw_params,
                                            int* audio_buff_size) override {
     UNUSED(stream);
     UNUSED(wanted_channel_layout);
@@ -55,8 +54,8 @@ class FakeHandler : public VideoStateHandler {
     UNUSED(wanted_sample_rate);
     UNUSED(audio_buff_size);
 
-    player::media::AudioParams laudio_hw_params;
-    if (!player::init_audio_params(3, 48000, 2, &laudio_hw_params)) {
+    media::AudioParams laudio_hw_params;
+    if (!init_audio_params(3, 48000, 2, &laudio_hw_params)) {
       return common::make_error("Failed to init audio.");
     }
 
@@ -126,9 +125,9 @@ class FakeApplication : public common::application::IApplication {
     const stream_id id = "unique";
     // wget http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_h264.mov
     const common::uri::Url uri = common::uri::Url("file://" PROJECT_TEST_SOURCES_DIR "/big_buck_bunny_1080p_h264.mov");
-    player::media::AppOptions opt;
+    media::AppOptions opt;
     DictionaryOptions* dict = new DictionaryOptions;
-    const player::media::ComplexOptions copt(dict->swr_opts, dict->sws_dict, dict->format_opts, dict->codec_opts);
+    const media::ComplexOptions copt(dict->swr_opts, dict->sws_dict, dict->format_opts, dict->codec_opts);
     VideoStateHandler* handler = new FakeHandler;
     VideoState* vs = new VideoState(id, uri, opt, copt);
     vs->SetHandler(handler);
@@ -164,14 +163,14 @@ class FakeApplication : public common::application::IApplication {
 
   virtual void PostEvent(event_t* event) override {
     events::Event* fevent = static_cast<events::Event*>(event);
-    if (fevent->GetEventType() == player::gui::events::RequestVideoEvent::EventType) {
-      player::gui::events::RequestVideoEvent* avent = static_cast<player::gui::events::RequestVideoEvent*>(event);
-      player::gui::events::FrameInfo fr = avent->GetInfo();
+    if (fevent->GetEventType() == gui::events::RequestVideoEvent::EventType) {
+      gui::events::RequestVideoEvent* avent = static_cast<gui::events::RequestVideoEvent*>(event);
+      gui::events::FrameInfo fr = avent->GetInfo();
       common::Error err = fr.stream_->RequestVideo(fr.width, fr.height, fr.av_pixel_format, fr.aspect_ratio);
       if (err) {
         fApp->Exit(EXIT_FAILURE);
       }
-    } else if (fevent->GetEventType() == player::gui::events::QuitStreamEvent::EventType) {
+    } else if (fevent->GetEventType() == gui::events::QuitStreamEvent::EventType) {
       // events::QuitStreamEvent* qevent = static_cast<gui::events::QuitStreamEvent*>(event);
       fApp->Exit(EXIT_SUCCESS);
     } else {

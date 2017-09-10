@@ -762,8 +762,8 @@ void show_bsfs() {
 
 void show_hwaccels() {
   std::cout << "Hardware acceleration methods:" << std::endl;
-  for (size_t i = 0; i < fastotv::client::player::media::hwaccel_count(); i++) {
-    std::cout << fastotv::client::player::media::hwaccels[i].name << std::endl;
+  for (size_t i = 0; i < fastoplayer::media::hwaccel_count(); i++) {
+    std::cout << fastoplayer::media::hwaccels[i].name << std::endl;
   }
 }
 

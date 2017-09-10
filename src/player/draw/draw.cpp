@@ -24,9 +24,8 @@
 
 #include <common/sprintf.h>
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace draw {
 
 common::Error CreateMainWindow(const common::draw::Size& size,
@@ -183,6 +182,5 @@ common::Error FlushRender(SDL_Renderer* render, const SDL_Color& rgba) {
 }
 
 }  // namespace draw
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

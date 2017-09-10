@@ -20,9 +20,8 @@
 
 #include "player/draw/draw.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace gui {
 
 IListBox::IListBox()
@@ -201,6 +200,5 @@ void ListBox::DrawRow(SDL_Renderer* render, size_t pos, bool is_active_row, cons
 }
 
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

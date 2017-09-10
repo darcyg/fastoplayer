@@ -18,9 +18,8 @@
 
 #include "player/media/video_state_handler.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 
 VideoStateHandler::VideoStateHandler() {}
@@ -28,6 +27,5 @@ VideoStateHandler::VideoStateHandler() {}
 VideoStateHandler::~VideoStateHandler() {}
 
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

@@ -23,9 +23,7 @@
 
 #include <common/macros.h>
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
 namespace draw {
 
 class TextureSaver {
@@ -44,6 +42,4 @@ class TextureSaver {
 };
 
 }  // namespace draw
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer

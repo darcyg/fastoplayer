@@ -27,9 +27,8 @@
 #include "player/gui/events/mouse_events.h"
 #include "player/gui/events/window_events.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace gui {
 
 class Window : public gui::events::EventListener {
@@ -125,6 +124,5 @@ class Window : public gui::events::EventListener {
 };
 
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

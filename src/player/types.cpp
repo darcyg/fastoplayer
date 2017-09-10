@@ -16,20 +16,10 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player/media/app_options.h"  // for AppOptions
-#include "player_options.h"            // for PlayerOptions
+#include "player/types.h"
 
 namespace fastoplayer {
 
-struct TVConfig {
-  TVConfig();
-  ~TVConfig();
-
-  bool power_off_on_exit;
-  common::logging::LOG_LEVEL loglevel;
-
-  media::AppOptions app_options;
-  PlayerOptions player_options;
-};
+const stream_id invalid_stream_id = stream_id();
 
 }  // namespace fastoplayer

@@ -27,9 +27,8 @@
 #include "player/media/clock.h"         // for Clock
 #include "player/media/packet_queue.h"  // for PacketQueue
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 
 Stream::Stream()
@@ -229,6 +228,5 @@ bool AudioStream::Open(int index, AVStream* av_stream_st) {
 }
 
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

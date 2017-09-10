@@ -18,9 +18,8 @@
 
 #include "player/draw/types.h"
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace draw {
 
 const SDL_Rect empty_rect = {0, 0, 0, 0};
@@ -65,6 +64,5 @@ bool IsEmptyRect(const SDL_Rect& rect) {
 }
 
 }  // namespace draw
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

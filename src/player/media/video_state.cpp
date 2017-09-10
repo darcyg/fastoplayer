@@ -112,9 +112,8 @@ int cmp_audio_fmts(enum AVSampleFormat fmt1, int64_t channel_count1, enum AVSamp
 }
 }  // namespace
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 
 namespace {
@@ -1851,6 +1850,5 @@ int VideoState::ConfigureAudioFilters(const std::string& afilters, int force_out
 #endif /* CONFIG_AVFILTER */
 
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

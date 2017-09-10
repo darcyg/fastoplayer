@@ -22,16 +22,10 @@
 
 #include <common/types.h>  // for time64_t
 #include <common/uri/url.h>
-#include <common/bounded_value.h>
 
 #define DEFAULT_FRAME_PER_SEC 25
 
-namespace fastotv {
-namespace client {
-typedef common::BoundedValue<int8_t, 0, 100> audio_volume_t;
-typedef std::string stream_id;  // must be unique
-static const stream_id invalid_stream_id = stream_id();
-namespace player {
+namespace fastoplayer {
 namespace media {
 
 typedef size_t bandwidth_t;
@@ -74,11 +68,9 @@ enum AvSyncType {
 int64_t get_valid_channel_layout(int64_t channel_layout, int channels);
 
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer
 
 namespace common {
-std::string ConvertToString(const fastotv::client::player::media::HWAccelID& value);
-bool ConvertFromString(const std::string& from, fastotv::client::player::media::HWAccelID* out);
+std::string ConvertToString(const fastoplayer::media::HWAccelID& value);
+bool ConvertFromString(const std::string& from, fastoplayer::media::HWAccelID* out);
 }  // namespace common

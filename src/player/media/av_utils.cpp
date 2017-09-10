@@ -26,9 +26,8 @@ extern "C" {
 
 #include <common/macros.h>
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace media {
 
 int check_stream_specifier(AVFormatContext* s, AVStream* st, const char* spec) {
@@ -249,6 +248,5 @@ AVDictionary** setup_find_stream_info_opts(AVFormatContext* s, AVDictionary* cod
 }
 
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer

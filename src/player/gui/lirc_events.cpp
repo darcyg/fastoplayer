@@ -47,12 +47,10 @@ bool ConvertFromString(const std::string& from, LircCode* out) {
 }
 }  // namespace common
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
+
 namespace gui {
 namespace events {}
 }  // namespace gui
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+
+}  // namespace fastoplayer
