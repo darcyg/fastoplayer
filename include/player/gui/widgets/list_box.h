@@ -25,15 +25,17 @@ namespace fastoplayer {
 namespace gui {
 
 class IListBox : public FontWindow {
- public:
+public:
   typedef FontWindow base_class;
-  typedef std::function<void(Uint8 button, size_t row)> mouse_clicked_row_callback_t;
-  typedef std::function<void(Uint8 button, size_t row)> mouse_released_row_callback_t;
+  typedef std::function<void(Uint8 button, size_t row)>
+      mouse_clicked_row_callback_t;
+  typedef std::function<void(Uint8 button, size_t row)>
+      mouse_released_row_callback_t;
 
   enum Selection { NO_SELECT, SINGLE_ROW_SELECT };
 
   IListBox();
-  IListBox(const SDL_Color& back_ground_color);
+  IListBox(const SDL_Color &back_ground_color);
   ~IListBox();
 
   void SetMouseClickedRowCallback(mouse_clicked_row_callback_t cb);
@@ -42,25 +44,28 @@ class IListBox : public FontWindow {
   void SetSelection(Selection sel);
   int GetSelection() const;
 
-  void SetSelectionColor(const SDL_Color& sel);
+  void SetSelectionColor(const SDL_Color &sel);
   SDL_Color GetSelectionColor() const;
 
   void SetRowHeight(int row_height);
   int GetRowHeight() const;
 
   virtual size_t GetRowCount() const = 0;
-  virtual void Draw(SDL_Renderer* render) override;
+  virtual void Draw(SDL_Renderer *render) override;
 
- protected:
-  virtual void DrawRow(SDL_Renderer* render, size_t pos, bool is_active_row, const SDL_Rect& row_rect) = 0;
-  virtual void HandleMouseMoveEvent(gui::events::MouseMoveEvent* event) override;
+protected:
+  virtual void DrawRow(SDL_Renderer *render, size_t pos, bool is_active_row,
+                       const SDL_Rect &row_rect) = 0;
+  virtual void
+  HandleMouseMoveEvent(gui::events::MouseMoveEvent *event) override;
 
   virtual void OnFocusChanged(bool focus) override;
-  virtual void OnMouseClicked(Uint8 button, const SDL_Point& position) override;
-  virtual void OnMouseReleased(Uint8 button, const SDL_Point& position) override;
+  virtual void OnMouseClicked(Uint8 button, const SDL_Point &position) override;
+  virtual void OnMouseReleased(Uint8 button,
+                               const SDL_Point &position) override;
 
- private:
-  size_t FindRowInPosition(const SDL_Point& position) const;
+private:
+  size_t FindRowInPosition(const SDL_Point &position) const;
 
   int row_height_;
   size_t last_drawed_row_pos_;
@@ -74,26 +79,27 @@ class IListBox : public FontWindow {
 };
 
 class ListBox : public IListBox {
- public:
+public:
   typedef IListBox base_class;
   typedef std::vector<std::string> lines_t;
 
   ListBox();
-  ListBox(const SDL_Color& back_ground_color);
+  ListBox(const SDL_Color &back_ground_color);
   ~ListBox();
 
-  void SetLines(const lines_t& lines);
+  void SetLines(const lines_t &lines);
   lines_t GetLines() const;
 
   virtual size_t GetRowCount() const override;
 
- protected:
-  virtual void DrawRow(SDL_Renderer* render, size_t pos, bool is_active_row, const SDL_Rect& row_rect) override;
+protected:
+  virtual void DrawRow(SDL_Renderer *render, size_t pos, bool is_active_row,
+                       const SDL_Rect &row_rect) override;
 
- private:
+private:
   lines_t lines_;
 };
 
-}  // namespace gui
+} // namespace gui
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

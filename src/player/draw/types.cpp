@@ -51,18 +51,14 @@ SDL_Rect GetCenterRect(SDL_Rect rect, int width, int height) {
   return {calc_x, calc_y, calc_width, calc_height};
 }
 
-bool IsPointInRect(const SDL_Point& point, const SDL_Rect& rect) {
+bool IsPointInRect(const SDL_Point &point, const SDL_Rect &rect) {
   return SDL_PointInRect(&point, &rect);
 }
 
-bool IsValidSize(int width, int height) {
-  return width > 0 && height > 0;
-}
+bool IsValidSize(int width, int height) { return width > 0 && height > 0; }
 
-bool IsEmptyRect(const SDL_Rect& rect) {
-  return SDL_RectEmpty(&rect);
-}
+bool IsEmptyRect(const SDL_Rect &rect) { return SDL_RectEmpty(&rect); }
 
-}  // namespace draw
+} // namespace draw
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

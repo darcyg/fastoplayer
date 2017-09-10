@@ -26,15 +26,14 @@ namespace gui {
 
 Button::Button() : base_class(), pressed_(false) {}
 
-Button::Button(const SDL_Color& back_ground_color) : base_class(back_ground_color) {}
+Button::Button(const SDL_Color &back_ground_color)
+    : base_class(back_ground_color) {}
 
 Button::~Button() {}
 
-bool Button::IsPressed() const {
-  return pressed_;
-}
+bool Button::IsPressed() const { return pressed_; }
 
-void Button::Draw(SDL_Renderer* render) {
+void Button::Draw(SDL_Renderer *render) {
   if (!IsCanDraw()) {
     base_class::Draw(render);
     return;
@@ -68,16 +67,16 @@ void Button::OnFocusChanged(bool focus) {
   base_class::OnFocusChanged(focus);
 }
 
-void Button::OnMouseClicked(Uint8 button, const SDL_Point& position) {
+void Button::OnMouseClicked(Uint8 button, const SDL_Point &position) {
   pressed_ = true;
   base_class::OnMouseClicked(button, position);
 }
 
-void Button::OnMouseReleased(Uint8 button, const SDL_Point& position) {
+void Button::OnMouseReleased(Uint8 button, const SDL_Point &position) {
   pressed_ = false;
   base_class::OnMouseReleased(button, position);
 }
 
-}  // namespace gui
+} // namespace gui
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

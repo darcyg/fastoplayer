@@ -31,7 +31,7 @@ PreExecInfo::PreExecInfo(int code) : code(code) {}
 
 PostExecInfo::PostExecInfo(int code) : code(code) {}
 
-}  // namespace events
-}  // namespace gui
+} // namespace events
+} // namespace gui
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

@@ -18,21 +18,21 @@
 
 #include <player/gui/sdl2_application.h>
 
-#include <stdlib.h>  // for EXIT_SUCCESS, EXIT_FAI...
+#include <stdlib.h> // for EXIT_SUCCESS, EXIT_FAI...
 
-#include <SDL2/SDL.h>           // for SDL_Init, SDL_Quit
-#include <SDL2/SDL_keyboard.h>  // for SDL_Keysym
-#include <SDL2/SDL_mouse.h>     // for SDL_ShowCursor
-#include <SDL2/SDL_stdinc.h>    // for Uint32
-#include <SDL2/SDL_timer.h>     // for SDL_AddTimer, SDL_Remo...
-#include <SDL2/SDL_ttf.h>       // for TTF_Init, TTF_Quit
-#include <SDL2/SDL_video.h>     // for ::SDL_WINDOWEVENT_CLOSE
+#include <SDL2/SDL.h>          // for SDL_Init, SDL_Quit
+#include <SDL2/SDL_keyboard.h> // for SDL_Keysym
+#include <SDL2/SDL_mouse.h>    // for SDL_ShowCursor
+#include <SDL2/SDL_stdinc.h>   // for Uint32
+#include <SDL2/SDL_timer.h>    // for SDL_AddTimer, SDL_Remo...
+#include <SDL2/SDL_ttf.h>      // for TTF_Init, TTF_Quit
+#include <SDL2/SDL_video.h>    // for ::SDL_WINDOWEVENT_CLOSE
 
-#include <common/logger.h>                  // for COMPACT_LOG_ERROR, COM...
-#include <common/macros.h>                  // for UNUSED, DNOTREACHED
-#include <common/threads/thread_manager.h>  // for THREAD_MANAGER
+#include <common/logger.h>                 // for COMPACT_LOG_ERROR, COM...
+#include <common/macros.h>                 // for UNUSED, DNOTREACHED
+#include <common/threads/thread_manager.h> // for THREAD_MANAGER
 
-#include <player/gui/events/events.h>  // for QuitEvent, QuitInfo
+#include <player/gui/events/events.h> // for QuitEvent, QuitInfo
 #include <player/gui/events/key_events.h>
 #include <player/gui/events/mouse_events.h>
 #include <player/gui/events/window_events.h>
@@ -41,27 +41,23 @@
 
 namespace {
 
-template <typename T>
-bool InRange(T a, T amin, T amax) {
+template <typename T> bool InRange(T a, T amin, T amax) {
   return amin <= a && a <= amax;
 }
 
-}  // namespace
+} // namespace
 
 namespace fastoplayer {
 
 namespace gui {
 namespace application {
 
-Sdl2Application::Sdl2Application(int argc, char** argv)
-    : common::application::IApplication(argc, argv),
-      dispatcher_(),
+Sdl2Application::Sdl2Application(int argc, char **argv)
+    : common::application::IApplication(argc, argv), dispatcher_(),
       update_display_timeout_msec_(event_timeout_wait_msec),
       cursor_visible_(false) {}
 
-Sdl2Application::~Sdl2Application() {
-  THREAD_MANAGER()->FreeInstance();
-}
+Sdl2Application::~Sdl2Application() { THREAD_MANAGER()->FreeInstance(); }
 
 int Sdl2Application::PreExecImpl() {
   Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER;
@@ -88,19 +84,22 @@ int Sdl2Application::ExecImpl() {
   while (true) {
     SDL_Event event;
     Uint32 start_wait_ts = SDL_GetTicks();
-    int res = SDL_PeepEvents(&event, 1, SDL_GETEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
-    if (res == -1) {        // error
-    } else if (res == 0) {  // no events
+    int res =
+        SDL_PeepEvents(&event, 1, SDL_GETEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
+    if (res == -1) {       // error
+    } else if (res == 0) { // no events
       events::TimeInfo inf;
-      events::TimerEvent* timer_event = new events::TimerEvent(this, inf);
+      events::TimerEvent *timer_event = new events::TimerEvent(this, inf);
       HandleEvent(timer_event);
       Uint32 work_time = SDL_GetTicks() - start_wait_ts;
       int sleep_timeout = update_display_timeout_msec_ - work_time;
-      if (sleep_timeout && InRange<int>(sleep_timeout, 0, update_display_timeout_msec_)) {
+      if (sleep_timeout &&
+          InRange<int>(sleep_timeout, 0, update_display_timeout_msec_)) {
         SDL_Delay(sleep_timeout);
       }
-    } else {  // some events
-      bool is_stop_event = event.type == FASTO_EVENT && event.user.data1 == NULL;
+    } else { // some events
+      bool is_stop_event =
+          event.type == FASTO_EVENT && event.user.data1 == NULL;
       if (is_stop_event) {
         break;
       }
@@ -113,51 +112,51 @@ int Sdl2Application::ExecImpl() {
   return EXIT_SUCCESS;
 }
 
-void Sdl2Application::ProcessEvent(SDL_Event* event) {
+void Sdl2Application::ProcessEvent(SDL_Event *event) {
   switch (event->type) {
-    case SDL_KEYDOWN: {
-      HandleKeyDownEvent(&event->key);
-      break;
-    }
-    case SDL_KEYUP: {
-      HandleKeyUpEvent(&event->key);
-      break;
-    }
-    case SDL_TEXTINPUT: {
-      HandleTextInputEvent(&event->text);
-      break;
-    }
-    case SDL_TEXTEDITING: {
-      HandleTextEditEvent(&event->edit);
-      break;
-    }
-    case SDL_MOUSEBUTTONDOWN: {
-      HandleMousePressEvent(&event->button);
-      break;
-    }
-    case SDL_MOUSEBUTTONUP: {
-      HandleMouseReleaseEvent(&event->button);
-      break;
-    }
-    case SDL_MOUSEMOTION: {
-      HandleMouseMoveEvent(&event->motion);
-      break;
-    }
-    case SDL_WINDOWEVENT: {
-      HandleWindowEvent(&event->window);
-      break;
-    }
-    case SDL_QUIT: {
-      HandleQuitEvent(&event->quit);
-      break;
-    }
-    case FASTO_EVENT: {
-      events::Event* fevent = static_cast<events::Event*>(event->user.data1);
-      HandleEvent(fevent);
-      break;
-    }
-    default:
-      break;
+  case SDL_KEYDOWN: {
+    HandleKeyDownEvent(&event->key);
+    break;
+  }
+  case SDL_KEYUP: {
+    HandleKeyUpEvent(&event->key);
+    break;
+  }
+  case SDL_TEXTINPUT: {
+    HandleTextInputEvent(&event->text);
+    break;
+  }
+  case SDL_TEXTEDITING: {
+    HandleTextEditEvent(&event->edit);
+    break;
+  }
+  case SDL_MOUSEBUTTONDOWN: {
+    HandleMousePressEvent(&event->button);
+    break;
+  }
+  case SDL_MOUSEBUTTONUP: {
+    HandleMouseReleaseEvent(&event->button);
+    break;
+  }
+  case SDL_MOUSEMOTION: {
+    HandleMouseMoveEvent(&event->motion);
+    break;
+  }
+  case SDL_WINDOWEVENT: {
+    HandleWindowEvent(&event->window);
+    break;
+  }
+  case SDL_QUIT: {
+    HandleQuitEvent(&event->quit);
+    break;
+  }
+  case FASTO_EVENT: {
+    events::Event *fevent = static_cast<events::Event *>(event->user.data1);
+    HandleEvent(fevent);
+    break;
+  }
+  default:
+    break;
   }
 }
 
@@ -166,7 +165,7 @@ int Sdl2Application::PostExecImpl() {
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
     if (event.type == FASTO_EVENT) {
-      events::Event* fevent = static_cast<events::Event*>(event.user.data1);
+      events::Event *fevent = static_cast<events::Event *>(event.user.data1);
       delete fevent;
     }
   }
@@ -174,7 +173,8 @@ int Sdl2Application::PostExecImpl() {
   return EXIT_SUCCESS;
 }
 
-Sdl2Application::update_display_timeout_t Sdl2Application::GetDisplayUpdateTimeout() const {
+Sdl2Application::update_display_timeout_t
+Sdl2Application::GetDisplayUpdateTimeout() const {
   return update_display_timeout_msec_;
 }
 
@@ -182,21 +182,23 @@ void Sdl2Application::SetDisplayUpdateTimeout(update_display_timeout_t msec) {
   update_display_timeout_msec_ = msec;
 }
 
-void Sdl2Application::Subscribe(common::IListener* listener, common::events_size_t id) {
-  dispatcher_.Subscribe(static_cast<events::EventListener*>(listener), id);
+void Sdl2Application::Subscribe(common::IListener *listener,
+                                common::events_size_t id) {
+  dispatcher_.Subscribe(static_cast<events::EventListener *>(listener), id);
 }
 
-void Sdl2Application::UnSubscribe(common::IListener* listener, common::events_size_t id) {
-  dispatcher_.UnSubscribe(static_cast<events::EventListener*>(listener), id);
+void Sdl2Application::UnSubscribe(common::IListener *listener,
+                                  common::events_size_t id) {
+  dispatcher_.UnSubscribe(static_cast<events::EventListener *>(listener), id);
 }
 
-void Sdl2Application::UnSubscribe(common::IListener* listener) {
-  dispatcher_.UnSubscribe(static_cast<events::EventListener*>(listener));
+void Sdl2Application::UnSubscribe(common::IListener *listener) {
+  dispatcher_.UnSubscribe(static_cast<events::EventListener *>(listener));
 }
 
-void Sdl2Application::SendEvent(common::IEvent* event) {
+void Sdl2Application::SendEvent(common::IEvent *event) {
   if (THREAD_MANAGER()->IsMainThread()) {
-    events::Event* fevent = static_cast<events::Event*>(event);
+    events::Event *fevent = static_cast<events::Event *>(event);
     HandleEvent(fevent);
     return;
   }
@@ -205,7 +207,7 @@ void Sdl2Application::SendEvent(common::IEvent* event) {
   PostEvent(event);
 }
 
-void Sdl2Application::PostEvent(common::IEvent* event) {
+void Sdl2Application::PostEvent(common::IEvent *event) {
   SDL_Event sevent;
   sevent.type = FASTO_EVENT;
   sevent.user.data1 = event;
@@ -218,7 +220,7 @@ void Sdl2Application::PostEvent(common::IEvent* event) {
 
 void Sdl2Application::ExitImpl(int result) {
   UNUSED(result);
-  PostEvent(NULL);  // FIX ME
+  PostEvent(NULL); // FIX ME
 }
 
 void Sdl2Application::ShowCursor() {
@@ -239,13 +241,12 @@ void Sdl2Application::HideCursor() {
   PostEvent(new events::MouseStateChangeEvent(this, minf));
 }
 
-bool Sdl2Application::IsCursorVisible() const {
-  return cursor_visible_;
-}
+bool Sdl2Application::IsCursorVisible() const { return cursor_visible_; }
 
-common::application::timer_id_t Sdl2Application::AddTimer(uint32_t interval,
-                                                          common::application::timer_callback_t cb,
-                                                          void* user_data) {
+common::application::timer_id_t
+Sdl2Application::AddTimer(uint32_t interval,
+                          common::application::timer_callback_t cb,
+                          void *user_data) {
   return SDL_AddTimer(interval, cb, user_data);
 }
 
@@ -253,81 +254,89 @@ bool Sdl2Application::RemoveTimer(common::application::timer_id_t id) {
   return SDL_RemoveTimer(id);
 }
 
-void Sdl2Application::HandleEvent(events::Event* event) {
-  // bool is_filtered_event = event_type == PRE_EXEC_EVENT || event_type == POST_EXEC_EVENT;
+void Sdl2Application::HandleEvent(events::Event *event) {
+  // bool is_filtered_event = event_type == PRE_EXEC_EVENT || event_type ==
+  // POST_EXEC_EVENT;
   dispatcher_.ProcessEvent(event);
 }
 
-void Sdl2Application::HandleKeyDownEvent(SDL_KeyboardEvent* event) {
-  auto ks = event->keysym;  // && event->repeat == 0
+void Sdl2Application::HandleKeyDownEvent(SDL_KeyboardEvent *event) {
+  auto ks = event->keysym; // && event->repeat == 0
   events::KeyPressInfo inf(event->state == SDL_PRESSED, ks);
-  events::KeyPressEvent* key_press = new events::KeyPressEvent(this, inf);
+  events::KeyPressEvent *key_press = new events::KeyPressEvent(this, inf);
   HandleEvent(key_press);
 }
 
-void Sdl2Application::HandleKeyUpEvent(SDL_KeyboardEvent* event) {
+void Sdl2Application::HandleKeyUpEvent(SDL_KeyboardEvent *event) {
   auto ks = event->keysym;
   events::KeyReleaseInfo inf(event->state == SDL_PRESSED, ks);
-  events::KeyReleaseEvent* key_release = new events::KeyReleaseEvent(this, inf);
+  events::KeyReleaseEvent *key_release = new events::KeyReleaseEvent(this, inf);
   HandleEvent(key_release);
 }
 
-void Sdl2Application::HandleTextInputEvent(SDL_TextInputEvent* event) {
+void Sdl2Application::HandleTextInputEvent(SDL_TextInputEvent *event) {
   events::TextInputInfo inf(event->text);
-  events::TextInputEvent* text_input = new events::TextInputEvent(this, inf);
+  events::TextInputEvent *text_input = new events::TextInputEvent(this, inf);
   HandleEvent(text_input);
 }
 
-void Sdl2Application::HandleTextEditEvent(SDL_TextEditingEvent* event) {
+void Sdl2Application::HandleTextEditEvent(SDL_TextEditingEvent *event) {
   events::TextEditInfo inf(event->text, event->start, event->length);
-  events::TextEditEvent* text_edit = new events::TextEditEvent(this, inf);
+  events::TextEditEvent *text_edit = new events::TextEditEvent(this, inf);
   HandleEvent(text_edit);
 }
 
-void Sdl2Application::HandleWindowEvent(SDL_WindowEvent* event) {  // SDL_WindowEventID
+void Sdl2Application::HandleWindowEvent(
+    SDL_WindowEvent *event) { // SDL_WindowEventID
   if (event->event == SDL_WINDOWEVENT_RESIZED) {
     common::draw::Size new_size(event->data1, event->data2);
     events::WindowResizeInfo inf(new_size);
-    events::WindowResizeEvent* wind_resize = new events::WindowResizeEvent(this, inf);
+    events::WindowResizeEvent *wind_resize =
+        new events::WindowResizeEvent(this, inf);
     HandleEvent(wind_resize);
   } else if (event->event == SDL_WINDOWEVENT_EXPOSED) {
     events::WindowExposeInfo inf;
-    events::WindowExposeEvent* wind_exp = new events::WindowExposeEvent(this, inf);
+    events::WindowExposeEvent *wind_exp =
+        new events::WindowExposeEvent(this, inf);
     HandleEvent(wind_exp);
   } else if (event->event == SDL_WINDOWEVENT_CLOSE) {
     events::WindowCloseInfo inf;
-    events::WindowCloseEvent* wind_close = new events::WindowCloseEvent(this, inf);
+    events::WindowCloseEvent *wind_close =
+        new events::WindowCloseEvent(this, inf);
     HandleEvent(wind_close);
   }
 }
 
-void Sdl2Application::HandleMousePressEvent(SDL_MouseButtonEvent* event) {
+void Sdl2Application::HandleMousePressEvent(SDL_MouseButtonEvent *event) {
   events::MousePressInfo inf(*event);
-  events::MousePressEvent* mouse_press_event = new events::MousePressEvent(this, inf);
+  events::MousePressEvent *mouse_press_event =
+      new events::MousePressEvent(this, inf);
   HandleEvent(mouse_press_event);
 }
 
-void Sdl2Application::HandleMouseReleaseEvent(SDL_MouseButtonEvent* event) {
+void Sdl2Application::HandleMouseReleaseEvent(SDL_MouseButtonEvent *event) {
   events::MouseReleaseInfo inf(*event);
-  events::MouseReleaseEvent* mouse_release_event = new events::MouseReleaseEvent(this, inf);
+  events::MouseReleaseEvent *mouse_release_event =
+      new events::MouseReleaseEvent(this, inf);
   HandleEvent(mouse_release_event);
 }
 
-void Sdl2Application::HandleMouseMoveEvent(SDL_MouseMotionEvent* event) {
+void Sdl2Application::HandleMouseMoveEvent(SDL_MouseMotionEvent *event) {
   events::MouseMoveInfo inf(*event);
-  events::MouseMoveEvent* mouse_move_event = new events::MouseMoveEvent(this, inf);
+  events::MouseMoveEvent *mouse_move_event =
+      new events::MouseMoveEvent(this, inf);
   HandleEvent(mouse_move_event);
 }
 
-void Sdl2Application::HandleQuitEvent(SDL_QuitEvent* event) {
+void Sdl2Application::HandleQuitEvent(SDL_QuitEvent *event) {
   UNUSED(event);
 
   events::QuitInfo inf;
-  events::QuitEvent* quit_event = new events::QuitEvent(this, inf);
+  events::QuitEvent *quit_event = new events::QuitEvent(this, inf);
   HandleEvent(quit_event);
 }
 
-}  // namespace application
-}  // namespace gui
+} // namespace application
+} // namespace gui
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

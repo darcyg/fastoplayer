@@ -24,24 +24,24 @@ namespace fastoplayer {
 namespace gui {
 
 class Label : public FontWindow {
- public:
+public:
   typedef FontWindow base_class;
 
   Label();
-  Label(const SDL_Color& back_ground_color);
+  Label(const SDL_Color &back_ground_color);
   virtual ~Label();
 
-  void SetText(const std::string& text);
+  void SetText(const std::string &text);
   std::string GetText() const;
   void ClearText();
 
-  virtual void Draw(SDL_Renderer* render) override;
+  virtual void Draw(SDL_Renderer *render) override;
 
- protected:
-  void DrawLabel(SDL_Renderer* render, SDL_Rect* text_rect);
+protected:
+  void DrawLabel(SDL_Renderer *render, SDL_Rect *text_rect);
 
   std::string text_;
 };
 
-}  // namespace gui
-}  // namespace fastoplayer
+} // namespace gui
+} // namespace fastoplayer

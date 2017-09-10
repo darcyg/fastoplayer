@@ -18,8 +18,8 @@
 
 #pragma once
 
-#include <SDL2/SDL_render.h>   // for SDL_Renderer, SDL_Texture
-#include <SDL2/SDL_surface.h>  // for SDL_Surface
+#include <SDL2/SDL_render.h>  // for SDL_Renderer, SDL_Texture
+#include <SDL2/SDL_surface.h> // for SDL_Surface
 
 #include <common/macros.h>
 
@@ -27,19 +27,20 @@ namespace fastoplayer {
 namespace draw {
 
 class TextureSaver {
- public:
+public:
   TextureSaver();
   ~TextureSaver();
 
-  SDL_Texture* GetTexture(SDL_Renderer* renderer, int width, int height, Uint32 format) const;
+  SDL_Texture *GetTexture(SDL_Renderer *renderer, int width, int height,
+                          Uint32 format) const;
 
   int GetWidth() const;
   int GetHeight() const;
 
- private:
-  mutable SDL_Texture* texture_;
-  mutable SDL_Renderer* renderer_;
+private:
+  mutable SDL_Texture *texture_;
+  mutable SDL_Renderer *renderer_;
 };
 
-}  // namespace draw
-}  // namespace fastoplayer
+} // namespace draw
+} // namespace fastoplayer

@@ -22,6 +22,6 @@ namespace fastoplayer {
 
 namespace gui {
 namespace events {}
-}  // namespace gui
+} // namespace gui
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

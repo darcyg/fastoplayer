@@ -18,8 +18,8 @@
 
 #pragma once
 
-#include <SDL2/SDL_render.h>   // for SDL_Renderer, SDL_Texture
-#include <SDL2/SDL_surface.h>  // for SDL_Surface
+#include <SDL2/SDL_render.h>  // for SDL_Renderer, SDL_Texture
+#include <SDL2/SDL_surface.h> // for SDL_Surface
 
 #include <common/macros.h>
 
@@ -27,23 +27,23 @@ namespace fastoplayer {
 namespace draw {
 
 class SurfaceSaver {
- public:
-  explicit SurfaceSaver(SDL_Surface* surface);
+public:
+  explicit SurfaceSaver(SDL_Surface *surface);
   ~SurfaceSaver();
 
-  SDL_Texture* GetTexture(SDL_Renderer* renderer) const;
+  SDL_Texture *GetTexture(SDL_Renderer *renderer) const;
 
   int GetWidthSurface() const;
   int GetHeightSurface() const;
 
- private:
+private:
   DISALLOW_COPY_AND_ASSIGN(SurfaceSaver);
-  SDL_Surface* surface_;
-  mutable SDL_Texture* texture_;
-  mutable SDL_Renderer* renderer_;
+  SDL_Surface *surface_;
+  mutable SDL_Texture *texture_;
+  mutable SDL_Renderer *renderer_;
 };
 
-SurfaceSaver* MakeSurfaceFromPath(const std::string& img_full_path);
+SurfaceSaver *MakeSurfaceFromPath(const std::string &img_full_path);
 
-}  // namespace draw
-}  // namespace fastoplayer
+} // namespace draw
+} // namespace fastoplayer

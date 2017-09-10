@@ -41,13 +41,13 @@ struct KeyReleaseInfo {
 };
 
 struct TextInputInfo {
-  TextInputInfo(const std::string& text);
+  TextInputInfo(const std::string &text);
 
   std::string text;
 };
 
 struct TextEditInfo {
-  TextEditInfo(const std::string& text, Sint32 start, Sint32 length);
+  TextEditInfo(const std::string &text, Sint32 start, Sint32 length);
 
   std::string text;
   Sint32 start;  /**< The start cursor of selected editing text */
@@ -59,6 +59,6 @@ typedef EventBase<KEY_RELEASE_EVENT, KeyReleaseInfo> KeyReleaseEvent;
 typedef EventBase<TEXT_INPUT_EVENT, TextInputInfo> TextInputEvent;
 typedef EventBase<TEXT_EDIT_EVENT, TextEditInfo> TextEditEvent;
 
-}  // namespace events
-}  // namespace gui
-}  // namespace fastoplayer
+} // namespace events
+} // namespace gui
+} // namespace fastoplayer

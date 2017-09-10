@@ -53,8 +53,7 @@ enum EventsType : common::IEvent::event_id_t {
 
 namespace common {
 
-template <>
-struct event_traits<EventsType> {
+template <> struct event_traits<EventsType> {
   typedef IEventEx<EventsType> event_t;
   typedef IExceptionEvent<EventsType> ex_event_t;
   typedef IListenerEx<EventsType> listener_t;
@@ -62,7 +61,7 @@ struct event_traits<EventsType> {
   static const unsigned id = EVENT_LOOP_ID;
 };
 
-}  // namespace common
+} // namespace common
 
 namespace fastoplayer {
 namespace gui {
@@ -76,29 +75,30 @@ typedef EventTraits::listener_t EventListener;
 // event base templates
 template <EventsType event_t, typename inf_t>
 class EventBase : public common::Event<EventsType, event_t> {
- public:
+public:
   typedef inf_t info_t;
   typedef common::Event<EventsType, event_t> base_class_t;
   typedef typename base_class_t::senders_t senders_t;
 
-  EventBase(senders_t* sender, info_t info) : base_class_t(sender), info_(info) {}
+  EventBase(senders_t *sender, info_t info)
+      : base_class_t(sender), info_(info) {}
 
   info_t GetInfo() const { return info_; }
 
- private:
+private:
   const info_t info_;
 };
 
 template <EventsType event_t>
 class EventBase<event_t, void> : public common::Event<EventsType, event_t> {
- public:
+public:
   typedef void info_t;
   typedef common::Event<EventsType, event_t> base_class_t;
   typedef typename base_class_t::senders_t senders_t;
 
-  explicit EventBase(senders_t* sender) : base_class_t(sender) {}
+  explicit EventBase(senders_t *sender) : base_class_t(sender) {}
 };
 
-}  // namespace events
-}  // namespace gui
-}  // namespace fastoplayer
+} // namespace events
+} // namespace gui
+} // namespace fastoplayer

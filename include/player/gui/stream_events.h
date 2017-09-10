@@ -19,7 +19,7 @@
 #pragma once
 
 extern "C" {
-#include <libavutil/rational.h>  // for AVRational
+#include <libavutil/rational.h> // for AVRational
 }
 
 #include <player/gui/events_base.h>
@@ -32,9 +32,10 @@ namespace gui {
 namespace events {
 
 struct FrameInfo {
-  FrameInfo(media::VideoState* stream, int width, int height, int av_pixel_format, AVRational aspect_ratio);
+  FrameInfo(media::VideoState *stream, int width, int height,
+            int av_pixel_format, AVRational aspect_ratio);
 
-  media::VideoState* stream_;
+  media::VideoState *stream_;
   int width;
   int height;
   int av_pixel_format;
@@ -42,15 +43,15 @@ struct FrameInfo {
 };
 
 struct QuitStreamInfo {
-  QuitStreamInfo(media::VideoState* stream, int exit_code);
+  QuitStreamInfo(media::VideoState *stream, int exit_code);
 
-  media::VideoState* stream_;
+  media::VideoState *stream_;
   int exit_code;
 };
 
 typedef EventBase<REQUEST_VIDEO_EVENT, FrameInfo> RequestVideoEvent;
 typedef EventBase<QUIT_STREAM_EVENT, QuitStreamInfo> QuitStreamEvent;
 
-}  // namespace events
-}  // namespace gui
-}  // namespace fastoplayer
+} // namespace events
+} // namespace gui
+} // namespace fastoplayer

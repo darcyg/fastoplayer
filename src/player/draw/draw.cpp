@@ -28,12 +28,10 @@ namespace fastoplayer {
 
 namespace draw {
 
-common::Error CreateMainWindow(const common::draw::Size& size,
-                               bool is_full_screen,
-                               const std::string& title,
-                               SDL_Renderer** renderer,
-                               SDL_Window** window) {
-  if (!renderer || !window || !size.IsValid()) {  // invalid input
+common::Error CreateMainWindow(const common::draw::Size &size,
+                               bool is_full_screen, const std::string &title,
+                               SDL_Renderer **renderer, SDL_Window **window) {
+  if (!renderer || !window || !size.IsValid()) { // invalid input
     return common::make_error_inval();
   }
 
@@ -45,10 +43,11 @@ common::Error CreateMainWindow(const common::draw::Size& size,
   for (int i = 0; i < num_video_drivers; ++i) {
     DEBUG_LOG() << "Available video driver: " << SDL_GetVideoDriver(i);
   }
-  SDL_Window* lwindow =
-      SDL_CreateWindow(NULL, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, size.width, size.height, flags);
+  SDL_Window *lwindow =
+      SDL_CreateWindow(NULL, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                       size.width, size.height, flags);
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-  SDL_Renderer* lrenderer = NULL;
+  SDL_Renderer *lrenderer = NULL;
   if (lwindow) {
     DEBUG_LOG() << "Initialized video driver: " << SDL_GetCurrentVideoDriver();
     int n = SDL_GetNumRenderDrivers();
@@ -56,24 +55,33 @@ common::Error CreateMainWindow(const common::draw::Size& size,
       SDL_RendererInfo renderer_info;
       int res = SDL_GetRenderDriverInfo(i, &renderer_info);
       if (res == 0) {
-        bool is_hardware_renderer = renderer_info.flags & SDL_RENDERER_ACCELERATED;
+        bool is_hardware_renderer =
+            renderer_info.flags & SDL_RENDERER_ACCELERATED;
         std::string screen_size =
             common::MemSPrintf(" maximum texture size can be %dx%d.",
-                               renderer_info.max_texture_width == 0 ? INT_MAX : renderer_info.max_texture_width,
-                               renderer_info.max_texture_height == 0 ? INT_MAX : renderer_info.max_texture_height);
+                               renderer_info.max_texture_width == 0
+                                   ? INT_MAX
+                                   : renderer_info.max_texture_width,
+                               renderer_info.max_texture_height == 0
+                                   ? INT_MAX
+                                   : renderer_info.max_texture_height);
         DEBUG_LOG() << "Available renderer: " << renderer_info.name
-                    << (is_hardware_renderer ? "(hardware)" : "(software)") << screen_size;
+                    << (is_hardware_renderer ? "(hardware)" : "(software)")
+                    << screen_size;
       }
     }
-    lrenderer = SDL_CreateRenderer(lwindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    lrenderer = SDL_CreateRenderer(lwindow, -1, SDL_RENDERER_ACCELERATED |
+                                                    SDL_RENDERER_PRESENTVSYNC);
     if (lrenderer) {
       SDL_RendererInfo info;
       if (SDL_GetRendererInfo(lrenderer, &info) == 0) {
         bool is_hardware_renderer = info.flags & SDL_RENDERER_ACCELERATED;
-        DEBUG_LOG() << "Initialized renderer: " << info.name << (is_hardware_renderer ? " (hardware)." : "(software).");
+        DEBUG_LOG() << "Initialized renderer: " << info.name
+                    << (is_hardware_renderer ? " (hardware)." : "(software).");
       }
     } else {
-      WARNING_LOG() << "Failed to initialize a hardware accelerated renderer: " << SDL_GetError();
+      WARNING_LOG() << "Failed to initialize a hardware accelerated renderer: "
+                    << SDL_GetError();
       lrenderer = SDL_CreateRenderer(lwindow, -1, 0);
     }
   }
@@ -98,14 +106,12 @@ common::Error CreateMainWindow(const common::draw::Size& size,
   return common::Error();
 }
 
-common::Error CreateTexture(SDL_Renderer* renderer,
-                            Uint32 new_format,
-                            int new_width,
-                            int new_height,
-                            SDL_BlendMode blendmode,
-                            bool init_texture,
-                            SDL_Texture** texture_out) {
-  SDL_Texture* ltexture = SDL_CreateTexture(renderer, new_format, SDL_TEXTUREACCESS_STREAMING, new_width, new_height);
+common::Error CreateTexture(SDL_Renderer *renderer, Uint32 new_format,
+                            int new_width, int new_height,
+                            SDL_BlendMode blendmode, bool init_texture,
+                            SDL_Texture **texture_out) {
+  SDL_Texture *ltexture = SDL_CreateTexture(
+      renderer, new_format, SDL_TEXTUREACCESS_STREAMING, new_width, new_height);
   if (!ltexture) {
     return common::make_error("Couldn't allocate memory for texture");
   }
@@ -114,7 +120,7 @@ common::Error CreateTexture(SDL_Renderer* renderer,
     return common::make_error("Couldn't set blend mode for texture");
   }
   if (init_texture) {
-    void* pixels;
+    void *pixels;
     int pitch;
     if (SDL_LockTexture(ltexture, NULL, &pixels, &pitch) < 0) {
       SDL_DestroyTexture(ltexture);
@@ -129,7 +135,7 @@ common::Error CreateTexture(SDL_Renderer* renderer,
   return common::Error();
 }
 
-common::Error SetRenderDrawColor(SDL_Renderer* render, const SDL_Color& rgba) {
+common::Error SetRenderDrawColor(SDL_Renderer *render, const SDL_Color &rgba) {
   if (!render) {
     return common::make_error_inval();
   }
@@ -142,7 +148,8 @@ common::Error SetRenderDrawColor(SDL_Renderer* render, const SDL_Color& rgba) {
   return common::Error();
 }
 
-common::Error FillRectColor(SDL_Renderer* render, const SDL_Rect& rect, const SDL_Color& rgba) {
+common::Error FillRectColor(SDL_Renderer *render, const SDL_Rect &rect,
+                            const SDL_Color &rgba) {
   common::Error err = SetRenderDrawColor(render, rgba);
   if (err) {
     return err;
@@ -155,7 +162,8 @@ common::Error FillRectColor(SDL_Renderer* render, const SDL_Rect& rect, const SD
   return common::Error();
 }
 
-common::Error DrawBorder(SDL_Renderer* render, const SDL_Rect& rect, const SDL_Color& rgba) {
+common::Error DrawBorder(SDL_Renderer *render, const SDL_Rect &rect,
+                         const SDL_Color &rgba) {
   common::Error err = SetRenderDrawColor(render, rgba);
   if (err) {
     return err;
@@ -168,7 +176,7 @@ common::Error DrawBorder(SDL_Renderer* render, const SDL_Rect& rect, const SDL_C
   return common::Error();
 }
 
-common::Error FlushRender(SDL_Renderer* render, const SDL_Color& rgba) {
+common::Error FlushRender(SDL_Renderer *render, const SDL_Color &rgba) {
   common::Error err = SetRenderDrawColor(render, rgba);
   if (err) {
     return err;
@@ -181,6 +189,6 @@ common::Error FlushRender(SDL_Renderer* render, const SDL_Color& rgba) {
   return common::Error();
 }
 
-}  // namespace draw
+} // namespace draw
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

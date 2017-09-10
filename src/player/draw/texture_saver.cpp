@@ -46,21 +46,24 @@ int TextureSaver::GetHeight() const {
   return h;
 }
 
-SDL_Texture* TextureSaver::GetTexture(SDL_Renderer* renderer, int width, int height, Uint32 format) const {
+SDL_Texture *TextureSaver::GetTexture(SDL_Renderer *renderer, int width,
+                                      int height, Uint32 format) const {
   if (!renderer) {
     return NULL;
   }
 
   Uint32 cur_format;
   int access, w, h;
-  if (renderer_ != renderer || SDL_QueryTexture(texture_, &cur_format, &access, &w, &h) < 0 || width != w ||
-      height != h || format != cur_format) {
+  if (renderer_ != renderer ||
+      SDL_QueryTexture(texture_, &cur_format, &access, &w, &h) < 0 ||
+      width != w || height != h || format != cur_format) {
     SDL_DestroyTexture(texture_);
     texture_ = NULL;
     renderer_ = NULL;
 
-    SDL_Texture* ltexture = NULL;
-    common::Error err = CreateTexture(renderer, format, width, height, SDL_BLENDMODE_NONE, false, &ltexture);
+    SDL_Texture *ltexture = NULL;
+    common::Error err = CreateTexture(renderer, format, width, height,
+                                      SDL_BLENDMODE_NONE, false, &ltexture);
     if (err) {
       DNOTREACHED() << err->GetDescription();
       return NULL;
@@ -80,6 +83,6 @@ TextureSaver::~TextureSaver() {
   renderer_ = NULL;
 }
 
-}  // namespace draw
+} // namespace draw
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

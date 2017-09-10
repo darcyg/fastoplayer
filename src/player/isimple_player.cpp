@@ -20,7 +20,7 @@
 
 #include <thread>
 
-#include <common/application/application.h>  // for fApp, Application
+#include <common/application/application.h> // for fApp, Application
 #include <common/threads/thread_manager.h>
 
 #include <common/convert2string.h>
@@ -30,9 +30,9 @@
 #include <player/av_sdl_utils.h>
 #include <player/sdl_utils.h>
 
-#include <player/media/frames/audio_frame.h>  // for AudioFrame
-#include <player/media/frames/video_frame.h>  // for VideoFrame
-#include <player/media/video_state.h>         // for VideoState
+#include <player/media/frames/audio_frame.h> // for AudioFrame
+#include <player/media/frames/video_frame.h> // for VideoFrame
+#include <player/media/video_state.h>        // for VideoState
 
 #include <player/gui/sdl2_application.h>
 #include <player/gui/widgets/label.h>
@@ -45,8 +45,8 @@
 /* Step size for volume control */
 #define VOLUME_STEP 1
 
-#define CURSOR_HIDE_DELAY_MSEC 1000  // 1 sec
-#define VOLUME_HIDE_DELAY_MSEC 2000  // 2 sec
+#define CURSOR_HIDE_DELAY_MSEC 1000 // 1 sec
+#define VOLUME_HIDE_DELAY_MSEC 2000 // 2 sec
 
 #define USER_FIELD "user"
 #define URLS_FIELD "urls"
@@ -57,33 +57,19 @@ namespace fastoplayer {
 
 const SDL_Color ISimplePlayer::text_color = {255, 255, 255, 0};
 const AVRational ISimplePlayer::min_fps = {25, 1};
-const SDL_Color ISimplePlayer::stream_statistic_color = {171, 217, 98, Uint8(SDL_ALPHA_OPAQUE * 0.5)};
+const SDL_Color ISimplePlayer::stream_statistic_color = {
+    171, 217, 98, Uint8(SDL_ALPHA_OPAQUE * 0.5)};
 const SDL_Color ISimplePlayer::volume_color = stream_statistic_color;
 
-ISimplePlayer::ISimplePlayer(const PlayerOptions& options)
-    : StreamHandler(),
-      renderer_(NULL),
-      font_(NULL),
-      options_(options),
-      audio_params_(nullptr),
-      audio_buff_size_(0),
-      window_(NULL),
-      cursor_last_shown_(0),
-      volume_label_(nullptr),
-      volume_last_shown_(0),
-      last_mouse_left_click_(0),
-      exec_tid_(),
-      stream_(nullptr),
-      window_size_(),
-      xleft_(0),
-      ytop_(0),
-      current_state_(INIT_STATE),
-      muted_(false),
-      statistic_label_(nullptr),
-      render_texture_(NULL),
+ISimplePlayer::ISimplePlayer(const PlayerOptions &options)
+    : StreamHandler(), renderer_(NULL), font_(NULL), options_(options),
+      audio_params_(nullptr), audio_buff_size_(0), window_(NULL),
+      cursor_last_shown_(0), volume_label_(nullptr), volume_last_shown_(0),
+      last_mouse_left_click_(0), exec_tid_(), stream_(nullptr), window_size_(),
+      xleft_(0), ytop_(0), current_state_(INIT_STATE), muted_(false),
+      statistic_label_(nullptr), render_texture_(NULL),
       update_video_timer_interval_msec_(0),
-      last_pts_checkpoint_(media::invalid_clock()),
-      video_frames_handled_(0) {
+      last_pts_checkpoint_(media::invalid_clock()), video_frames_handled_(0) {
   UpdateDisplayInterval(min_fps);
 
   fApp->Subscribe(this, gui::events::PostExecEvent::EventType);
@@ -119,15 +105,14 @@ ISimplePlayer::ISimplePlayer(const PlayerOptions& options)
 
 void ISimplePlayer::SetFullScreen(bool full_screen) {
   options_.is_full_screen = full_screen;
-  SDL_SetWindowFullscreen(window_, full_screen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
+  SDL_SetWindowFullscreen(window_,
+                          full_screen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
   if (stream_) {
     stream_->RefreshRequest();
   }
 }
 
-void ISimplePlayer::SetMute(bool mute) {
-  muted_ = mute;
-}
+void ISimplePlayer::SetMute(bool mute) { muted_ = mute; }
 
 ISimplePlayer::~ISimplePlayer() {
   destroy(&statistic_label_);
@@ -144,73 +129,85 @@ ISimplePlayer::States ISimplePlayer::GetCurrentState() const {
   return current_state_;
 }
 
-PlayerOptions ISimplePlayer::GetOptions() const {
-  return options_;
-}
+PlayerOptions ISimplePlayer::GetOptions() const { return options_; }
 
-void ISimplePlayer::SetUrlLocation(stream_id sid,
-                                   const common::uri::Url& uri,
+void ISimplePlayer::SetUrlLocation(stream_id sid, const common::uri::Url &uri,
                                    media::AppOptions opt,
                                    media::ComplexOptions copt) {
-  media::VideoState* stream = CreateStream(sid, uri, opt, copt);
+  media::VideoState *stream = CreateStream(sid, uri, opt, copt);
   SetStream(stream);
 }
 
-void ISimplePlayer::HandleEvent(event_t* event) {
+void ISimplePlayer::HandleEvent(event_t *event) {
   if (event->GetEventType() == gui::events::PreExecEvent::EventType) {
-    gui::events::PreExecEvent* pre_event = static_cast<gui::events::PreExecEvent*>(event);
+    gui::events::PreExecEvent *pre_event =
+        static_cast<gui::events::PreExecEvent *>(event);
     HandlePreExecEvent(pre_event);
   } else if (event->GetEventType() == gui::events::PostExecEvent::EventType) {
-    gui::events::PostExecEvent* post_event = static_cast<gui::events::PostExecEvent*>(event);
+    gui::events::PostExecEvent *post_event =
+        static_cast<gui::events::PostExecEvent *>(event);
     HandlePostExecEvent(post_event);
-  } else if (event->GetEventType() == gui::events::RequestVideoEvent::EventType) {
-    gui::events::RequestVideoEvent* avent = static_cast<gui::events::RequestVideoEvent*>(event);
+  } else if (event->GetEventType() ==
+             gui::events::RequestVideoEvent::EventType) {
+    gui::events::RequestVideoEvent *avent =
+        static_cast<gui::events::RequestVideoEvent *>(event);
     HandleRequestVideoEvent(avent);
   } else if (event->GetEventType() == gui::events::QuitStreamEvent::EventType) {
-    gui::events::QuitStreamEvent* quit_stream_event = static_cast<gui::events::QuitStreamEvent*>(event);
+    gui::events::QuitStreamEvent *quit_stream_event =
+        static_cast<gui::events::QuitStreamEvent *>(event);
     HandleQuitStreamEvent(quit_stream_event);
   } else if (event->GetEventType() == gui::events::TimerEvent::EventType) {
-    gui::events::TimerEvent* tevent = static_cast<gui::events::TimerEvent*>(event);
+    gui::events::TimerEvent *tevent =
+        static_cast<gui::events::TimerEvent *>(event);
     HandleTimerEvent(tevent);
   } else if (event->GetEventType() == gui::events::KeyPressEvent::EventType) {
-    gui::events::KeyPressEvent* key_press_event = static_cast<gui::events::KeyPressEvent*>(event);
+    gui::events::KeyPressEvent *key_press_event =
+        static_cast<gui::events::KeyPressEvent *>(event);
     HandleKeyPressEvent(key_press_event);
   } else if (event->GetEventType() == gui::events::LircPressEvent::EventType) {
-    gui::events::LircPressEvent* lirc_press_event = static_cast<gui::events::LircPressEvent*>(event);
+    gui::events::LircPressEvent *lirc_press_event =
+        static_cast<gui::events::LircPressEvent *>(event);
     HandleLircPressEvent(lirc_press_event);
-  } else if (event->GetEventType() == gui::events::WindowResizeEvent::EventType) {
-    gui::events::WindowResizeEvent* win_resize_event = static_cast<gui::events::WindowResizeEvent*>(event);
+  } else if (event->GetEventType() ==
+             gui::events::WindowResizeEvent::EventType) {
+    gui::events::WindowResizeEvent *win_resize_event =
+        static_cast<gui::events::WindowResizeEvent *>(event);
     HandleWindowResizeEvent(win_resize_event);
-  } else if (event->GetEventType() == gui::events::WindowExposeEvent::EventType) {
-    gui::events::WindowExposeEvent* win_expose = static_cast<gui::events::WindowExposeEvent*>(event);
+  } else if (event->GetEventType() ==
+             gui::events::WindowExposeEvent::EventType) {
+    gui::events::WindowExposeEvent *win_expose =
+        static_cast<gui::events::WindowExposeEvent *>(event);
     HandleWindowExposeEvent(win_expose);
-  } else if (event->GetEventType() == gui::events::WindowCloseEvent::EventType) {
-    gui::events::WindowCloseEvent* window_close = static_cast<gui::events::WindowCloseEvent*>(event);
+  } else if (event->GetEventType() ==
+             gui::events::WindowCloseEvent::EventType) {
+    gui::events::WindowCloseEvent *window_close =
+        static_cast<gui::events::WindowCloseEvent *>(event);
     HandleWindowCloseEvent(window_close);
   } else if (event->GetEventType() == gui::events::MouseMoveEvent::EventType) {
-    gui::events::MouseMoveEvent* mouse_move = static_cast<gui::events::MouseMoveEvent*>(event);
+    gui::events::MouseMoveEvent *mouse_move =
+        static_cast<gui::events::MouseMoveEvent *>(event);
     HandleMouseMoveEvent(mouse_move);
   } else if (event->GetEventType() == gui::events::MousePressEvent::EventType) {
-    gui::events::MousePressEvent* mouse_press = static_cast<gui::events::MousePressEvent*>(event);
+    gui::events::MousePressEvent *mouse_press =
+        static_cast<gui::events::MousePressEvent *>(event);
     HandleMousePressEvent(mouse_press);
   } else if (event->GetEventType() == gui::events::QuitEvent::EventType) {
-    gui::events::QuitEvent* quit_event = static_cast<gui::events::QuitEvent*>(event);
+    gui::events::QuitEvent *quit_event =
+        static_cast<gui::events::QuitEvent *>(event);
     HandleQuitEvent(quit_event);
   }
 }
 
-void ISimplePlayer::HandleExceptionEvent(event_t* event, common::Error err) {
+void ISimplePlayer::HandleExceptionEvent(event_t *event, common::Error err) {
   if (event->GetEventType() == gui::events::QuitStreamEvent::EventType) {
     SwitchToChannelErrorMode(err);
   }
 }
 
-common::Error ISimplePlayer::HandleRequestAudio(media::VideoState* stream,
-                                                int64_t wanted_channel_layout,
-                                                int wanted_nb_channels,
-                                                int wanted_sample_rate,
-                                                media::AudioParams* audio_hw_params,
-                                                int* audio_buff_size) {
+common::Error ISimplePlayer::HandleRequestAudio(
+    media::VideoState *stream, int64_t wanted_channel_layout,
+    int wanted_nb_channels, int wanted_sample_rate,
+    media::AudioParams *audio_hw_params, int *audio_buff_size) {
   UNUSED(stream);
 
   if (audio_params_) {
@@ -222,8 +219,9 @@ common::Error ISimplePlayer::HandleRequestAudio(media::VideoState* stream,
   /* prepare audio output */
   media::AudioParams laudio_hw_params;
   int laudio_buff_size;
-  if (!audio_open(this, wanted_channel_layout, wanted_nb_channels, wanted_sample_rate, sdl_audio_callback,
-                  &laudio_hw_params, &laudio_buff_size)) {
+  if (!audio_open(this, wanted_channel_layout, wanted_nb_channels,
+                  wanted_sample_rate, sdl_audio_callback, &laudio_hw_params,
+                  &laudio_buff_size)) {
     return common::make_error("Can't init audio system.");
   }
 
@@ -236,22 +234,23 @@ common::Error ISimplePlayer::HandleRequestAudio(media::VideoState* stream,
   return common::Error();
 }
 
-void ISimplePlayer::HanleAudioMix(uint8_t* audio_stream_ptr, const uint8_t* src, uint32_t len, int volume) {
+void ISimplePlayer::HanleAudioMix(uint8_t *audio_stream_ptr, const uint8_t *src,
+                                  uint32_t len, int volume) {
   SDL_MixAudio(audio_stream_ptr, src, len, ConvertToSDLVolume(volume));
 }
 
-common::Error ISimplePlayer::HandleRequestVideo(media::VideoState* stream,
-                                                int width,
-                                                int height,
+common::Error ISimplePlayer::HandleRequestVideo(media::VideoState *stream,
+                                                int width, int height,
                                                 int av_pixel_format,
                                                 AVRational aspect_ratio) {
   UNUSED(av_pixel_format);
   CHECK(THREAD_MANAGER()->IsMainThread());
-  if (!stream) {  // invalid input
+  if (!stream) { // invalid input
     return common::make_error_inval();
   }
 
-  SDL_Rect rect = CalculateDisplayRect(xleft_, ytop_, INT_MAX, height, width, height, aspect_ratio);
+  SDL_Rect rect = CalculateDisplayRect(xleft_, ytop_, INT_MAX, height, width,
+                                       height, aspect_ratio);
   options_.default_size.width = rect.w;
   options_.default_size.height = rect.h;
 
@@ -262,33 +261,38 @@ common::Error ISimplePlayer::HandleRequestVideo(media::VideoState* stream,
   return common::Error();
 }
 
-void ISimplePlayer::HandleRequestVideoEvent(gui::events::RequestVideoEvent* event) {
-  gui::events::RequestVideoEvent* avent = static_cast<gui::events::RequestVideoEvent*>(event);
+void ISimplePlayer::HandleRequestVideoEvent(
+    gui::events::RequestVideoEvent *event) {
+  gui::events::RequestVideoEvent *avent =
+      static_cast<gui::events::RequestVideoEvent *>(event);
   gui::events::FrameInfo fr = avent->GetInfo();
-  common::Error err = fr.stream_->RequestVideo(fr.width, fr.height, fr.av_pixel_format, fr.aspect_ratio);
+  common::Error err = fr.stream_->RequestVideo(
+      fr.width, fr.height, fr.av_pixel_format, fr.aspect_ratio);
   if (err) {
     SwitchToChannelErrorMode(err);
     Quit();
   }
 }
 
-void ISimplePlayer::HandleQuitStreamEvent(gui::events::QuitStreamEvent* event) {
+void ISimplePlayer::HandleQuitStreamEvent(gui::events::QuitStreamEvent *event) {
   UNUSED(event);
 }
 
-void ISimplePlayer::HandlePreExecEvent(gui::events::PreExecEvent* event) {
+void ISimplePlayer::HandlePreExecEvent(gui::events::PreExecEvent *event) {
   gui::events::PreExecInfo inf = event->GetInfo();
   if (inf.code == EXIT_SUCCESS) {
-    const std::string absolute_source_dir = common::file_system::absolute_path_from_relative(RELATIVE_SOURCE_DIR);
+    const std::string absolute_source_dir =
+        common::file_system::absolute_path_from_relative(RELATIVE_SOURCE_DIR);
     render_texture_ = new draw::TextureSaver;
 
-    const std::string font_path = common::file_system::make_path(absolute_source_dir, MAIN_FONT_PATH_RELATIVE);
+    const std::string font_path = common::file_system::make_path(
+        absolute_source_dir, MAIN_FONT_PATH_RELATIVE);
     if (font_path.empty()) {
       WARNING_LOG() << "Couldn't open font file path invalid!";
       return;
     }
 
-    const char* font_path_ptr = font_path.c_str();
+    const char *font_path_ptr = font_path.c_str();
     font_ = TTF_OpenFont(font_path_ptr, 24);
     if (!font_) {
       WARNING_LOG() << "Couldn't open font file path: " << font_path;
@@ -299,7 +303,7 @@ void ISimplePlayer::HandlePreExecEvent(gui::events::PreExecEvent* event) {
   statistic_label_->SetFont(font_);
 }
 
-void ISimplePlayer::HandlePostExecEvent(gui::events::PostExecEvent* event) {
+void ISimplePlayer::HandlePostExecEvent(gui::events::PostExecEvent *event) {
   gui::events::PostExecInfo inf = event->GetInfo();
   if (inf.code == EXIT_SUCCESS) {
     FreeStreamSafe(false);
@@ -326,7 +330,7 @@ void ISimplePlayer::HandlePostExecEvent(gui::events::PostExecEvent* event) {
   }
 }
 
-void ISimplePlayer::HandleTimerEvent(gui::events::TimerEvent* event) {
+void ISimplePlayer::HandleTimerEvent(gui::events::TimerEvent *event) {
   UNUSED(event);
   const media::msec_t cur_time = media::GetCurrentMsec();
   media::msec_t diff_currsor = cur_time - cursor_last_shown_;
@@ -341,7 +345,7 @@ void ISimplePlayer::HandleTimerEvent(gui::events::TimerEvent* event) {
   DrawDisplay();
 }
 
-void ISimplePlayer::HandleLircPressEvent(gui::events::LircPressEvent* event) {
+void ISimplePlayer::HandleLircPressEvent(gui::events::LircPressEvent *event) {
   gui::events::LircPressInfo inf = event->GetInfo();
   if (inf.code == LIRC_KEY_OK) {
     PauseStream();
@@ -356,11 +360,11 @@ void ISimplePlayer::HandleLircPressEvent(gui::events::LircPressEvent* event) {
   }
 }
 
-void ISimplePlayer::HandleKeyPressEvent(gui::events::KeyPressEvent* event) {
+void ISimplePlayer::HandleKeyPressEvent(gui::events::KeyPressEvent *event) {
   const gui::events::KeyPressInfo inf = event->GetInfo();
   const SDL_Scancode scan_code = inf.ks.scancode;
   const Uint16 modifier = inf.ks.mod;
-  if (scan_code == SDL_SCANCODE_ESCAPE) {  // Quit
+  if (scan_code == SDL_SCANCODE_ESCAPE) { // Quit
     Quit();
   } else if (scan_code == SDL_SCANCODE_F) {
     bool full_screen = !options_.is_full_screen;
@@ -371,7 +375,7 @@ void ISimplePlayer::HandleKeyPressEvent(gui::events::KeyPressEvent* event) {
     PauseStream();
   } else if (scan_code == SDL_SCANCODE_M) {
     ToggleMute();
-  } else if (scan_code == SDL_SCANCODE_S) {  // Step to next frame
+  } else if (scan_code == SDL_SCANCODE_S) { // Step to next frame
     if (stream_) {
       stream_->StepToNextFrame();
     }
@@ -394,11 +398,11 @@ void ISimplePlayer::HandleKeyPressEvent(gui::events::KeyPressEvent* event) {
   } else if (scan_code == SDL_SCANCODE_LEFT) {
     if (modifier & KMOD_SHIFT) {
       if (stream_) {
-        stream_->Seek(-10000);  // msec
+        stream_->Seek(-10000); // msec
       }
     } else if (modifier & KMOD_ALT) {
       if (stream_) {
-        stream_->Seek(-60000);  // msec
+        stream_->Seek(-60000); // msec
       }
     } else if (modifier & KMOD_CTRL) {
       if (stream_) {
@@ -408,11 +412,11 @@ void ISimplePlayer::HandleKeyPressEvent(gui::events::KeyPressEvent* event) {
   } else if (scan_code == SDL_SCANCODE_RIGHT) {
     if (modifier & KMOD_SHIFT) {
       if (stream_) {
-        stream_->Seek(10000);  // msec
+        stream_->Seek(10000); // msec
       }
     } else if (modifier & KMOD_ALT) {
       if (stream_) {
-        stream_->Seek(60000);  // msec
+        stream_->Seek(60000); // msec
       }
     } else if (modifier & KMOD_CTRL) {
       if (stream_) {
@@ -430,11 +434,11 @@ void ISimplePlayer::HandleKeyPressEvent(gui::events::KeyPressEvent* event) {
   }
 }
 
-void ISimplePlayer::HandleMousePressEvent(gui::events::MousePressEvent* event) {
+void ISimplePlayer::HandleMousePressEvent(gui::events::MousePressEvent *event) {
   media::msec_t cur_time = media::GetCurrentMsec();
   gui::events::MousePressInfo inf = event->GetInfo();
   if (inf.mevent.button == SDL_BUTTON_LEFT) {
-    if (cur_time - last_mouse_left_click_ <= 500) {  // double click 0.5 sec
+    if (cur_time - last_mouse_left_click_ <= 500) { // double click 0.5 sec
       bool full_screen = !options_.is_full_screen;
       SetFullScreen(full_screen);
       last_mouse_left_click_ = 0;
@@ -449,7 +453,7 @@ void ISimplePlayer::HandleMousePressEvent(gui::events::MousePressEvent* event) {
   cursor_last_shown_ = cur_time;
 }
 
-void ISimplePlayer::HandleMouseMoveEvent(gui::events::MouseMoveEvent* event) {
+void ISimplePlayer::HandleMouseMoveEvent(gui::events::MouseMoveEvent *event) {
   UNUSED(event);
   if (!fApp->IsCursorVisible()) {
     fApp->ShowCursor();
@@ -458,7 +462,8 @@ void ISimplePlayer::HandleMouseMoveEvent(gui::events::MouseMoveEvent* event) {
   cursor_last_shown_ = cur_time;
 }
 
-void ISimplePlayer::HandleWindowResizeEvent(gui::events::WindowResizeEvent* event) {
+void ISimplePlayer::HandleWindowResizeEvent(
+    gui::events::WindowResizeEvent *event) {
   gui::events::WindowResizeInfo inf = event->GetInfo();
   window_size_ = inf.size;
   if (stream_) {
@@ -466,19 +471,21 @@ void ISimplePlayer::HandleWindowResizeEvent(gui::events::WindowResizeEvent* even
   }
 }
 
-void ISimplePlayer::HandleWindowExposeEvent(gui::events::WindowExposeEvent* event) {
+void ISimplePlayer::HandleWindowExposeEvent(
+    gui::events::WindowExposeEvent *event) {
   UNUSED(event);
   if (stream_) {
     stream_->RefreshRequest();
   }
 }
 
-void ISimplePlayer::HandleWindowCloseEvent(gui::events::WindowCloseEvent* event) {
+void ISimplePlayer::HandleWindowCloseEvent(
+    gui::events::WindowCloseEvent *event) {
   UNUSED(event);
   Quit();
 }
 
-void ISimplePlayer::HandleQuitEvent(gui::events::QuitEvent* event) {
+void ISimplePlayer::HandleQuitEvent(gui::events::QuitEvent *event) {
   UNUSED(event);
   Quit();
 }
@@ -490,7 +497,7 @@ void ISimplePlayer::FreeStreamSafe(bool fast_cleanup) {
   }
 
   if (fast_cleanup) {
-    media::VideoState* vs = stream_;
+    media::VideoState *vs = stream_;
     auto tid = exec_tid_;
 
     exec_tid_.reset();
@@ -520,14 +527,17 @@ void ISimplePlayer::UpdateDisplayInterval(AVRational fps) {
   }
 
   double frames_per_sec = fps.den / static_cast<double>(fps.num);
-  update_video_timer_interval_msec_ = static_cast<uint32_t>(frames_per_sec * 1000);
-  gui::application::Sdl2Application* app = static_cast<gui::application::Sdl2Application*>(fApp);
+  update_video_timer_interval_msec_ =
+      static_cast<uint32_t>(frames_per_sec * 1000);
+  gui::application::Sdl2Application *app =
+      static_cast<gui::application::Sdl2Application *>(fApp);
   app->SetDisplayUpdateTimeout(update_video_timer_interval_msec_);
 }
 
-void ISimplePlayer::sdl_audio_callback(void* user_data, uint8_t* stream, int len) {
-  ISimplePlayer* player = static_cast<ISimplePlayer*>(user_data);
-  media::VideoState* st = player->stream_;
+void ISimplePlayer::sdl_audio_callback(void *user_data, uint8_t *stream,
+                                       int len) {
+  ISimplePlayer *player = static_cast<ISimplePlayer *>(user_data);
+  media::VideoState *st = player->stream_;
   if (!player->muted_ && st && st->IsStreamReady()) {
     st->UpdateAudioBuffer(stream, len, player->options_.audio_volume);
   } else {
@@ -542,12 +552,11 @@ void ISimplePlayer::UpdateVolume(int8_t step) {
 
   // update ui variables
   volume_label_->SetVisible(true);
-  volume_label_->SetText(common::MemSPrintf("VOLUME: %d", options_.audio_volume));
+  volume_label_->SetText(
+      common::MemSPrintf("VOLUME: %d", options_.audio_volume));
 }
 
-void ISimplePlayer::Quit() {
-  fApp->Exit(EXIT_SUCCESS);
-}
+void ISimplePlayer::Quit() { fApp->Exit(EXIT_SUCCESS); }
 
 void ISimplePlayer::SwitchToChannelErrorMode(common::Error err) {
   if (!err) {
@@ -588,7 +597,7 @@ void ISimplePlayer::DrawFailedStatus() {
 
 void ISimplePlayer::DrawPlayingStatus() {
   CHECK(THREAD_MANAGER()->IsMainThread());
-  media::frames::VideoFrame* frame = stream_->TryToGetVideoFrame();
+  media::frames::VideoFrame *frame = stream_->TryToGetVideoFrame();
   uint32_t frames_per_sec = 1000 / update_video_timer_interval_msec_;
   uint32_t mod = frames_per_sec * no_data_panic_sec;
   bool need_to_check_is_alive = video_frames_handled_ % mod == 0;
@@ -596,7 +605,8 @@ void ISimplePlayer::DrawPlayingStatus() {
     INFO_LOG() << "No data checkpoint.";
     media::VideoState::stats_t stats = stream_->GetStatistic();
     media::clock64_t cl = stats->master_pts;
-    if (!stream_->IsPaused() && (last_pts_checkpoint_ == cl && cl != media::invalid_clock())) {
+    if (!stream_->IsPaused() &&
+        (last_pts_checkpoint_ == cl && cl != media::invalid_clock())) {
       common::Error err = common::make_error("No input data!");
       SwitchToChannelErrorMode(err);
       last_pts_checkpoint_ = media::invalid_clock();
@@ -620,15 +630,17 @@ void ISimplePlayer::DrawPlayingStatus() {
     sdl_format = SDL_PIXELFORMAT_ARGB8888;
   }
 
-  SDL_Texture* texture = render_texture_->GetTexture(renderer_, width, height, sdl_format);
+  SDL_Texture *texture =
+      render_texture_->GetTexture(renderer_, width, height, sdl_format);
   if (!texture) {
     /* SDL allocates a buffer smaller than requested if the video
      * overlay hardware is unable to support the requested size. */
 
     ERROR_LOG() << "Error: the video system does not support an image\n"
                    "size of "
-                << width << "x" << height << " pixels. Try using -lowres or -vf \"scale=w:h\"\n"
-                                             "to reduce the image size.";
+                << width << "x" << height
+                << " pixels. Try using -lowres or -vf \"scale=w:h\"\n"
+                   "to reduce the image size.";
     return;
   }
 
@@ -642,9 +654,11 @@ void ISimplePlayer::DrawPlayingStatus() {
 
   draw::FlushRender(renderer_, draw::black_color);
 
-  SDL_Rect rect = CalculateDisplayRect(xleft_, ytop_, window_size_.width, window_size_.height, frame->width,
+  SDL_Rect rect = CalculateDisplayRect(xleft_, ytop_, window_size_.width,
+                                       window_size_.height, frame->width,
                                        frame->height, frame->sar);
-  SDL_RenderCopyEx(renderer_, texture, NULL, &rect, 0, NULL, flip_v ? SDL_FLIP_VERTICAL : SDL_FLIP_NONE);
+  SDL_RenderCopyEx(renderer_, texture, NULL, &rect, 0, NULL,
+                   flip_v ? SDL_FLIP_VERTICAL : SDL_FLIP_NONE);
 
   DrawInfo();
   SDL_RenderPresent(renderer_);
@@ -668,17 +682,20 @@ void ISimplePlayer::DrawInfo() {
 SDL_Rect ISimplePlayer::GetStatisticRect() const {
   const SDL_Rect display_rect = GetDisplayRect();
   int padding_left = display_rect.w / 4;
-  return {display_rect.x + padding_left, display_rect.y, display_rect.w - padding_left * 2, display_rect.h};
+  return {display_rect.x + padding_left, display_rect.y,
+          display_rect.w - padding_left * 2, display_rect.h};
 }
 
 SDL_Rect ISimplePlayer::GetVolumeRect() const {
   const SDL_Rect display_rect = GetDrawRect();
-  return {display_rect.x, display_rect.h - volume_height + display_rect.y, display_rect.w, volume_height};
+  return {display_rect.x, display_rect.h - volume_height + display_rect.y,
+          display_rect.w, volume_height};
 }
 
 SDL_Rect ISimplePlayer::GetDrawRect() const {
   const SDL_Rect dr = GetDisplayRect();
-  return {dr.x + x_start, dr.y + y_start, dr.w - x_start * 2, dr.h - y_start * 2};
+  return {dr.x + x_start, dr.y + y_start, dr.w - x_start * 2,
+          dr.h - y_start * 2};
 }
 
 SDL_Rect ISimplePlayer::GetDisplayRect() const {
@@ -699,25 +716,39 @@ void ISimplePlayer::DrawStatistic() {
   const SDL_Rect statistic_rect = GetStatisticRect();
   const bool is_unknown = stats->fmt == media::UNKNOWN_STREAM;
 
-  std::string fmt_text = (is_unknown ? "N/A" : media::ConvertStreamFormatToString(stats->fmt));
-  std::string hwaccel_text = (is_unknown ? "N/A" : common::ConvertToString(stats->active_hwaccel));
-  std::transform(hwaccel_text.begin(), hwaccel_text.end(), hwaccel_text.begin(), ::toupper);
+  std::string fmt_text =
+      (is_unknown ? "N/A" : media::ConvertStreamFormatToString(stats->fmt));
+  std::string hwaccel_text =
+      (is_unknown ? "N/A" : common::ConvertToString(stats->active_hwaccel));
+  std::transform(hwaccel_text.begin(), hwaccel_text.end(), hwaccel_text.begin(),
+                 ::toupper);
   double pts = stats->master_clock / 1000.0;
   std::string pts_text = (is_unknown ? "N/A" : common::ConvertToString(pts, 3));
-  std::string fps_text = (is_unknown ? "N/A" : common::ConvertToString(stats->GetFps()));
+  std::string fps_text =
+      (is_unknown ? "N/A" : common::ConvertToString(stats->GetFps()));
   media::clock64_t diff = stats->GetDiffStreams();
   std::string diff_text = (is_unknown ? "N/A" : common::ConvertToString(diff));
-  std::string fd_text = (stats->fmt & media::HAVE_VIDEO_STREAM
-                             ? common::MemSPrintf("%d/%d", stats->frame_drops_early, stats->frame_drops_late)
-                             : "N/A");
+  std::string fd_text =
+      (stats->fmt & media::HAVE_VIDEO_STREAM
+           ? common::MemSPrintf("%d/%d", stats->frame_drops_early,
+                                stats->frame_drops_late)
+           : "N/A");
   std::string vbitrate_text =
-      (stats->fmt & media::HAVE_VIDEO_STREAM ? common::ConvertToString(stats->video_bandwidth * 8 / 1024) : "N/A");
+      (stats->fmt & media::HAVE_VIDEO_STREAM
+           ? common::ConvertToString(stats->video_bandwidth * 8 / 1024)
+           : "N/A");
   std::string abitrate_text =
-      (stats->fmt & media::HAVE_AUDIO_STREAM ? common::ConvertToString(stats->audio_bandwidth * 8 / 1024) : "N/A");
+      (stats->fmt & media::HAVE_AUDIO_STREAM
+           ? common::ConvertToString(stats->audio_bandwidth * 8 / 1024)
+           : "N/A");
   std::string video_queue_text =
-      (stats->fmt & media::HAVE_VIDEO_STREAM ? common::ConvertToString(stats->video_queue_size / 1024) : "N/A");
+      (stats->fmt & media::HAVE_VIDEO_STREAM
+           ? common::ConvertToString(stats->video_queue_size / 1024)
+           : "N/A");
   std::string audio_queue_text =
-      (stats->fmt & media::HAVE_AUDIO_STREAM ? common::ConvertToString(stats->audio_queue_size / 1024) : "N/A");
+      (stats->fmt & media::HAVE_AUDIO_STREAM
+           ? common::ConvertToString(stats->audio_queue_size / 1024)
+           : "N/A");
 
 #define STATS_LINES_COUNT 10
   const std::string result_text = common::MemSPrintf(
@@ -731,8 +762,8 @@ void ISimplePlayer::DrawStatistic() {
       "ABITRATE: %s kb/s\n"
       "VQUEUE: %s KB\n"
       "AQUEUE: %s KB",
-      fmt_text, hwaccel_text, diff_text, pts_text, fps_text, fd_text, vbitrate_text, abitrate_text, video_queue_text,
-      audio_queue_text);
+      fmt_text, hwaccel_text, diff_text, pts_text, fps_text, fd_text,
+      vbitrate_text, abitrate_text, video_queue_text, audio_queue_text);
 
   int h = TTF_FontLineSkip(font_) * STATS_LINES_COUNT;
   if (h > statistic_rect.h) {
@@ -748,29 +779,24 @@ void ISimplePlayer::DrawStatistic() {
 void ISimplePlayer::DrawVolume() {
   const SDL_Rect volume_rect = GetVolumeRect();
   int padding_left = volume_rect.w / 4;
-  SDL_Rect sdl_volume_rect = {volume_rect.x + padding_left, volume_rect.y, volume_rect.w - padding_left * 2,
-                              volume_rect.h};
+  SDL_Rect sdl_volume_rect = {volume_rect.x + padding_left, volume_rect.y,
+                              volume_rect.w - padding_left * 2, volume_rect.h};
 
   volume_label_->SetRect(sdl_volume_rect);
   volume_label_->Draw(renderer_);
 }
 
-bool ISimplePlayer::IsMouseVisible() const {
-  return fApp->IsCursorVisible();
-}
+bool ISimplePlayer::IsMouseVisible() const { return fApp->IsCursorVisible(); }
 
-SDL_Renderer* ISimplePlayer::GetRenderer() const {
-  return renderer_;
-}
+SDL_Renderer *ISimplePlayer::GetRenderer() const { return renderer_; }
 
-TTF_Font* ISimplePlayer::GetFont() const {
-  return font_;
-}
+TTF_Font *ISimplePlayer::GetFont() const { return font_; }
 
-void ISimplePlayer::InitWindow(const std::string& title, States status) {
+void ISimplePlayer::InitWindow(const std::string &title, States status) {
   CalculateDispalySize();
   if (!window_) {
-    common::Error err = draw::CreateMainWindow(window_size_, options_.is_full_screen, title, &renderer_, &window_);
+    common::Error err = draw::CreateMainWindow(
+        window_size_, options_.is_full_screen, title, &renderer_, &window_);
     if (err) {
       return;
     }
@@ -781,14 +807,12 @@ void ISimplePlayer::InitWindow(const std::string& title, States status) {
   SetStatus(status);
 }
 
-void ISimplePlayer::OnWindowCreated(SDL_Window* window, SDL_Renderer* render) {
+void ISimplePlayer::OnWindowCreated(SDL_Window *window, SDL_Renderer *render) {
   UNUSED(window);
   UNUSED(render);
 }
 
-void ISimplePlayer::SetStatus(States new_state) {
-  current_state_ = new_state;
-}
+void ISimplePlayer::SetStatus(States new_state) { current_state_ = new_state; }
 
 void ISimplePlayer::CalculateDispalySize() {
   if (window_size_.IsValid()) {
@@ -802,9 +826,7 @@ void ISimplePlayer::CalculateDispalySize() {
   }
 }
 
-void ISimplePlayer::ToggleShowStatistic() {
-  statistic_label_->ToggleVisible();
-}
+void ISimplePlayer::ToggleShowStatistic() { statistic_label_->ToggleVisible(); }
 
 void ISimplePlayer::ToggleMute() {
   bool muted = !muted_;
@@ -817,7 +839,7 @@ void ISimplePlayer::PauseStream() {
   }
 }
 
-void ISimplePlayer::SetStream(media::VideoState* stream) {
+void ISimplePlayer::SetStream(media::VideoState *stream) {
   FreeStreamSafe(true);
   stream_ = stream;
 
@@ -836,17 +858,17 @@ void ISimplePlayer::SetStream(media::VideoState* stream) {
   }
 }
 
-media::VideoState* ISimplePlayer::CreateStream(stream_id sid,
-                                               const common::uri::Url& uri,
+media::VideoState *ISimplePlayer::CreateStream(stream_id sid,
+                                               const common::uri::Url &uri,
                                                media::AppOptions opt,
                                                media::ComplexOptions copt) {
   if (!uri.IsValid()) {
     return nullptr;
   }
 
-  media::VideoState* stream = new media::VideoState(sid, uri, opt, copt);
+  media::VideoState *stream = new media::VideoState(sid, uri, opt, copt);
   options_.last_showed_channel_id = sid;
   return stream;
 }
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

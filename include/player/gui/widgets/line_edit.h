@@ -20,41 +20,42 @@
 
 #include <common/time.h>
 
-#include <player/gui/widgets/label.h>
 #include <player/gui/events/key_events.h>
+#include <player/gui/widgets/label.h>
 
 namespace fastoplayer {
 
 namespace gui {
 
 class LineEdit : public Label {
- public:
+public:
   typedef Label base_class;
   enum { blinking_cursor_time_msec = 500, cursor_width = 2 };
 
   LineEdit();
-  LineEdit(const SDL_Color& back_ground_color);
+  LineEdit(const SDL_Color &back_ground_color);
   virtual ~LineEdit();
 
   bool IsActived() const;
   void SetActived(bool active);
 
-  virtual void Draw(SDL_Renderer* render) override;
+  virtual void Draw(SDL_Renderer *render) override;
 
- protected:
-  virtual void HandleEvent(event_t* event) override;
-  virtual void HandleExceptionEvent(event_t* event, common::Error err) override;
+protected:
+  virtual void HandleEvent(event_t *event) override;
+  virtual void HandleExceptionEvent(event_t *event, common::Error err) override;
 
-  virtual void HandleMousePressEvent(gui::events::MousePressEvent* event) override;
+  virtual void
+  HandleMousePressEvent(gui::events::MousePressEvent *event) override;
 
-  virtual void HandleKeyPressEvent(gui::events::KeyPressEvent* event);
-  virtual void HandleKeyReleaseEvent(gui::events::KeyReleaseEvent* event);
-  virtual void HandleTextInputEvent(gui::events::TextInputEvent* event);
-  virtual void HandleTextEditEvent(gui::events::TextEditEvent* event);
+  virtual void HandleKeyPressEvent(gui::events::KeyPressEvent *event);
+  virtual void HandleKeyReleaseEvent(gui::events::KeyReleaseEvent *event);
+  virtual void HandleTextInputEvent(gui::events::TextInputEvent *event);
+  virtual void HandleTextEditEvent(gui::events::TextEditEvent *event);
 
   virtual void OnActiveChanged(bool active);
 
- private:
+private:
   void Init();
   bool active_;
 
@@ -62,6 +63,6 @@ class LineEdit : public Label {
   bool show_cursor_;
 };
 
-}  // namespace gui
+} // namespace gui
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

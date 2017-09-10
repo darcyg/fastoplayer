@@ -18,47 +18,48 @@
 
 #pragma once
 
-#include <string>  // for string
+#include <string> // for string
 
 #include <player/ffmpeg_config.h>
 
 extern "C" {
-#include <libavcodec/avcodec.h>  // for AVCodecContext
-#include <libavutil/buffer.h>    // for AVBufferRef
-#include <libavutil/frame.h>     // for AVFrame
-#include <libavutil/pixfmt.h>    // for AVPixelFormat
+#include <libavcodec/avcodec.h> // for AVCodecContext
+#include <libavutil/buffer.h>   // for AVBufferRef
+#include <libavutil/frame.h>    // for AVFrame
+#include <libavutil/pixfmt.h>   // for AVPixelFormat
 }
 
 #include <player/media/types.h>
 
-typedef void hw_uninit_callback_t(AVCodecContext* s);
-typedef int hw_get_buffer_callback_t(AVCodecContext* s, AVFrame* frame, int flags);
-typedef int hw_retrieve_data_callback_t(AVCodecContext* s, AVFrame* frame);
+typedef void hw_uninit_callback_t(AVCodecContext *s);
+typedef int hw_get_buffer_callback_t(AVCodecContext *s, AVFrame *frame,
+                                     int flags);
+typedef int hw_retrieve_data_callback_t(AVCodecContext *s, AVFrame *frame);
 
 namespace fastoplayer {
 
 namespace media {
 
-extern AVBufferRef* hw_device_ctx;
+extern AVBufferRef *hw_device_ctx;
 
 struct InputStream {
-  void* hwaccel_ctx;
-  hw_uninit_callback_t* hwaccel_uninit;
-  hw_get_buffer_callback_t* hwaccel_get_buffer;
-  hw_retrieve_data_callback_t* hwaccel_retrieve_data;
-  char* hwaccel_device;
+  void *hwaccel_ctx;
+  hw_uninit_callback_t *hwaccel_uninit;
+  hw_get_buffer_callback_t *hwaccel_get_buffer;
+  hw_retrieve_data_callback_t *hwaccel_retrieve_data;
+  char *hwaccel_device;
   AVPixelFormat hwaccel_pix_fmt;
   HWAccelID active_hwaccel_id;
   HWAccelID hwaccel_id;
-  AVBufferRef* hw_frames_ctx;
+  AVBufferRef *hw_frames_ctx;
   AVPixelFormat hwaccel_output_format;
   AVPixelFormat hwaccel_retrieved_pix_fmt;
 };
 
 struct HWAccel {
-  const char* name;
-  int (*init)(AVCodecContext* s);
-  void (*uninit)(AVCodecContext* s);
+  const char *name;
+  int (*init)(AVCodecContext *s);
+  void (*uninit)(AVCodecContext *s);
   HWAccelID id;
   AVPixelFormat pix_fmt;
 };
@@ -66,8 +67,8 @@ struct HWAccel {
 extern const HWAccel hwaccels[];
 
 size_t hwaccel_count();
-const HWAccel* get_hwaccel(enum AVPixelFormat pix_fmt);
+const HWAccel *get_hwaccel(enum AVPixelFormat pix_fmt);
 
-}  // namespace media
+} // namespace media
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

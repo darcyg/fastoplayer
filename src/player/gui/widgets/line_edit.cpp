@@ -27,27 +27,27 @@ namespace fastoplayer {
 
 namespace gui {
 
-LineEdit::LineEdit() : base_class(), active_(false), start_blink_ts_(0), show_cursor_(false) {
+LineEdit::LineEdit()
+    : base_class(), active_(false), start_blink_ts_(0), show_cursor_(false) {
   Init();
 }
 
-LineEdit::LineEdit(const SDL_Color& back_ground_color)
-    : base_class(back_ground_color), active_(false), start_blink_ts_(0), show_cursor_(false) {
+LineEdit::LineEdit(const SDL_Color &back_ground_color)
+    : base_class(back_ground_color), active_(false), start_blink_ts_(0),
+      show_cursor_(false) {
   Init();
 }
 
 LineEdit::~LineEdit() {}
 
-bool LineEdit::IsActived() const {
-  return active_;
-}
+bool LineEdit::IsActived() const { return active_; }
 
 void LineEdit::SetActived(bool active) {
   active_ = active;
   OnActiveChanged(active);
 }
 
-void LineEdit::Draw(SDL_Renderer* render) {
+void LineEdit::Draw(SDL_Renderer *render) {
   if (!IsCanDraw()) {
     base_class::Draw(render);
     return;
@@ -79,36 +79,41 @@ void LineEdit::Draw(SDL_Renderer* render) {
     if (show_cursor_) {
       int width_pos = text_.empty() ? cursor_width : text_rect.w;
       int cursor_height = text_rect.h - cursor_width * 2;
-      SDL_Rect cursor_rect = {width_pos, text_rect.y + cursor_width, cursor_width, cursor_height};
+      SDL_Rect cursor_rect = {width_pos, text_rect.y + cursor_width,
+                              cursor_width, cursor_height};
       draw::FillRectColor(render, cursor_rect, draw::black_color);
     }
   }
 }
 
-void LineEdit::HandleEvent(event_t* event) {
+void LineEdit::HandleEvent(event_t *event) {
   if (event->GetEventType() == gui::events::KeyPressEvent::EventType) {
-    gui::events::KeyPressEvent* key_press_event = static_cast<gui::events::KeyPressEvent*>(event);
+    gui::events::KeyPressEvent *key_press_event =
+        static_cast<gui::events::KeyPressEvent *>(event);
     HandleKeyPressEvent(key_press_event);
   } else if (event->GetEventType() == gui::events::KeyPressEvent::EventType) {
-    gui::events::KeyReleaseEvent* key_rel_event = static_cast<gui::events::KeyReleaseEvent*>(event);
+    gui::events::KeyReleaseEvent *key_rel_event =
+        static_cast<gui::events::KeyReleaseEvent *>(event);
     HandleKeyReleaseEvent(key_rel_event);
   } else if (event->GetEventType() == gui::events::TextInputEvent::EventType) {
-    gui::events::TextInputEvent* ti_event = static_cast<gui::events::TextInputEvent*>(event);
+    gui::events::TextInputEvent *ti_event =
+        static_cast<gui::events::TextInputEvent *>(event);
     HandleTextInputEvent(ti_event);
   } else if (event->GetEventType() == gui::events::TextEditEvent::EventType) {
-    gui::events::TextEditEvent* ti_event = static_cast<gui::events::TextEditEvent*>(event);
+    gui::events::TextEditEvent *ti_event =
+        static_cast<gui::events::TextEditEvent *>(event);
     HandleTextEditEvent(ti_event);
   }
 
   base_class::HandleEvent(event);
 }
 
-void LineEdit::HandleExceptionEvent(event_t* event, common::Error err) {
+void LineEdit::HandleExceptionEvent(event_t *event, common::Error err) {
   UNUSED(event);
   UNUSED(err);
 }
 
-void LineEdit::HandleMousePressEvent(gui::events::MousePressEvent* event) {
+void LineEdit::HandleMousePressEvent(gui::events::MousePressEvent *event) {
   if (!IsCanDraw()) {
     base_class::HandleMousePressEvent(event);
     return;
@@ -124,7 +129,7 @@ void LineEdit::HandleMousePressEvent(gui::events::MousePressEvent* event) {
   base_class::HandleMousePressEvent(event);
 }
 
-void LineEdit::HandleKeyPressEvent(gui::events::KeyPressEvent* event) {
+void LineEdit::HandleKeyPressEvent(gui::events::KeyPressEvent *event) {
   if (!IsCanDraw()) {
     return;
   }
@@ -138,16 +143,16 @@ void LineEdit::HandleKeyPressEvent(gui::events::KeyPressEvent* event) {
   }
 
   gui::events::KeyPressInfo kinf = event->GetInfo();
-  if (kinf.ks.scancode == SDL_SCANCODE_RETURN) {  // escape press
+  if (kinf.ks.scancode == SDL_SCANCODE_RETURN) { // escape press
     SetActived(false);
-  } else if (kinf.ks.scancode == SDL_SCANCODE_ESCAPE) {  // escape press
+  } else if (kinf.ks.scancode == SDL_SCANCODE_ESCAPE) { // escape press
     SetActived(false);
   } else if (kinf.ks.scancode == SDL_SCANCODE_BACKSPACE) {
     text_.pop_back();
   }
 }
 
-void LineEdit::HandleKeyReleaseEvent(gui::events::KeyReleaseEvent* event) {
+void LineEdit::HandleKeyReleaseEvent(gui::events::KeyReleaseEvent *event) {
   UNUSED(event);
   if (!IsCanDraw()) {
     return;
@@ -162,7 +167,7 @@ void LineEdit::HandleKeyReleaseEvent(gui::events::KeyReleaseEvent* event) {
   }
 }
 
-void LineEdit::HandleTextInputEvent(gui::events::TextInputEvent* event) {
+void LineEdit::HandleTextInputEvent(gui::events::TextInputEvent *event) {
   UNUSED(event);
   if (!IsCanDraw()) {
     return;
@@ -186,7 +191,7 @@ void LineEdit::HandleTextInputEvent(gui::events::TextInputEvent* event) {
   }
 }
 
-void LineEdit::HandleTextEditEvent(gui::events::TextEditEvent* event) {
+void LineEdit::HandleTextEditEvent(gui::events::TextEditEvent *event) {
   UNUSED(event);
   if (!IsCanDraw()) {
     return;
@@ -219,6 +224,6 @@ void LineEdit::OnActiveChanged(bool active) {
   }
 }
 
-}  // namespace gui
+} // namespace gui
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

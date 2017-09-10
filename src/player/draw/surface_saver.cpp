@@ -24,12 +24,12 @@ namespace fastoplayer {
 
 namespace draw {
 
-SurfaceSaver* MakeSurfaceFromPath(const std::string& img_full_path) {
+SurfaceSaver *MakeSurfaceFromPath(const std::string &img_full_path) {
   if (img_full_path.empty()) {
     return nullptr;
   }
 
-  SDL_Surface* img_surface = IMG_Load(img_full_path.c_str());
+  SDL_Surface *img_surface = IMG_Load(img_full_path.c_str());
   if (!img_surface) {
     return nullptr;
   }
@@ -37,7 +37,8 @@ SurfaceSaver* MakeSurfaceFromPath(const std::string& img_full_path) {
   return new SurfaceSaver(img_surface);
 }
 
-SurfaceSaver::SurfaceSaver(SDL_Surface* surface) : surface_(surface), texture_(NULL), renderer_(NULL) {}
+SurfaceSaver::SurfaceSaver(SDL_Surface *surface)
+    : surface_(surface), texture_(NULL), renderer_(NULL) {}
 
 SurfaceSaver::~SurfaceSaver() {
   if (renderer_) {
@@ -55,7 +56,7 @@ SurfaceSaver::~SurfaceSaver() {
   }
 }
 
-SDL_Texture* SurfaceSaver::GetTexture(SDL_Renderer* renderer) const {
+SDL_Texture *SurfaceSaver::GetTexture(SDL_Renderer *renderer) const {
   if (!renderer || !surface_) {
     return NULL;
   }
@@ -89,6 +90,6 @@ int SurfaceSaver::GetHeightSurface() const {
   return surface_->h;
 }
 
-}  // namespace draw
+} // namespace draw
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

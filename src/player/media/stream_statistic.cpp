@@ -30,19 +30,11 @@ namespace fastoplayer {
 namespace media {
 
 Stats::Stats()
-    : frame_drops_early(0),
-      frame_drops_late(0),
-      frame_processed(0),
-      master_pts(media::invalid_clock()),
-      master_clock(media::invalid_clock()),
-      audio_clock(media::invalid_clock()),
-      video_clock(media::invalid_clock()),
-      fmt(UNKNOWN_STREAM),
-      audio_queue_size(0),
-      video_queue_size(0),
-      video_bandwidth(0),
-      audio_bandwidth(0),
-      active_hwaccel(HWACCEL_NONE),
+    : frame_drops_early(0), frame_drops_late(0), frame_processed(0),
+      master_pts(media::invalid_clock()), master_clock(media::invalid_clock()),
+      audio_clock(media::invalid_clock()), video_clock(media::invalid_clock()),
+      fmt(UNKNOWN_STREAM), audio_queue_size(0), video_queue_size(0),
+      video_bandwidth(0), audio_bandwidth(0), active_hwaccel(HWACCEL_NONE),
       start_ts_(common::time::current_mstime()) {}
 
 clock64_t Stats::GetDiffStreams() const {
@@ -79,6 +71,6 @@ std::string ConvertStreamFormatToString(stream_format_t fmt) {
   return UNKNOWN_STREAM_TEXT;
 }
 
-}  // namespace media
+} // namespace media
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

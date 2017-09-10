@@ -21,16 +21,16 @@
 #include <player/ffmpeg_config.h>
 
 extern "C" {
-#include <libavcodec/avcodec.h>    // for AVPacket
-#include <libavformat/avformat.h>  // for AVStream
-#include <libavutil/rational.h>    // for AVRational
+#include <libavcodec/avcodec.h>   // for AVPacket
+#include <libavformat/avformat.h> // for AVStream
+#include <libavutil/rational.h>   // for AVRational
 }
 
-#include <common/macros.h>  // for DISALLOW_COPY_AND_ASSIGN
-#include <common/types.h>   // for time64_t
+#include <common/macros.h> // for DISALLOW_COPY_AND_ASSIGN
+#include <common/types.h>  // for time64_t
 
-#include <player/media/bandwidth_estimation.h>  // for DesireBytesPerSec
-#include <player/media/types.h>                 // for clock64_t
+#include <player/media/bandwidth_estimation.h> // for DesireBytesPerSec
+#include <player/media/types.h>                // for clock64_t
 
 namespace fastoplayer {
 
@@ -40,17 +40,17 @@ class Clock;
 class PacketQueue;
 
 class Stream {
- public:
+public:
   enum { minimum_frames = 25 };
   bool HasEnoughPackets() const;
-  virtual bool Open(int index, AVStream* av_stream_st);
+  virtual bool Open(int index, AVStream *av_stream_st);
   bool IsOpened() const;
   virtual void Close();
   virtual ~Stream();
 
   int Index() const;
   AVRational GetTimeBase() const;
-  AVCodecParameters* GetCodecpar() const;
+  AVCodecParameters *GetCodecpar() const;
   double q2d() const;
 
   clock64_t GetPts() const;
@@ -66,23 +66,23 @@ class Stream {
 
   void SyncSerialClock();
 
-  PacketQueue* GetQueue() const;
+  PacketQueue *GetQueue() const;
   bandwidth_t Bandwidth() const;
   DesireBytesPerSec DesireBandwith() const;
   size_t TotalDownloadedBytes() const;
-  void RegisterPacket(const AVPacket* packet);
+  void RegisterPacket(const AVPacket *packet);
 
- protected:
+protected:
   Stream();
-  void SetDesireBandwith(const DesireBytesPerSec& band);
+  void SetDesireBandwith(const DesireBytesPerSec &band);
 
-  AVStream* stream_st_;
+  AVStream *stream_st_;
 
- private:
+private:
   DISALLOW_COPY_AND_ASSIGN(Stream);
 
-  PacketQueue* packet_queue_;
-  Clock* clock_;
+  PacketQueue *packet_queue_;
+  Clock *clock_;
   int stream_index_;
 
   DesireBytesPerSec bandwidth_;
@@ -91,29 +91,29 @@ class Stream {
 };
 
 class VideoStream : public Stream {
- public:
+public:
   VideoStream();
 
-  virtual bool Open(int index, AVStream* av_stream_st, AVRational frame_rate);
+  virtual bool Open(int index, AVStream *av_stream_st, AVRational frame_rate);
 
   AVRational GetFrameRate() const;
   double GetRotation() const;
   bool HaveDispositionPicture() const;
   AVRational GetAspectRatio() const;
-  AVRational StableAspectRatio(AVFrame* frame) const;
+  AVRational StableAspectRatio(AVFrame *frame) const;
 
- private:
+private:
   using Stream::Open;
   AVRational frame_rate_;
 };
 
 class AudioStream : public Stream {
- public:
+public:
   AudioStream();
 
-  virtual bool Open(int index, AVStream* av_stream_st) override;
+  virtual bool Open(int index, AVStream *av_stream_st) override;
 };
 
-}  // namespace media
+} // namespace media
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

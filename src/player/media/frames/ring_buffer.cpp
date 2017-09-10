@@ -20,7 +20,6 @@
 
 namespace fastoplayer {
 
-namespace media {
-}  // namespace media
+namespace media {} // namespace media
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

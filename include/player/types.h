@@ -23,7 +23,7 @@
 namespace fastoplayer {
 
 typedef common::BoundedValue<int8_t, 0, 100> audio_volume_t;
-typedef std::string stream_id;  // must be unique
+typedef std::string stream_id; // must be unique
 extern const stream_id invalid_stream_id;
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

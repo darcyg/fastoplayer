@@ -18,14 +18,14 @@
 
 #pragma once
 
-#include <player/media/types.h>  // for clock64_t
+#include <player/media/types.h> // for clock64_t
 
 namespace fastoplayer {
 
 namespace media {
 
 class Clock {
- public:
+public:
   Clock();
 
   clock64_t GetPts() const;
@@ -38,14 +38,15 @@ class Clock {
 
   void SetPaused(bool paused);
 
- private:
+private:
   bool paused_;
-  clock64_t pts_;       /* clock base */
-  clock64_t pts_drift_; /* clock base minus time at which we updated the clock */
+  clock64_t pts_; /* clock base */
+  clock64_t
+      pts_drift_; /* clock base minus time at which we updated the clock */
   clock64_t last_updated_;
   double speed_;
 };
 
-}  // namespace media
+} // namespace media
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

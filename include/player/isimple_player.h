@@ -18,27 +18,26 @@
 
 #pragma once
 
-#include <SDL2/SDL_ttf.h>  // for TTF_Font
+#include <SDL2/SDL_ttf.h> // for TTF_Font
 
 #include <common/uri/url.h>
 
-#include <player/player_options.h>
-#include <player/stream_handler.h>
-#include <player/media/app_options.h>  // for AppOptions, ComplexOp...
-#include <player/media/types.h>
-#include <player/gui/events/events.h>  // for PostExecEvent, PreExe...
+#include <player/gui/events/events.h> // for PostExecEvent, PreExe...
 #include <player/gui/events/key_events.h>
 #include <player/gui/events/mouse_events.h>
 #include <player/gui/events/window_events.h>
 #include <player/gui/lirc_events.h>
 #include <player/gui/stream_events.h>
+#include <player/media/app_options.h> // for AppOptions, ComplexOp...
+#include <player/media/types.h>
+#include <player/player_options.h>
+#include <player/stream_handler.h>
 
 namespace common {
 namespace threads {
-template <typename RT>
-class Thread;
+template <typename RT> class Thread;
 }
-}  // namespace common
+} // namespace common
 
 namespace fastoplayer {
 
@@ -47,14 +46,14 @@ class TextureSaver;
 }
 namespace media {
 struct AudioParams;
-}  // namespace media
+} // namespace media
 
 namespace gui {
 class Label;
 }
 
 class ISimplePlayer : public StreamHandler, public gui::events::EventListener {
- public:
+public:
   enum {
     volume_height = 30,
     space_height = 10,
@@ -85,54 +84,52 @@ class ISimplePlayer : public StreamHandler, public gui::events::EventListener {
 
   PlayerOptions GetOptions() const;
 
-  virtual void SetUrlLocation(stream_id sid,
-                              const common::uri::Url& uri,
+  virtual void SetUrlLocation(stream_id sid, const common::uri::Url &uri,
                               media::AppOptions opt,
                               media::ComplexOptions copt);
 
- protected:
-  explicit ISimplePlayer(const PlayerOptions& options);
+protected:
+  explicit ISimplePlayer(const PlayerOptions &options);
 
-  virtual void HandleEvent(event_t* event) override;
-  virtual void HandleExceptionEvent(event_t* event, common::Error err) override;
+  virtual void HandleEvent(event_t *event) override;
+  virtual void HandleExceptionEvent(event_t *event, common::Error err) override;
 
-  virtual common::Error HandleRequestAudio(media::VideoState* stream,
+  virtual common::Error HandleRequestAudio(media::VideoState *stream,
                                            int64_t wanted_channel_layout,
                                            int wanted_nb_channels,
                                            int wanted_sample_rate,
-                                           media::AudioParams* audio_hw_params,
-                                           int* audio_buff_size) override;
-  virtual void HanleAudioMix(uint8_t* audio_stream_ptr, const uint8_t* src, uint32_t len, int volume) override;
+                                           media::AudioParams *audio_hw_params,
+                                           int *audio_buff_size) override;
+  virtual void HanleAudioMix(uint8_t *audio_stream_ptr, const uint8_t *src,
+                             uint32_t len, int volume) override;
 
   // should executed in gui thread
-  virtual common::Error HandleRequestVideo(media::VideoState* stream,
-                                           int width,
-                                           int height,
-                                           int av_pixel_format,
+  virtual common::Error HandleRequestVideo(media::VideoState *stream, int width,
+                                           int height, int av_pixel_format,
                                            AVRational aspect_ratio) override;
 
-  virtual void HandlePreExecEvent(gui::events::PreExecEvent* event);
-  virtual void HandlePostExecEvent(gui::events::PostExecEvent* event);
+  virtual void HandlePreExecEvent(gui::events::PreExecEvent *event);
+  virtual void HandlePostExecEvent(gui::events::PostExecEvent *event);
 
-  virtual void HandleTimerEvent(gui::events::TimerEvent* event);
+  virtual void HandleTimerEvent(gui::events::TimerEvent *event);
 
-  virtual void HandleRequestVideoEvent(gui::events::RequestVideoEvent* event);
-  virtual void HandleQuitStreamEvent(gui::events::QuitStreamEvent* event);
+  virtual void HandleRequestVideoEvent(gui::events::RequestVideoEvent *event);
+  virtual void HandleQuitStreamEvent(gui::events::QuitStreamEvent *event);
 
-  virtual void HandleKeyPressEvent(gui::events::KeyPressEvent* event);
+  virtual void HandleKeyPressEvent(gui::events::KeyPressEvent *event);
 
-  virtual void HandleLircPressEvent(gui::events::LircPressEvent* event);
+  virtual void HandleLircPressEvent(gui::events::LircPressEvent *event);
 
-  virtual void HandleWindowResizeEvent(gui::events::WindowResizeEvent* event);
-  virtual void HandleWindowExposeEvent(gui::events::WindowExposeEvent* event);
-  virtual void HandleWindowCloseEvent(gui::events::WindowCloseEvent* event);
+  virtual void HandleWindowResizeEvent(gui::events::WindowResizeEvent *event);
+  virtual void HandleWindowExposeEvent(gui::events::WindowExposeEvent *event);
+  virtual void HandleWindowCloseEvent(gui::events::WindowCloseEvent *event);
 
-  virtual void HandleMousePressEvent(gui::events::MousePressEvent* event);
-  virtual void HandleMouseMoveEvent(gui::events::MouseMoveEvent* event);
+  virtual void HandleMousePressEvent(gui::events::MousePressEvent *event);
+  virtual void HandleMouseMoveEvent(gui::events::MouseMoveEvent *event);
 
-  virtual void HandleQuitEvent(gui::events::QuitEvent* event);
+  virtual void HandleQuitEvent(gui::events::QuitEvent *event);
 
-  virtual void InitWindow(const std::string& title, States status);
+  virtual void InitWindow(const std::string &title, States status);
   virtual void SetStatus(States new_state);
 
   virtual void DrawDisplay();
@@ -140,28 +137,29 @@ class ISimplePlayer : public StreamHandler, public gui::events::EventListener {
   virtual void DrawFailedStatus();
   virtual void DrawInitStatus();
 
-  virtual void DrawInfo();  // statistic + volume
+  virtual void DrawInfo(); // statistic + volume
 
   virtual void DrawStatistic();
   virtual void DrawVolume();
 
   bool IsMouseVisible() const;
 
-  virtual media::VideoState* CreateStream(stream_id sid,
-                                          const common::uri::Url& uri,
+  virtual media::VideoState *CreateStream(stream_id sid,
+                                          const common::uri::Url &uri,
                                           media::AppOptions opt,
                                           media::ComplexOptions copt);
-  void SetStream(media::VideoState* stream);  // if stream == NULL => SwitchToChannelErrorMode
+  void SetStream(media::VideoState
+                     *stream); // if stream == NULL => SwitchToChannelErrorMode
 
-  SDL_Rect GetDrawRect() const;  // GetDisplayRect + with margins
+  SDL_Rect GetDrawRect() const; // GetDisplayRect + with margins
   SDL_Rect GetDisplayRect() const;
 
-  SDL_Renderer* GetRenderer() const;
-  TTF_Font* GetFont() const;
+  SDL_Renderer *GetRenderer() const;
+  TTF_Font *GetFont() const;
 
-  virtual void OnWindowCreated(SDL_Window* window, SDL_Renderer* render);
+  virtual void OnWindowCreated(SDL_Window *window, SDL_Renderer *render);
 
- private:
+private:
   void SwitchToChannelErrorMode(common::Error err);
 
   void FreeStreamSafe(bool fast_cleanup);
@@ -169,7 +167,7 @@ class ISimplePlayer : public StreamHandler, public gui::events::EventListener {
   void UpdateDisplayInterval(AVRational fps);
 
   /* prepare a new audio buffer */
-  static void sdl_audio_callback(void* user_data, uint8_t* stream, int len);
+  static void sdl_audio_callback(void *user_data, uint8_t *stream, int len);
 
   void CalculateDispalySize();
 
@@ -183,25 +181,25 @@ class ISimplePlayer : public StreamHandler, public gui::events::EventListener {
   SDL_Rect GetStatisticRect() const;
   SDL_Rect GetVolumeRect() const;
 
-  SDL_Renderer* renderer_;
-  TTF_Font* font_;
+  SDL_Renderer *renderer_;
+  TTF_Font *font_;
 
   PlayerOptions options_;
 
-  media::AudioParams* audio_params_;
+  media::AudioParams *audio_params_;
   int audio_buff_size_;
 
-  SDL_Window* window_;
+  SDL_Window *window_;
 
   media::msec_t cursor_last_shown_;
 
-  gui::Label* volume_label_;
+  gui::Label *volume_label_;
   media::msec_t volume_last_shown_;
 
   media::msec_t last_mouse_left_click_;
 
-  std::shared_ptr<common::threads::Thread<int> > exec_tid_;
-  media::VideoState* stream_;
+  std::shared_ptr<common::threads::Thread<int>> exec_tid_;
+  media::VideoState *stream_;
 
   common::draw::Size window_size_;
   const int xleft_;
@@ -210,9 +208,9 @@ class ISimplePlayer : public StreamHandler, public gui::events::EventListener {
   States current_state_;
 
   bool muted_;
-  gui::Label* statistic_label_;
+  gui::Label *statistic_label_;
 
-  draw::TextureSaver* render_texture_;
+  draw::TextureSaver *render_texture_;
 
   uint32_t update_video_timer_interval_msec_;
 
@@ -220,5 +218,4 @@ class ISimplePlayer : public StreamHandler, public gui::events::EventListener {
   size_t video_frames_handled_;
 };
 
-
-}  // namespace fastoplayer
+} // namespace fastoplayer

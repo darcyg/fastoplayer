@@ -21,18 +21,18 @@
 namespace fastoplayer {
 
 class FFmpegApplication : public gui::application::Sdl2Application {
- public:
+public:
   typedef gui::application::Sdl2Application base_class;
-  FFmpegApplication(int argc, char** argv);
+  FFmpegApplication(int argc, char **argv);
 
   ~FFmpegApplication();
 
- private:
+private:
   virtual int PreExecImpl() override;
 
   virtual int PostExecImpl() override;
 };
 
-int prepare_to_start(const std::string& app_directory_absolute_path);
+int prepare_to_start(const std::string &app_directory_absolute_path);
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

@@ -18,18 +18,18 @@
 
 #pragma once
 
-#include <stdint.h>  // for uint8_t
+#include <stdint.h> // for uint8_t
 
 #include <SDL2/SDL_events.h>
 
-#include <player/gui/events_base.h>  // for EventBase, EventsType::M...
+#include <player/gui/events_base.h> // for EventBase, EventsType::M...
 
 namespace fastoplayer {
 namespace gui {
 namespace events {
 
 struct MouseStateChangeInfo {
-  MouseStateChangeInfo(const SDL_Point& mouse_point, bool cursor_visible);
+  MouseStateChangeInfo(const SDL_Point &mouse_point, bool cursor_visible);
 
   SDL_Point GetMousePoint() const;
   bool IsCursorVisible() const;
@@ -39,7 +39,7 @@ struct MouseStateChangeInfo {
 };
 
 struct MouseMoveInfo {
-  MouseMoveInfo(const SDL_MouseMotionEvent& event);
+  MouseMoveInfo(const SDL_MouseMotionEvent &event);
 
   SDL_Point GetMousePoint() const;
 
@@ -47,25 +47,26 @@ struct MouseMoveInfo {
 };
 
 struct MousePressInfo {
-  MousePressInfo(const SDL_MouseButtonEvent& event);
+  MousePressInfo(const SDL_MouseButtonEvent &event);
 
   SDL_Point GetMousePoint() const;
 
   SDL_MouseButtonEvent mevent;
 };
 struct MouseReleaseInfo {
-  MouseReleaseInfo(const SDL_MouseButtonEvent& event);
+  MouseReleaseInfo(const SDL_MouseButtonEvent &event);
 
   SDL_Point GetMousePoint() const;
 
   SDL_MouseButtonEvent mevent;
 };
 
-typedef EventBase<MOUSE_CHANGE_STATE_EVENT, MouseStateChangeInfo> MouseStateChangeEvent;
+typedef EventBase<MOUSE_CHANGE_STATE_EVENT, MouseStateChangeInfo>
+    MouseStateChangeEvent;
 typedef EventBase<MOUSE_MOVE_EVENT, MouseMoveInfo> MouseMoveEvent;
 typedef EventBase<MOUSE_PRESS_EVENT, MousePressInfo> MousePressEvent;
 typedef EventBase<MOUSE_RELEASE_EVENT, MouseReleaseInfo> MouseReleaseEvent;
 
-}  // namespace events
-}  // namespace gui
-}  // namespace fastoplayer
+} // namespace events
+} // namespace gui
+} // namespace fastoplayer

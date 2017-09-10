@@ -20,13 +20,8 @@
 
 namespace fastoplayer {
 
-
-SDL_Rect CalculateDisplayRect(int scr_xleft,
-                              int scr_ytop,
-                              int scr_width,
-                              int scr_height,
-                              int pic_width,
-                              int pic_height,
+SDL_Rect CalculateDisplayRect(int scr_xleft, int scr_ytop, int scr_width,
+                              int scr_height, int pic_width, int pic_height,
                               AVRational pic_sar) {
   float aspect_ratio;
 
@@ -39,7 +34,8 @@ SDL_Rect CalculateDisplayRect(int scr_xleft,
   if (aspect_ratio <= 0.0) {
     aspect_ratio = 1.0;
   }
-  aspect_ratio *= static_cast<float>(pic_width) / static_cast<float>(pic_height);
+  aspect_ratio *=
+      static_cast<float>(pic_width) / static_cast<float>(pic_height);
 
   /* XXX: we suppose the screen has a 1.0 pixel ratio */
   int height = scr_height;
@@ -54,34 +50,41 @@ SDL_Rect CalculateDisplayRect(int scr_xleft,
   return {scr_xleft + x, scr_ytop + y, FFMAX(width, 1), FFMAX(height, 1)};
 }
 
-common::Error UploadTexture(SDL_Texture* tex, const AVFrame* frame) {
+common::Error UploadTexture(SDL_Texture *tex, const AVFrame *frame) {
   if (frame->format == AV_PIX_FMT_YUV420P) {
-    if (frame->linesize[0] < 0 || frame->linesize[1] < 0 || frame->linesize[2] < 0) {
+    if (frame->linesize[0] < 0 || frame->linesize[1] < 0 ||
+        frame->linesize[2] < 0) {
       return common::make_error("Negative linesize is not supported for YUV.");
     }
-    if (SDL_UpdateYUVTexture(tex, NULL, frame->data[0], frame->linesize[0], frame->data[1], frame->linesize[1],
-                             frame->data[2], frame->linesize[2]) != 0) {
-      return common::make_error(common::MemSPrintf("UpdateYUVTexture error: %s.", SDL_GetError()));
+    if (SDL_UpdateYUVTexture(tex, NULL, frame->data[0], frame->linesize[0],
+                             frame->data[1], frame->linesize[1], frame->data[2],
+                             frame->linesize[2]) != 0) {
+      return common::make_error(
+          common::MemSPrintf("UpdateYUVTexture error: %s.", SDL_GetError()));
     }
     return common::Error();
   } else if (frame->format == AV_PIX_FMT_BGRA) {
     if (frame->linesize[0] < 0) {
-      if (SDL_UpdateTexture(tex, NULL, frame->data[0] + frame->linesize[0] * (frame->height - 1),
+      if (SDL_UpdateTexture(tex, NULL,
+                            frame->data[0] +
+                                frame->linesize[0] * (frame->height - 1),
                             -frame->linesize[0]) != 0) {
-        return common::make_error(common::MemSPrintf("UpdateTexture error: %s.", SDL_GetError()));
+        return common::make_error(
+            common::MemSPrintf("UpdateTexture error: %s.", SDL_GetError()));
       }
       return common::Error();
     }
     if (SDL_UpdateTexture(tex, NULL, frame->data[0], frame->linesize[0]) != 0) {
-      return common::make_error(common::MemSPrintf("UpdateTexture error: %s.", SDL_GetError()));
+      return common::make_error(
+          common::MemSPrintf("UpdateTexture error: %s.", SDL_GetError()));
     }
 
     return common::Error();
   }
 
   DNOTREACHED();
-  return common::make_error(common::MemSPrintf("Unsupported pixel format %d.", frame->format));
+  return common::make_error(
+      common::MemSPrintf("Unsupported pixel format %d.", frame->format));
 }
 
-
-}  // namespace fastoplayer
+} // namespace fastoplayer

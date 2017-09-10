@@ -24,23 +24,18 @@ namespace gui {
 
 Label::Label() : base_class(), text_() {}
 
-Label::Label(const SDL_Color& back_ground_color) : base_class(back_ground_color), text_() {}
+Label::Label(const SDL_Color &back_ground_color)
+    : base_class(back_ground_color), text_() {}
 
 Label::~Label() {}
 
-void Label::SetText(const std::string& text) {
-  text_ = text;
-}
+void Label::SetText(const std::string &text) { text_ = text; }
 
-std::string Label::GetText() const {
-  return text_;
-}
+std::string Label::GetText() const { return text_; }
 
-void Label::ClearText() {
-  text_.clear();
-}
+void Label::ClearText() { text_.clear(); }
 
-void Label::Draw(SDL_Renderer* render) {
+void Label::Draw(SDL_Renderer *render) {
   if (!IsCanDraw()) {
     base_class::Draw(render);
     return;
@@ -49,11 +44,11 @@ void Label::Draw(SDL_Renderer* render) {
   DrawLabel(render, NULL);
 }
 
-void Label::DrawLabel(SDL_Renderer* render, SDL_Rect* text_rect) {
+void Label::DrawLabel(SDL_Renderer *render, SDL_Rect *text_rect) {
   base_class::Draw(render);
   base_class::DrawText(render, text_, GetRect(), GetDrawType(), text_rect);
 }
 
-}  // namespace gui
+} // namespace gui
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

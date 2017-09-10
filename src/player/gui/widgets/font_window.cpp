@@ -24,51 +24,41 @@ namespace fastoplayer {
 
 namespace gui {
 
-FontWindow::FontWindow() : base_class(), draw_type_(WRAPPED_TEXT), text_color_(), font_(nullptr) {}
+FontWindow::FontWindow()
+    : base_class(), draw_type_(WRAPPED_TEXT), text_color_(), font_(nullptr) {}
 
-FontWindow::FontWindow(const SDL_Color& back_ground_color)
-    : base_class(back_ground_color), draw_type_(WRAPPED_TEXT), text_color_(), font_(nullptr) {}
+FontWindow::FontWindow(const SDL_Color &back_ground_color)
+    : base_class(back_ground_color), draw_type_(WRAPPED_TEXT), text_color_(),
+      font_(nullptr) {}
 
 FontWindow::~FontWindow() {}
 
-void FontWindow::SetDrawType(DrawType dt) {
-  draw_type_ = dt;
-}
+void FontWindow::SetDrawType(DrawType dt) { draw_type_ = dt; }
 
-FontWindow::DrawType FontWindow::GetDrawType() const {
-  return draw_type_;
-}
+FontWindow::DrawType FontWindow::GetDrawType() const { return draw_type_; }
 
-void FontWindow::SetTextColor(const SDL_Color& color) {
-  text_color_ = color;
-}
+void FontWindow::SetTextColor(const SDL_Color &color) { text_color_ = color; }
 
-SDL_Color FontWindow::GetTextColor() const {
-  return text_color_;
-}
+SDL_Color FontWindow::GetTextColor() const { return text_color_; }
 
-void FontWindow::SetFont(TTF_Font* font) {
-  font_ = font;
-}
+void FontWindow::SetFont(TTF_Font *font) { font_ = font; }
 
-TTF_Font* FontWindow::GetFont() const {
-  return font_;
-}
+TTF_Font *FontWindow::GetFont() const { return font_; }
 
-void FontWindow::DrawText(SDL_Renderer* render,
-                          const std::string& text,
-                          const SDL_Rect& rect,
-                          DrawType dt,
-                          SDL_Rect* text_rect) {
+void FontWindow::DrawText(SDL_Renderer *render, const std::string &text,
+                          const SDL_Rect &rect, DrawType dt,
+                          SDL_Rect *text_rect) {
   if (dt == WRAPPED_TEXT) {
-    draw::DrawWrappedTextInRect(render, text, font_, text_color_, rect, text_rect);
+    draw::DrawWrappedTextInRect(render, text, font_, text_color_, rect,
+                                text_rect);
   } else if (dt == CENTER_TEXT) {
-    draw::DrawCenterTextInRect(render, text, font_, text_color_, rect, text_rect);
+    draw::DrawCenterTextInRect(render, text, font_, text_color_, rect,
+                               text_rect);
   } else {
     NOTREACHED();
   }
 }
 
-}  // namespace gui
+} // namespace gui
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

@@ -23,16 +23,18 @@ namespace fastoplayer {
 namespace gui {
 namespace events {
 
-KeyPressInfo::KeyPressInfo(bool pressed, SDL_Keysym ks) : is_pressed(pressed), ks(ks) {}
+KeyPressInfo::KeyPressInfo(bool pressed, SDL_Keysym ks)
+    : is_pressed(pressed), ks(ks) {}
 
-KeyReleaseInfo::KeyReleaseInfo(bool pressed, SDL_Keysym ks) : is_pressed(pressed), ks(ks) {}
+KeyReleaseInfo::KeyReleaseInfo(bool pressed, SDL_Keysym ks)
+    : is_pressed(pressed), ks(ks) {}
 
-TextInputInfo::TextInputInfo(const std::string& text) : text(text) {}
+TextInputInfo::TextInputInfo(const std::string &text) : text(text) {}
 
-TextEditInfo::TextEditInfo(const std::string& text, Sint32 start, Sint32 length)
+TextEditInfo::TextEditInfo(const std::string &text, Sint32 start, Sint32 length)
     : text(text), start(start), length(length) {}
 
-}  // namespace events
-}  // namespace gui
+} // namespace events
+} // namespace gui
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

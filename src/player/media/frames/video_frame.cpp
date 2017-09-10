@@ -23,17 +23,20 @@ namespace fastoplayer {
 namespace media {
 namespace frames {
 
-VideoFrame::VideoFrame() : BaseFrame(), width(0), height(0), format(AV_PIX_FMT_NONE), sar{0, 0} {}
+VideoFrame::VideoFrame()
+    : BaseFrame(), width(0), height(0), format(AV_PIX_FMT_NONE), sar{0, 0} {}
 
-clock64_t CalcDurationBetweenVideoFrames(VideoFrame* vp, VideoFrame* nextvp, clock64_t max_frame_duration) {
+clock64_t CalcDurationBetweenVideoFrames(VideoFrame *vp, VideoFrame *nextvp,
+                                         clock64_t max_frame_duration) {
   clock64_t duration = nextvp->pts - vp->pts;
-  if (!IsValidClock(duration) || duration <= 0 || duration > max_frame_duration) {
+  if (!IsValidClock(duration) || duration <= 0 ||
+      duration > max_frame_duration) {
     return vp->duration;
   }
   return duration;
 }
 
-}  // namespace frames
-}  // namespace media
+} // namespace frames
+} // namespace media
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

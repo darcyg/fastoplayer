@@ -21,8 +21,9 @@
 namespace fastoplayer {
 
 TVConfig::TVConfig()
-    : power_off_on_exit(false), loglevel(common::logging::LOG_LEVEL_INFO), app_options(), player_options() {}
+    : power_off_on_exit(false), loglevel(common::logging::LOG_LEVEL_INFO),
+      app_options(), player_options() {}
 
 TVConfig::~TVConfig() {}
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

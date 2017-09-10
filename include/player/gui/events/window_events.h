@@ -20,15 +20,15 @@
 
 #include <common/draw/types.h>
 
-#include <player/gui/events_base.h>
 #include <player/draw/types.h>
+#include <player/gui/events_base.h>
 
 namespace fastoplayer {
 namespace gui {
 namespace events {
 
 struct WindowResizeInfo {
-  explicit WindowResizeInfo(const common::draw::Size& size);
+  explicit WindowResizeInfo(const common::draw::Size &size);
 
   common::draw::Size size;
 };
@@ -40,6 +40,6 @@ typedef EventBase<WINDOW_RESIZE_EVENT, WindowResizeInfo> WindowResizeEvent;
 typedef EventBase<WINDOW_EXPOSE_EVENT, WindowExposeInfo> WindowExposeEvent;
 typedef EventBase<WINDOW_CLOSE_EVENT, WindowCloseInfo> WindowCloseEvent;
 
-}  // namespace events
-}  // namespace gui
-}  // namespace fastoplayer
+} // namespace events
+} // namespace gui
+} // namespace fastoplayer

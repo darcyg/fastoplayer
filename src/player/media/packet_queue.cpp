@@ -18,13 +18,15 @@
 
 #include <player/media/packet_queue.h>
 
-#include <stddef.h>  // for NULL
+#include <stddef.h> // for NULL
 
 namespace fastoplayer {
 
 namespace media {
 
-PacketQueue::PacketQueue() : queue_(), size_(0), duration_(0), abort_request_(true), cond_(), mutex_() {}
+PacketQueue::PacketQueue()
+    : queue_(), size_(0), duration_(0), abort_request_(true), cond_(),
+      mutex_() {}
 
 int PacketQueue::PutNullpacket(int stream_index) {
   AVPacket pkt1, *pkt = &pkt1;
@@ -35,7 +37,7 @@ int PacketQueue::PutNullpacket(int stream_index) {
   return PushFront(pkt);
 }
 
-bool PacketQueue::Get(AVPacket* pkt) {
+bool PacketQueue::Get(AVPacket *pkt) {
   if (!pkt) {
     return false;
   }
@@ -65,13 +67,9 @@ size_t PacketQueue::GetNbPackets() {
   return queue_.size();
 }
 
-int PacketQueue::GetSize() const {
-  return size_;
-}
+int PacketQueue::GetSize() const { return size_; }
 
-int64_t PacketQueue::GetDuration() const {
-  return duration_;
-}
+int64_t PacketQueue::GetDuration() const { return duration_; }
 
 void PacketQueue::Start() {
   lock_t lock(mutex_);
@@ -79,11 +77,9 @@ void PacketQueue::Start() {
   cond_.notify_one();
 }
 
-int PacketQueue::Put(AVPacket* pkt) {
-  return PushBack(pkt);
-}
+int PacketQueue::Put(AVPacket *pkt) { return PushBack(pkt); }
 
-int PacketQueue::PushFront(AVPacket* pkt) {
+int PacketQueue::PushFront(AVPacket *pkt) {
   lock_t lock(mutex_);
   if (abort_request_) {
     av_packet_unref(pkt);
@@ -97,7 +93,7 @@ int PacketQueue::PushFront(AVPacket* pkt) {
   return 0;
 }
 
-int PacketQueue::PushBack(AVPacket* pkt) {
+int PacketQueue::PushBack(AVPacket *pkt) {
   lock_t lock(mutex_);
   if (abort_request_) {
     av_packet_unref(pkt);
@@ -128,10 +124,8 @@ void PacketQueue::Abort() {
   cond_.notify_one();
 }
 
-PacketQueue::~PacketQueue() {
-  Flush();
-}
+PacketQueue::~PacketQueue() { Flush(); }
 
-}  // namespace media
+} // namespace media
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

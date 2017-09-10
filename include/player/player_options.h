@@ -24,7 +24,6 @@
 
 namespace fastoplayer {
 
-
 struct PlayerOptions {
   enum { width = 640, height = 480, volume = 100 };
   PlayerOptions();
@@ -34,9 +33,8 @@ struct PlayerOptions {
   common::draw::Size default_size;
   common::draw::Size screen_size;
 
-  audio_volume_t audio_volume;  // Range: 0 - 100
+  audio_volume_t audio_volume; // Range: 0 - 100
   stream_id last_showed_channel_id;
 };
 
-
-}  // namespace fastoplayer
+} // namespace fastoplayer

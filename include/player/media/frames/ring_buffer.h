@@ -22,8 +22,8 @@
 #include <condition_variable>
 #include <mutex>
 
-#include <common/logger.h>  // for COMPACT_LOG_FILE_CRIT
-#include <common/macros.h>  // for DCHECK
+#include <common/logger.h> // for COMPACT_LOG_FILE_CRIT
+#include <common/macros.h> // for DCHECK
 #include <common/types.h>
 
 namespace fastoplayer {
@@ -31,13 +31,13 @@ namespace fastoplayer {
 namespace media {
 namespace frames {
 
-template <typename T, size_t buffer_size>
-class RingBuffer {
- public:
-  typedef T* pointer_type;
+template <typename T, size_t buffer_size> class RingBuffer {
+public:
+  typedef T *pointer_type;
 
   RingBuffer()
-      : queue_cond_(), queue_mutex_(), queue_(), rindex_shown_(0), rindex_(0), windex_(0), size_(0), stoped_(false) {
+      : queue_cond_(), queue_mutex_(), queue_(), rindex_shown_(0), rindex_(0),
+        windex_(0), size_(0), stoped_(false) {
     for (size_t i = 0; i < buffer_size; i++) {
       queue_[i] = new T;
     }
@@ -104,7 +104,9 @@ class RingBuffer {
 
   pointer_type PeekLast() const { return queue_[rindex_]; }
 
-  pointer_type Peek() const { return queue_[(rindex_ + rindex_shown_) % buffer_size]; }
+  pointer_type Peek() const {
+    return queue_[(rindex_ + rindex_shown_) % buffer_size];
+  }
 
   pointer_type PeekNextOrNull() const {
     if (IsEmpty()) {
@@ -118,7 +120,7 @@ class RingBuffer {
 
   size_t RindexShown() const { return rindex_shown_; }
 
- protected:
+protected:
   pointer_type MoveToNext() const {
     if (!rindex_shown_) {
       rindex_shown_ = 1;
@@ -142,20 +144,20 @@ class RingBuffer {
     size_++;
   }
 
- private:
+private:
   typedef std::unique_lock<std::mutex> lock_t;
   std::condition_variable queue_cond_;
   std::mutex queue_mutex_;
 
   pointer_type queue_[buffer_size];
-  mutable size_t rindex_shown_;  // in mostly const
+  mutable size_t rindex_shown_; // in mostly const
   size_t rindex_;
   std::atomic<size_t> windex_;
   std::atomic<size_t> size_;
   bool stoped_;
 };
 
-}  // namespace frames
-}  // namespace media
+} // namespace frames
+} // namespace media
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

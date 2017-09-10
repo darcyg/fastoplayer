@@ -18,22 +18,19 @@
 
 #pragma once
 
-#include <SDL2/SDL_render.h>  // for SDL_Renderer, SDL_Texture
+#include <SDL2/SDL_render.h> // for SDL_Renderer, SDL_Texture
 extern "C" {
-#include <libavutil/frame.h>  // for AVFrame
+#include <libavutil/frame.h> // for AVFrame
 }
 
-#include <common/error.h>  // for Error
+#include <common/error.h> // for Error
 
 namespace fastoplayer {
 
-SDL_Rect CalculateDisplayRect(int scr_xleft,
-                              int scr_ytop,
-                              int scr_width,
-                              int scr_height,
-                              int pic_width,
-                              int pic_height,
+SDL_Rect CalculateDisplayRect(int scr_xleft, int scr_ytop, int scr_width,
+                              int scr_height, int pic_width, int pic_height,
                               AVRational pic_sar);
-common::Error UploadTexture(SDL_Texture* tex, const AVFrame* frame) WARN_UNUSED_RESULT;
+common::Error UploadTexture(SDL_Texture *tex,
+                            const AVFrame *frame) WARN_UNUSED_RESULT;
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

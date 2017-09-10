@@ -18,29 +18,25 @@
 
 #include <player/media/stream.h>
 
-#include <stddef.h>  // for NULL
+#include <stddef.h> // for NULL
 
-#include <common/logger.h>  // for COMPACT_LOG_FILE_CRIT
-#include <common/time.h>    // for current_mstime
+#include <common/logger.h> // for COMPACT_LOG_FILE_CRIT
+#include <common/time.h>   // for current_mstime
 
 #include <player/media/av_utils.h>
-#include <player/media/clock.h>         // for Clock
-#include <player/media/packet_queue.h>  // for PacketQueue
+#include <player/media/clock.h>        // for Clock
+#include <player/media/packet_queue.h> // for PacketQueue
 
 namespace fastoplayer {
 
 namespace media {
 
 Stream::Stream()
-    : stream_st_(NULL),
-      packet_queue_(new PacketQueue),
-      clock_(new Clock),
-      stream_index_(-1),
-      bandwidth_(),
-      start_ts_(0),
+    : stream_st_(NULL), packet_queue_(new PacketQueue), clock_(new Clock),
+      stream_index_(-1), bandwidth_(), start_ts_(0),
       total_downloaded_bytes_(0) {}
 
-bool Stream::Open(int index, AVStream* av_stream_st) {
+bool Stream::Open(int index, AVStream *av_stream_st) {
   stream_index_ = index;
   stream_st_ = av_stream_st;
   return IsOpened();
@@ -70,7 +66,8 @@ bool Stream::HasEnoughPackets() const {
   }
 
   return (packet_queue_->GetNbPackets() > minimum_frames &&
-          (!packet_queue_->GetDuration() || q2d() * packet_queue_->GetDuration() > 1000));
+          (!packet_queue_->GetDuration() ||
+           q2d() * packet_queue_->GetDuration() > 1000));
 }
 
 Stream::~Stream() {
@@ -80,37 +77,27 @@ Stream::~Stream() {
   destroy(&packet_queue_);
 }
 
-int Stream::Index() const {
-  return stream_index_;
-}
+int Stream::Index() const { return stream_index_; }
 
 AVRational Stream::GetTimeBase() const {
   return stream_st_ ? stream_st_->time_base : AVRational();
 }
 
-AVCodecParameters* Stream::GetCodecpar() const {
+AVCodecParameters *Stream::GetCodecpar() const {
   return stream_st_ ? stream_st_->codecpar : NULL;
 }
 
-double Stream::q2d() const {
-  return q2d_diff(stream_st_->time_base);
-}
+double Stream::q2d() const { return q2d_diff(stream_st_->time_base); }
 
-clock64_t Stream::GetPts() const {
-  return clock_->GetPts();
-}
+clock64_t Stream::GetPts() const { return clock_->GetPts(); }
 
-clock64_t Stream::GetClock() const {
-  return clock_->GetClock();
-}
+clock64_t Stream::GetClock() const { return clock_->GetClock(); }
 
 void Stream::SetClockAt(clock64_t pts, clock64_t time) {
   clock_->SetClockAt(pts, time);
 }
 
-void Stream::SetClock(clock64_t pts) {
-  clock_->SetClock(pts);
-}
+void Stream::SetClock(clock64_t pts) { clock_->SetClock(pts); }
 
 void Stream::SetPaused(bool pause) {
   clock_->SetPaused(pause);
@@ -119,19 +106,13 @@ void Stream::SetPaused(bool pause) {
   start_ts_ = 0;
 }
 
-clock64_t Stream::LastUpdatedClock() const {
-  return clock_->LastUpdated();
-}
+clock64_t Stream::LastUpdatedClock() const { return clock_->LastUpdated(); }
 
-void Stream::SyncSerialClock() {
-  SetClock(clock_->GetClock());
-}
+void Stream::SyncSerialClock() { SetClock(clock_->GetClock()); }
 
-PacketQueue* Stream::GetQueue() const {
-  return packet_queue_;
-}
+PacketQueue *Stream::GetQueue() const { return packet_queue_; }
 
-void Stream::RegisterPacket(const AVPacket* packet) {
+void Stream::RegisterPacket(const AVPacket *packet) {
   if (!packet || packet->size < 0) {
     return;
   }
@@ -150,31 +131,30 @@ bandwidth_t Stream::Bandwidth() const {
   return CalculateBandwidth(total_downloaded_bytes_, data_interval);
 }
 
-size_t Stream::TotalDownloadedBytes() const {
-  return total_downloaded_bytes_;
-}
+size_t Stream::TotalDownloadedBytes() const { return total_downloaded_bytes_; }
 
-DesireBytesPerSec Stream::DesireBandwith() const {
-  return bandwidth_;
-}
+DesireBytesPerSec Stream::DesireBandwith() const { return bandwidth_; }
 
-void Stream::SetDesireBandwith(const DesireBytesPerSec& band) {
+void Stream::SetDesireBandwith(const DesireBytesPerSec &band) {
   bandwidth_ = band;
 }
 
 VideoStream::VideoStream() : Stream(), frame_rate_() {}
 
-bool VideoStream::Open(int index, AVStream* av_stream_st, AVRational frame_rate) {
-  AVCodecParameters* codecpar = av_stream_st->codecpar;
+bool VideoStream::Open(int index, AVStream *av_stream_st,
+                       AVRational frame_rate) {
+  AVCodecParameters *codecpar = av_stream_st->codecpar;
   DesireBytesPerSec band;
   if (codecpar->bit_rate != 0) {
     band = VideoBitrateAverage(codecpar->bit_rate / 8);
   } else {
     int profile = codecpar->profile;
     if (codecpar->codec_id == AV_CODEC_ID_H264) {
-      band = CalculateDesireH264BandwidthBytesPerSec(codecpar->width, codecpar->height, av_q2d(frame_rate), profile);
+      band = CalculateDesireH264BandwidthBytesPerSec(
+          codecpar->width, codecpar->height, av_q2d(frame_rate), profile);
     } else if (codecpar->codec_id == AV_CODEC_ID_MPEG2TS) {
-      band = CalculateDesireMPEGBandwidthBytesPerSec(codecpar->width, codecpar->height);
+      band = CalculateDesireMPEGBandwidthBytesPerSec(codecpar->width,
+                                                     codecpar->height);
     } else {
       NOTREACHED();
     }
@@ -185,13 +165,9 @@ bool VideoStream::Open(int index, AVStream* av_stream_st, AVRational frame_rate)
   return Stream::Open(index, av_stream_st);
 }
 
-AVRational VideoStream::GetFrameRate() const {
-  return frame_rate_;
-}
+AVRational VideoStream::GetFrameRate() const { return frame_rate_; }
 
-double VideoStream::GetRotation() const {
-  return get_rotation(stream_st_);
-}
+double VideoStream::GetRotation() const { return get_rotation(stream_st_); }
 
 bool VideoStream::HaveDispositionPicture() const {
   return stream_st_->disposition & AV_DISPOSITION_ATTACHED_PIC;
@@ -202,19 +178,20 @@ AVRational VideoStream::GetAspectRatio() const {
   return stream_st_ ? stream_st_->sample_aspect_ratio : undef;
 }
 
-AVRational VideoStream::StableAspectRatio(AVFrame* frame) const {
+AVRational VideoStream::StableAspectRatio(AVFrame *frame) const {
   return guess_sample_aspect_ratio(stream_st_, frame);
 }
 
 AudioStream::AudioStream() : Stream() {}
 
-bool AudioStream::Open(int index, AVStream* av_stream_st) {
-  AVCodecParameters* codecpar = av_stream_st->codecpar;
+bool AudioStream::Open(int index, AVStream *av_stream_st) {
+  AVCodecParameters *codecpar = av_stream_st->codecpar;
   DesireBytesPerSec band;
   if (codecpar->bit_rate != 0) {
     band = AudioBitrateAverage(codecpar->bit_rate / 8);
   } else {
-    if (codecpar->codec_id == AV_CODEC_ID_AAC || codecpar->codec_id == AV_CODEC_ID_AAC_LATM) {
+    if (codecpar->codec_id == AV_CODEC_ID_AAC ||
+        codecpar->codec_id == AV_CODEC_ID_AAC_LATM) {
       band = CalculateDesireAACBandwidthBytesPerSec(codecpar->channels);
     } else if (codecpar->codec_id == AV_CODEC_ID_MP2) {
       band = CalculateDesireMP2BandwidthBytesPerSec(codecpar->channels);
@@ -227,6 +204,6 @@ bool AudioStream::Open(int index, AVStream* av_stream_st) {
   return Stream::Open(index, av_stream_st);
 }
 
-}  // namespace media
+} // namespace media
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

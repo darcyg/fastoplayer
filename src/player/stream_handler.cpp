@@ -24,22 +24,21 @@
 
 namespace fastoplayer {
 
-
 StreamHandler::~StreamHandler() {}
 
-void StreamHandler::HandleFrameResize(media::VideoState* stream,
-                                      int width,
-                                      int height,
-                                      int av_pixel_format,
+void StreamHandler::HandleFrameResize(media::VideoState *stream, int width,
+                                      int height, int av_pixel_format,
                                       AVRational aspect_ratio) {
-  gui::events::RequestVideoEvent* qevent = new gui::events::RequestVideoEvent(
-      stream, gui::events::FrameInfo(stream, width, height, av_pixel_format, aspect_ratio));
+  gui::events::RequestVideoEvent *qevent = new gui::events::RequestVideoEvent(
+      stream, gui::events::FrameInfo(stream, width, height, av_pixel_format,
+                                     aspect_ratio));
   fApp->PostEvent(qevent);
 }
 
-void StreamHandler::HandleQuitStream(media::VideoState* stream, int exit_code, common::Error err) {
-  gui::events::QuitStreamEvent* qevent =
-      new gui::events::QuitStreamEvent(stream, gui::events::QuitStreamInfo(stream, exit_code));
+void StreamHandler::HandleQuitStream(media::VideoState *stream, int exit_code,
+                                     common::Error err) {
+  gui::events::QuitStreamEvent *qevent = new gui::events::QuitStreamEvent(
+      stream, gui::events::QuitStreamInfo(stream, exit_code));
   if (err) {
     fApp->PostEvent(common::make_exception_event(qevent, err));
     return;
@@ -48,5 +47,4 @@ void StreamHandler::HandleQuitStream(media::VideoState* stream, int exit_code, c
   fApp->PostEvent(qevent);
 }
 
-
-}  // namespace fastoplayer
+} // namespace fastoplayer

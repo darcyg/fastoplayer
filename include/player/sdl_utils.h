@@ -21,13 +21,12 @@
 #include <SDL2/SDL_audio.h>
 
 extern "C" {
-#include <libavutil/rational.h>  // for AVRational
+#include <libavutil/rational.h> // for AVRational
 }
 
 #include <player/types.h>
 
 namespace fastoplayer {
-
 
 namespace media {
 struct AudioParams;
@@ -35,16 +34,12 @@ struct AudioParams;
 
 int ConvertToSDLVolume(int val);
 
-bool init_audio_params(int64_t wanted_channel_layout, int freq, int channels, media::AudioParams* audio_hw_params)
-    WARN_UNUSED_RESULT;
+bool init_audio_params(int64_t wanted_channel_layout, int freq, int channels,
+                       media::AudioParams *audio_hw_params) WARN_UNUSED_RESULT;
 
-bool audio_open(void* opaque,
-                int64_t wanted_channel_layout,
-                int wanted_nb_channels,
-                int wanted_sample_rate,
-                SDL_AudioCallback cb,
-                media::AudioParams* audio_hw_params,
-                int* audio_buff_size) WARN_UNUSED_RESULT;
+bool audio_open(void *opaque, int64_t wanted_channel_layout,
+                int wanted_nb_channels, int wanted_sample_rate,
+                SDL_AudioCallback cb, media::AudioParams *audio_hw_params,
+                int *audio_buff_size) WARN_UNUSED_RESULT;
 
-
-}  // namespace fastoplayer
+} // namespace fastoplayer

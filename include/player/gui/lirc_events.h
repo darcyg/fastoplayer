@@ -18,9 +18,9 @@
 
 #pragma once
 
-#include <string>  // for string
+#include <string> // for string
 
-#include <player/gui/events_base.h>  // for EventBase, EventsType::L...
+#include <player/gui/events_base.h> // for EventBase, EventsType::L...
 
 enum LircCode {
   LIRC_KEY_OK = 0,
@@ -34,8 +34,8 @@ enum LircCode {
 
 namespace common {
 std::string ConvertToString(LircCode value);
-bool ConvertFromString(const std::string& from, LircCode* out);
-}  // namespace common
+bool ConvertFromString(const std::string &from, LircCode *out);
+} // namespace common
 
 namespace fastoplayer {
 namespace gui {
@@ -46,6 +46,6 @@ struct LircPressInfo {
 };
 typedef EventBase<LIRC_PRESS_EVENT, LircPressInfo> LircPressEvent;
 
-}  // namespace events
-}  // namespace gui
-}  // namespace fastoplayer
+} // namespace events
+} // namespace gui
+} // namespace fastoplayer

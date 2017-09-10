@@ -30,11 +30,11 @@ struct AudioFrame : public BaseFrame {
 
   AVSampleFormat format;
 
- private:
+private:
   DISALLOW_COPY_AND_ASSIGN(AudioFrame);
 };
 
-}  // namespace frames
-}  // namespace media
+} // namespace frames
+} // namespace media
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

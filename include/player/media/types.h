@@ -18,9 +18,9 @@
 
 #pragma once
 
-#include <stdint.h>  // for int64_t
+#include <stdint.h> // for int64_t
 
-#include <common/types.h>  // for time64_t
+#include <common/types.h> // for time64_t
 #include <common/uri/url.h>
 
 #define DEFAULT_FRAME_PER_SEC 25
@@ -37,7 +37,7 @@ enum HWAccelID {
   HWACCEL_DXVA2,
   HWACCEL_VDA,
   HWACCEL_VIDEOTOOLBOX,
-  HWACCEL_QSV,  // mfx
+  HWACCEL_QSV, // mfx
   HWACCEL_VAAPI,
   HWACCEL_CUVID
 };
@@ -46,10 +46,11 @@ typedef common::time64_t msec_t;
 typedef common::time64_t clock64_t;
 clock64_t invalid_clock();
 
-bandwidth_t CalculateBandwidth(size_t total_downloaded_bytes, msec_t data_interval);
+bandwidth_t CalculateBandwidth(size_t total_downloaded_bytes,
+                               msec_t data_interval);
 
 bool IsValidClock(clock64_t clock);
-clock64_t GetRealClockTime();  // msec
+clock64_t GetRealClockTime(); // msec
 
 msec_t ClockToMsec(clock64_t clock);
 msec_t GetCurrentMsec();
@@ -58,7 +59,7 @@ typedef clock64_t pts_t;
 pts_t invalid_pts();
 bool IsValidPts(pts_t pts);
 
-std::string make_url(const common::uri::Url& uri);
+std::string make_url(const common::uri::Url &uri);
 
 enum AvSyncType {
   AV_SYNC_AUDIO_MASTER, /* default choice */
@@ -67,10 +68,11 @@ enum AvSyncType {
 
 int64_t get_valid_channel_layout(int64_t channel_layout, int channels);
 
-}  // namespace media
-}  // namespace fastoplayer
+} // namespace media
+} // namespace fastoplayer
 
 namespace common {
-std::string ConvertToString(const fastoplayer::media::HWAccelID& value);
-bool ConvertFromString(const std::string& from, fastoplayer::media::HWAccelID* out);
-}  // namespace common
+std::string ConvertToString(const fastoplayer::media::HWAccelID &value);
+bool ConvertFromString(const std::string &from,
+                       fastoplayer::media::HWAccelID *out);
+} // namespace common
