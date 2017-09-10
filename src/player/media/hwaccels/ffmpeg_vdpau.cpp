@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "client/player/media/hwaccels/ffmpeg_vdpau.h"
+#include <player/media/hwaccels/ffmpeg_vdpau.h>
 
 #include <errno.h>   // for EINVAL, ENOMEM
 #include <stddef.h>  // for NULL
@@ -35,11 +35,9 @@ extern "C" {
 #include <common/logger.h>  // for COMPACT_LOG_ERROR, ERROR_LOG
 #include <common/macros.h>  // for UNUSED
 
-#include "client/player/media/ffmpeg_internal.h"  // for InputStream
+#include <player/media/ffmpeg_internal.h>  // for InputStream
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
 namespace media {
 
 typedef struct VDPAUContext {
@@ -171,7 +169,5 @@ void vdpau_uninit(AVCodecContext* decoder_ctx) {
   av_freep(&decoder_ctx->hwaccel_context);
 }
 
-}  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+}
+}

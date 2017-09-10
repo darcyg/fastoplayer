@@ -27,11 +27,11 @@ extern "C" {
 
 #include <common/file_system.h>  // for File, create_directory
 
+#include <player/ffmpeg_application.h>
+
 #include "cmdutils.h"  // for DictionaryOptions, show_...
 #include "load_config.h"
 #include "simple_player.h"
-
-#include "player/ffmpeg_application.h"
 
 void init_ffmpeg() {
   init_dynload();

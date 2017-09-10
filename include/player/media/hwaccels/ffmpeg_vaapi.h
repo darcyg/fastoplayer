@@ -25,12 +25,10 @@ extern "C" {
 }
 
 namespace fastoplayer {
-
 namespace media {
 
 int vaapi_init(AVCodecContext* decoder_ctx);
 void vaapi_uninit(AVCodecContext* decoder_ctx);
 
 }  // namespace media
-
 }  // namespace fastoplayer

@@ -66,7 +66,7 @@ extern "C" {
 #include <common/log_levels.h>  // for LOG_LEVEL::LOG_LEVEL_INFO, etc
 #include <common/sprintf.h>     // for MemSPrintf
 
-#include "player/media/ffmpeg_internal.h"
+#include <player/media/ffmpeg_internal.h>
 
 #if CONFIG_AVDEVICE
 #define HELP_AVDEVICE                                         \
