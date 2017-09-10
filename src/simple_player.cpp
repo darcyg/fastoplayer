@@ -20,18 +20,18 @@
 
 namespace fastoplayer {
 
-SimplePlayer::SimplePlayer(const PlayerOptions& options) : ISimplePlayer(options), stream_url_() {}
+SimplePlayer::SimplePlayer(const PlayerOptions &options)
+    : ISimplePlayer(options), stream_url_() {}
 
 std::string SimplePlayer::GetCurrentUrlName() const {
   return stream_url_.GetUrl();
 }
 
-void SimplePlayer::SetUrlLocation(stream_id sid,
-                                  const common::uri::Url& uri,
+void SimplePlayer::SetUrlLocation(stream_id sid, const common::uri::Url &uri,
                                   media::AppOptions opt,
                                   media::ComplexOptions copt) {
   stream_url_ = uri;
   ISimplePlayer::SetUrlLocation(sid, uri, opt, copt);
 }
 
-}  // namespace fastoplayer
+} // namespace fastoplayer

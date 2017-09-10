@@ -18,15 +18,15 @@
 
 #include "load_config.h"
 
-#include <string.h>  // for strcmp
+#include <string.h> // for strcmp
 
-#include <common/file_system.h>  // for ANSIFile, ascii_string_path
+#include <common/file_system.h> // for ANSIFile, ascii_string_path
 #include <common/utils.h>
 
-#include <player/media/ffmpeg_internal.h>  // for HWAccelID
-#include <player/ffmpeg_config.h>  // for CONFIG_AVFILTER
+#include <player/ffmpeg_config.h>         // for CONFIG_AVFILTER
+#include <player/media/ffmpeg_internal.h> // for HWAccelID
 
-#include "inih/ini.h"  // for ini_parse
+#include "inih/ini.h" // for ini_parse
 
 #include "cmdutils.h"
 
@@ -39,7 +39,8 @@
 #define CONFIG_PLAYER_OPTIONS_HEIGHT_FIELD "height"
 #define CONFIG_PLAYER_OPTIONS_FULLSCREEN_FIELD "fullscreen"
 #define CONFIG_PLAYER_OPTIONS_VOLUME_FIELD "volume"
-#define CONFIG_PLAYER_OPTIONS_LAST_SHOWED_CHANNEL_ID_FIELD "last_showed_channel_id"
+#define CONFIG_PLAYER_OPTIONS_LAST_SHOWED_CHANNEL_ID_FIELD                     \
+  "last_showed_channel_id"
 
 #define CONFIG_APP_OPTIONS "app_options"
 #define CONFIG_APP_OPTIONS_AST_FIELD "ast"
@@ -69,7 +70,8 @@
 
 /*
   [main_options]
-  loglevel=INFO ["EMERG", "ALLERT", "CRITICAL", "ERROR", "WARNING", "NOTICE", "INFO", "DEBUG"]
+  loglevel=INFO ["EMERG", "ALLERT", "CRITICAL", "ERROR", "WARNING", "NOTICE",
+  "INFO", "DEBUG"]
   poweroffonexit=false [true,false]
 
   [app_options]
@@ -105,10 +107,11 @@ namespace fastoplayer {
 
 namespace {
 
-int ini_handler_fasto(void* user, const char* section, const char* name, const char* value) {
-  TVConfig* pconfig = reinterpret_cast<TVConfig*>(user);
+int ini_handler_fasto(void *user, const char *section, const char *name,
+                      const char *value) {
+  TVConfig *pconfig = reinterpret_cast<TVConfig *>(user);
   size_t value_len = strlen(value);
-  if (value_len == 0) {  // skip empty fields
+  if (value_len == 0) { // skip empty fields
     return 0;
   }
 
@@ -119,7 +122,8 @@ int ini_handler_fasto(void* user, const char* section, const char* name, const c
       pconfig->loglevel = lg;
     }
     return 1;
-  } else if (MATCH(CONFIG_MAIN_OPTIONS, CONFIG_MAIN_OPTIONS_POWEROFF_ON_EXIT_FIELD)) {
+  } else if (MATCH(CONFIG_MAIN_OPTIONS,
+                   CONFIG_MAIN_OPTIONS_POWEROFF_ON_EXIT_FIELD)) {
     bool exit;
     if (parse_bool(value, &exit)) {
       pconfig->power_off_on_exit = exit;
@@ -137,7 +141,8 @@ int ini_handler_fasto(void* user, const char* section, const char* name, const c
       pconfig->player_options.screen_size.height = height;
     }
     return 1;
-  } else if (MATCH(CONFIG_PLAYER_OPTIONS, CONFIG_PLAYER_OPTIONS_FULLSCREEN_FIELD)) {
+  } else if (MATCH(CONFIG_PLAYER_OPTIONS,
+                   CONFIG_PLAYER_OPTIONS_FULLSCREEN_FIELD)) {
     bool is_full_screen;
     if (parse_bool(value, &is_full_screen)) {
       pconfig->player_options.is_full_screen = is_full_screen;
@@ -149,7 +154,8 @@ int ini_handler_fasto(void* user, const char* section, const char* name, const c
       pconfig->player_options.audio_volume = volume;
     }
     return 1;
-  } else if (MATCH(CONFIG_PLAYER_OPTIONS, CONFIG_PLAYER_OPTIONS_LAST_SHOWED_CHANNEL_ID_FIELD)) {
+  } else if (MATCH(CONFIG_PLAYER_OPTIONS,
+                   CONFIG_PLAYER_OPTIONS_LAST_SHOWED_CHANNEL_ID_FIELD)) {
     pconfig->player_options.last_showed_channel_id = value;
     return 1;
   } else if (MATCH(CONFIG_APP_OPTIONS, CONFIG_APP_OPTIONS_AST_FIELD)) {
@@ -172,15 +178,18 @@ int ini_handler_fasto(void* user, const char* section, const char* name, const c
     return 1;
   } else if (MATCH(CONFIG_APP_OPTIONS, CONFIG_APP_OPTIONS_LOWRES_FIELD)) {
     int lowres;
-    if (parse_number(value, std::numeric_limits<int>::min(), std::numeric_limits<int>::max(), &lowres)) {
+    if (parse_number(value, std::numeric_limits<int>::min(),
+                     std::numeric_limits<int>::max(), &lowres)) {
       pconfig->app_options.lowres = lowres;
     }
     return 1;
   } else if (MATCH(CONFIG_APP_OPTIONS, CONFIG_APP_OPTIONS_SYNC_FIELD)) {
     if (strcmp(value, "audio") == 0) {
-      pconfig->app_options.av_sync_type = fastoplayer::media::AV_SYNC_AUDIO_MASTER;
+      pconfig->app_options.av_sync_type =
+          fastoplayer::media::AV_SYNC_AUDIO_MASTER;
     } else if (strcmp(value, "video") == 0) {
-      pconfig->app_options.av_sync_type = fastoplayer::media::AV_SYNC_VIDEO_MASTER;
+      pconfig->app_options.av_sync_type =
+          fastoplayer::media::AV_SYNC_VIDEO_MASTER;
     } else {
       return 0;
     }
@@ -201,7 +210,8 @@ int ini_handler_fasto(void* user, const char* section, const char* name, const c
     if (strcmp(value, "auto") == 0) {
       pconfig->app_options.seek_by_bytes = fastoplayer::media::SEEK_AUTO;
     } else if (strcmp(value, "off") == 0) {
-      pconfig->app_options.seek_by_bytes = fastoplayer::media::SEEK_BY_BYTES_OFF;
+      pconfig->app_options.seek_by_bytes =
+          fastoplayer::media::SEEK_BY_BYTES_OFF;
     } else if (strcmp(value, "on") == 0) {
       pconfig->app_options.seek_by_bytes = fastoplayer::media::SEEK_BY_BYTES_ON;
     } else {
@@ -263,10 +273,12 @@ int ini_handler_fasto(void* user, const char* section, const char* name, const c
       pconfig->app_options.hwaccel_id = hwid;
     }
     return 1;
-  } else if (MATCH(CONFIG_APP_OPTIONS, CONFIG_APP_OPTIONS_HWACCEL_DEVICE_FIELD)) {
+  } else if (MATCH(CONFIG_APP_OPTIONS,
+                   CONFIG_APP_OPTIONS_HWACCEL_DEVICE_FIELD)) {
     pconfig->app_options.hwaccel_device = value;
     return 1;
-  } else if (MATCH(CONFIG_APP_OPTIONS, CONFIG_APP_OPTIONS_HWACCEL_OUTPUT_FORMAT_FIELD)) {
+  } else if (MATCH(CONFIG_APP_OPTIONS,
+                   CONFIG_APP_OPTIONS_HWACCEL_OUTPUT_FORMAT_FIELD)) {
     pconfig->app_options.hwaccel_output_format = value;
     return 1;
   } else if (MATCH(CONFIG_APP_OPTIONS, CONFIG_APP_OPTIONS_AUTOROTATE_FIELD)) {
@@ -279,17 +291,20 @@ int ini_handler_fasto(void* user, const char* section, const char* name, const c
     return 0; /* unknown section/name, error */
   }
 }
-}  // namespace
+} // namespace
 
-common::ErrnoError load_config_file(const std::string& config_absolute_path, TVConfig* options) {
+common::ErrnoError load_config_file(const std::string &config_absolute_path,
+                                    TVConfig *options) {
   if (!options) {
     return common::make_errno_error_inval();
   }
 
   std::string copy_config_absolute_path = config_absolute_path;
   if (!common::file_system::is_file_exist(config_absolute_path)) {
-    const std::string absolute_source_dir = common::file_system::absolute_path_from_relative(RELATIVE_SOURCE_DIR);
-    copy_config_absolute_path = common::file_system::make_path(absolute_source_dir, CONFIG_FILE_PATH_RELATIVE);
+    const std::string absolute_source_dir =
+        common::file_system::absolute_path_from_relative(RELATIVE_SOURCE_DIR);
+    copy_config_absolute_path = common::file_system::make_path(
+        absolute_source_dir, CONFIG_FILE_PATH_RELATIVE);
   }
 
   if (!copy_config_absolute_path.empty()) {
@@ -298,7 +313,8 @@ common::ErrnoError load_config_file(const std::string& config_absolute_path, TVC
   return common::ErrnoError();
 }
 
-common::ErrnoError save_config_file(const std::string& config_absolute_path, TVConfig* options) {
+common::ErrnoError save_config_file(const std::string &config_absolute_path,
+                                    TVConfig *options) {
   if (!options || config_absolute_path.empty()) {
     return common::make_errno_error_inval();
   }
@@ -311,58 +327,86 @@ common::ErrnoError save_config_file(const std::string& config_absolute_path, TVC
   }
 
   config_save_file.Write("[" CONFIG_MAIN_OPTIONS "]\n");
-  config_save_file.WriteFormated(CONFIG_MAIN_OPTIONS_LOG_LEVEL_FIELD "=%s\n",
-                                 common::logging::log_level_to_text(options->loglevel));
-  config_save_file.WriteFormated(CONFIG_MAIN_OPTIONS_POWEROFF_ON_EXIT_FIELD "=%s\n",
-                                 common::ConvertToString(options->power_off_on_exit));
+  config_save_file.WriteFormated(
+      CONFIG_MAIN_OPTIONS_LOG_LEVEL_FIELD "=%s\n",
+      common::logging::log_level_to_text(options->loglevel));
+  config_save_file.WriteFormated(
+      CONFIG_MAIN_OPTIONS_POWEROFF_ON_EXIT_FIELD "=%s\n",
+      common::ConvertToString(options->power_off_on_exit));
 
   config_save_file.Write("[" CONFIG_APP_OPTIONS "]\n");
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_AST_FIELD "=%s\n",
-                                 options->app_options.wanted_stream_spec[AVMEDIA_TYPE_AUDIO]);
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_VST_FIELD "=%s\n",
-                                 options->app_options.wanted_stream_spec[AVMEDIA_TYPE_VIDEO]);
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_FAST_FIELD "=%s\n",
-                                 common::ConvertToString(options->app_options.fast));
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_GENPTS_FIELD "=%s\n",
-                                 common::ConvertToString(options->app_options.genpts));
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_LOWRES_FIELD "=%d\n", options->app_options.lowres);
+  config_save_file.WriteFormated(
+      CONFIG_APP_OPTIONS_AST_FIELD "=%s\n",
+      options->app_options.wanted_stream_spec[AVMEDIA_TYPE_AUDIO]);
+  config_save_file.WriteFormated(
+      CONFIG_APP_OPTIONS_VST_FIELD "=%s\n",
+      options->app_options.wanted_stream_spec[AVMEDIA_TYPE_VIDEO]);
+  config_save_file.WriteFormated(
+      CONFIG_APP_OPTIONS_FAST_FIELD "=%s\n",
+      common::ConvertToString(options->app_options.fast));
+  config_save_file.WriteFormated(
+      CONFIG_APP_OPTIONS_GENPTS_FIELD "=%s\n",
+      common::ConvertToString(options->app_options.genpts));
+  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_LOWRES_FIELD "=%d\n",
+                                 options->app_options.lowres);
   config_save_file.WriteFormated(CONFIG_APP_OPTIONS_SYNC_FIELD "=%s\n",
-                                 options->app_options.av_sync_type == media::AV_SYNC_AUDIO_MASTER ? "audio" : "video");
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_FRAMEDROP_FIELD "=%d\n",
-                                 static_cast<int>(options->app_options.framedrop));
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_BYTES_FIELD "=%d\n",
-                                 static_cast<int>(options->app_options.seek_by_bytes));
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_INFBUF_FIELD "=%d\n", options->app_options.infinite_buffer);
+                                 options->app_options.av_sync_type ==
+                                         media::AV_SYNC_AUDIO_MASTER
+                                     ? "audio"
+                                     : "video");
+  config_save_file.WriteFormated(
+      CONFIG_APP_OPTIONS_FRAMEDROP_FIELD "=%d\n",
+      static_cast<int>(options->app_options.framedrop));
+  config_save_file.WriteFormated(
+      CONFIG_APP_OPTIONS_BYTES_FIELD "=%d\n",
+      static_cast<int>(options->app_options.seek_by_bytes));
+  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_INFBUF_FIELD "=%d\n",
+                                 options->app_options.infinite_buffer);
 
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_VN_FIELD "=%s\n",
-                                 common::ConvertToString(!options->app_options.enable_video));
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_AN_FIELD "=%s\n",
-                                 common::ConvertToString(!options->app_options.enable_audio));
+  config_save_file.WriteFormated(
+      CONFIG_APP_OPTIONS_VN_FIELD "=%s\n",
+      common::ConvertToString(!options->app_options.enable_video));
+  config_save_file.WriteFormated(
+      CONFIG_APP_OPTIONS_AN_FIELD "=%s\n",
+      common::ConvertToString(!options->app_options.enable_audio));
 #if CONFIG_AVFILTER
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_VF_FIELD "=%s\n", options->app_options.vfilters);
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_AF_FIELD "=%s\n", options->app_options.afilters);
+  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_VF_FIELD "=%s\n",
+                                 options->app_options.vfilters);
+  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_AF_FIELD "=%s\n",
+                                 options->app_options.afilters);
 #endif
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_ACODEC_FIELD "=%s\n", options->app_options.audio_codec_name);
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_VCODEC_FIELD "=%s\n", options->app_options.video_codec_name);
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_HWACCEL_FIELD "=%s\n",
-                                 common::ConvertToString(options->app_options.hwaccel_id));
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_HWACCEL_DEVICE_FIELD "=%s\n", options->app_options.hwaccel_device);
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_HWACCEL_OUTPUT_FORMAT_FIELD "=%s\n",
+  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_ACODEC_FIELD "=%s\n",
+                                 options->app_options.audio_codec_name);
+  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_VCODEC_FIELD "=%s\n",
+                                 options->app_options.video_codec_name);
+  config_save_file.WriteFormated(
+      CONFIG_APP_OPTIONS_HWACCEL_FIELD "=%s\n",
+      common::ConvertToString(options->app_options.hwaccel_id));
+  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_HWACCEL_DEVICE_FIELD
+                                 "=%s\n",
+                                 options->app_options.hwaccel_device);
+  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_HWACCEL_OUTPUT_FORMAT_FIELD
+                                 "=%s\n",
                                  options->app_options.hwaccel_output_format);
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_AUTOROTATE_FIELD "=%s\n",
-                                 common::ConvertToString(options->app_options.autorotate));
+  config_save_file.WriteFormated(
+      CONFIG_APP_OPTIONS_AUTOROTATE_FIELD "=%s\n",
+      common::ConvertToString(options->app_options.autorotate));
 
   config_save_file.Write("[" CONFIG_PLAYER_OPTIONS "]\n");
-  config_save_file.WriteFormated(CONFIG_PLAYER_OPTIONS_WIDTH_FIELD "=%d\n", options->player_options.screen_size.width);
+  config_save_file.WriteFormated(CONFIG_PLAYER_OPTIONS_WIDTH_FIELD "=%d\n",
+                                 options->player_options.screen_size.width);
   config_save_file.WriteFormated(CONFIG_PLAYER_OPTIONS_HEIGHT_FIELD "=%d\n",
                                  options->player_options.screen_size.height);
-  config_save_file.WriteFormated(CONFIG_PLAYER_OPTIONS_FULLSCREEN_FIELD "=%s\n",
-                                 common::ConvertToString(options->player_options.is_full_screen));
-  config_save_file.WriteFormated(CONFIG_PLAYER_OPTIONS_VOLUME_FIELD "=%d\n", options->player_options.audio_volume);
-  config_save_file.WriteFormated(CONFIG_PLAYER_OPTIONS_LAST_SHOWED_CHANNEL_ID_FIELD "=%s\n",
-                                 options->player_options.last_showed_channel_id);
+  config_save_file.WriteFormated(
+      CONFIG_PLAYER_OPTIONS_FULLSCREEN_FIELD "=%s\n",
+      common::ConvertToString(options->player_options.is_full_screen));
+  config_save_file.WriteFormated(CONFIG_PLAYER_OPTIONS_VOLUME_FIELD "=%d\n",
+                                 options->player_options.audio_volume);
+  config_save_file.WriteFormated(
+      CONFIG_PLAYER_OPTIONS_LAST_SHOWED_CHANNEL_ID_FIELD "=%s\n",
+      options->player_options.last_showed_channel_id);
 
   config_save_file.Close();
   return common::ErrnoError();
 }
-}  // namespace fastoplayer
+} // namespace fastoplayer

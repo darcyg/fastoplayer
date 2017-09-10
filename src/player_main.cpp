@@ -16,20 +16,20 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <string.h>  // for strcmp, NULL
+#include <string.h> // for strcmp, NULL
 
 #include <iostream>
 
 extern "C" {
-#include <libavdevice/avdevice.h>  // for avdevice_register_all
-#include <libavfilter/avfilter.h>  // for avfilter_register_all
+#include <libavdevice/avdevice.h> // for avdevice_register_all
+#include <libavfilter/avfilter.h> // for avfilter_register_all
 }
 
-#include <common/file_system.h>  // for File, create_directory
+#include <common/file_system.h> // for File, create_directory
 
 #include <player/ffmpeg_application.h>
 
-#include "cmdutils.h"  // for DictionaryOptions, show_...
+#include "cmdutils.h" // for DictionaryOptions, show_...
 #include "load_config.h"
 #include "simple_player.h"
 
@@ -46,30 +46,32 @@ void init_ffmpeg() {
   av_register_all();
 }
 
-int main_simple_player_application(int argc,
-                                   char** argv,
-                                   const common::uri::Url& stream_url,
-                                   const std::string& app_directory_absolute_path) {
+int main_simple_player_application(
+    int argc, char **argv, const common::uri::Url &stream_url,
+    const std::string &app_directory_absolute_path) {
   int res = fastoplayer::prepare_to_start(app_directory_absolute_path);
   if (res == EXIT_FAILURE) {
     return EXIT_FAILURE;
   }
 
-  const std::string config_absolute_path =
-      common::file_system::make_path(app_directory_absolute_path, CONFIG_FILE_NAME);
+  const std::string config_absolute_path = common::file_system::make_path(
+      app_directory_absolute_path, CONFIG_FILE_NAME);
   if (!common::file_system::is_valid_path(config_absolute_path)) {
-    std::cout << "Can't config file path: " << config_absolute_path << std::endl;
+    std::cout << "Can't config file path: " << config_absolute_path
+              << std::endl;
     return EXIT_FAILURE;
   }
 
   fastoplayer::TVConfig main_options;
-  common::ErrnoError err = fastoplayer::load_config_file(config_absolute_path, &main_options);
+  common::ErrnoError err =
+      fastoplayer::load_config_file(config_absolute_path, &main_options);
   if (err) {
     return EXIT_FAILURE;
   }
 
 #if defined(LOG_TO_FILE)
-  const std::string log_path = common::file_system::make_path(app_directory_absolute_path, std::string(LOG_FILE_NAME));
+  const std::string log_path = common::file_system::make_path(
+      app_directory_absolute_path, std::string(LOG_FILE_NAME));
   INIT_LOGGER(PROJECT_NAME_TITLE, log_path, main_options.loglevel);
 #else
   INIT_LOGGER(PROJECT_NAME_TITLE, main_options.loglevel);
@@ -77,13 +79,14 @@ int main_simple_player_application(int argc,
 
   fastoplayer::FFmpegApplication app(argc, argv);
 
-  AVDictionary* sws_dict = NULL;
-  AVDictionary* swr_opts = NULL;
-  AVDictionary* format_opts = NULL;
-  AVDictionary* codec_opts = NULL;
+  AVDictionary *sws_dict = NULL;
+  AVDictionary *swr_opts = NULL;
+  AVDictionary *format_opts = NULL;
+  AVDictionary *codec_opts = NULL;
   av_dict_set(&sws_dict, "flags", "bicubic", 0);
 
-  fastoplayer::media::ComplexOptions copt(swr_opts, sws_dict, format_opts, codec_opts);
+  fastoplayer::media::ComplexOptions copt(swr_opts, sws_dict, format_opts,
+                                          codec_opts);
   auto player = new fastoplayer::SimplePlayer(main_options.player_options);
   player->SetUrlLocation("0", stream_url, main_options.app_options, copt);
   res = app.Exec();
@@ -97,7 +100,7 @@ int main_simple_player_application(int argc,
 }
 
 /* Called from the main */
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   init_ffmpeg();
 
   common::uri::Url url;
@@ -194,7 +197,9 @@ int main(int argc, char** argv) {
   const std::string app_directory_absolute_path =
       common::file_system::is_absolute_path(app_directory_path)
           ? app_directory_path
-          : common::file_system::absolute_path_from_relative(app_directory_path);
+          : common::file_system::absolute_path_from_relative(
+                app_directory_path);
 
-  return main_simple_player_application(argc, argv, url, app_directory_absolute_path);
+  return main_simple_player_application(argc, argv, url,
+                                        app_directory_absolute_path);
 }
