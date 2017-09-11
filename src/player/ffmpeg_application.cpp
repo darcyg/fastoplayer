@@ -23,7 +23,7 @@
 #include <iostream>
 
 extern "C" {
-#include <libavformat/avformat.h> // for av_register_all, avforma...
+#include <libavformat/avformat.h>  // for av_register_all, avforma...
 }
 
 #include <common/file_system.h>
@@ -65,65 +65,61 @@ common::logging::LOG_LEVEL ffmpeg_log_to_fasto(int level) {
   }
 }
 
-void avlog_cb(void *, int level, const char *sz_fmt, va_list varg) {
+void avlog_cb(void*, int level, const char* sz_fmt, va_list varg) {
   common::logging::LOG_LEVEL lg = ffmpeg_log_to_fasto(level);
   common::logging::LOG_LEVEL clg = common::logging::CURRENT_LOG_LEVEL();
   if (lg > clg) {
     return;
   }
 
-  char *ret = NULL;
+  char* ret = NULL;
   int res = common::vasprintf(&ret, sz_fmt, varg);
   if (res == ERROR_RESULT_VALUE || !ret) {
     return;
   }
 
-  static std::ostream &info_stream =
-      common::logging::LogMessage(common::logging::LOG_LEVEL_INFO, false)
-          .Stream();
+  static std::ostream& info_stream = common::logging::LogMessage(common::logging::LOG_LEVEL_INFO, false).Stream();
   info_stream << ret;
   free(ret);
 }
 
-int lockmgr(void **mtx, enum AVLockOp op) {
-  std::mutex *lmtx = static_cast<std::mutex *>(*mtx);
+int lockmgr(void** mtx, enum AVLockOp op) {
+  std::mutex* lmtx = static_cast<std::mutex*>(*mtx);
   switch (op) {
-  case AV_LOCK_CREATE: {
-    *mtx = new std::mutex;
-    if (!*mtx) {
-      return 1;
+    case AV_LOCK_CREATE: {
+      *mtx = new std::mutex;
+      if (!*mtx) {
+        return 1;
+      }
+      return 0;
     }
-    return 0;
-  }
-  case AV_LOCK_OBTAIN: {
-    lmtx->lock();
-    return 0;
-  }
-  case AV_LOCK_RELEASE: {
-    lmtx->unlock();
-    return 0;
-  }
-  case AV_LOCK_DESTROY: {
-    delete lmtx;
-    return 0;
-  }
+    case AV_LOCK_OBTAIN: {
+      lmtx->lock();
+      return 0;
+    }
+    case AV_LOCK_RELEASE: {
+      lmtx->unlock();
+      return 0;
+    }
+    case AV_LOCK_DESTROY: {
+      delete lmtx;
+      return 0;
+    }
   }
   return 1;
 }
 
-} // namespace
+}  // namespace
 
 namespace fastoplayer {
 
-FFmpegApplication::FFmpegApplication(int argc, char **argv)
-    : base_class(argc, argv) {
+FFmpegApplication::FFmpegApplication(int argc, char** argv) : base_class(argc, argv) {
   avformat_network_init();
   signal(SIGINT, sigterm_handler);  /* Interrupt (ANSI).    */
   signal(SIGTERM, sigterm_handler); /* Termination (ANSI).  */
 
   av_log_set_callback(avlog_cb);
-  int ffmpeg_log_level =
-      fasto_log_to_ffmpeg(common::logging::CURRENT_LOG_LEVEL());
+  int ffmpeg_log_level = fasto_log_to_ffmpeg(common::logging::CURRENT_LOG_LEVEL());
   av_log_set_level(ffmpeg_log_level);
 }
 
@@ -140,24 +136,21 @@ int FFmpegApplication::PreExecImpl() {
 
   int pre_exec = base_class::PreExecImpl();
   gui::events::PreExecInfo inf(pre_exec);
-  gui::events::PreExecEvent *pre_event =
-      new gui::events::PreExecEvent(this, inf);
+  gui::events::PreExecEvent* pre_event = new gui::events::PreExecEvent(this, inf);
   base_class::SendEvent(pre_event);
   return pre_exec;
 }
 
 int FFmpegApplication::PostExecImpl() {
   gui::events::PostExecInfo inf(EXIT_SUCCESS);
-  gui::events::PostExecEvent *post_event =
-      new gui::events::PostExecEvent(this, inf);
+  gui::events::PostExecEvent* post_event = new gui::events::PostExecEvent(this, inf);
   base_class::SendEvent(post_event);
   return base_class::PostExecImpl();
 }
 
-int prepare_to_start(const std::string &app_directory_absolute_path) {
+int prepare_to_start(const std::string& app_directory_absolute_path) {
   if (!common::file_system::is_directory_exist(app_directory_absolute_path)) {
-    common::ErrnoError err = common::file_system::create_directory(
-        app_directory_absolute_path, true);
+    common::ErrnoError err = common::file_system::create_directory(app_directory_absolute_path, true);
     if (err) {
       std::cout << "Can't create app directory error:(" << err->GetDescription()
                 << "), path: " << app_directory_absolute_path << std::endl;
@@ -165,15 +158,13 @@ int prepare_to_start(const std::string &app_directory_absolute_path) {
     }
   }
 
-  common::ErrnoError err =
-      common::file_system::node_access(app_directory_absolute_path);
+  common::ErrnoError err = common::file_system::node_access(app_directory_absolute_path);
   if (err) {
-    std::cout << "Can't have permissions to app directory path: "
-              << app_directory_absolute_path << std::endl;
+    std::cout << "Can't have permissions to app directory path: " << app_directory_absolute_path << std::endl;
     return EXIT_FAILURE;
   }
 
   return EXIT_SUCCESS;
 }
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

@@ -25,11 +25,11 @@
 namespace fastoplayer {
 namespace draw {
 
-bool IsEmptyRect(const SDL_Rect &rect);
+bool IsEmptyRect(const SDL_Rect& rect);
 
 SDL_Rect GetCenterRect(SDL_Rect rect, int width, int height);
 
-bool IsPointInRect(const SDL_Point &point, const SDL_Rect &rect);
+bool IsPointInRect(const SDL_Point& point, const SDL_Rect& rect);
 
 extern const SDL_Rect empty_rect;
 extern const SDL_Color white_color;
@@ -42,5 +42,5 @@ extern const SDL_Color gray_color;
 
 extern const size_t invalid_row_position;
 
-} // namespace draw
-} // namespace fastoplayer
+}  // namespace draw
+}  // namespace fastoplayer

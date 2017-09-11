@@ -25,7 +25,7 @@ namespace frames {
 
 AudioFrame::AudioFrame() : BaseFrame(), format(AV_SAMPLE_FMT_NONE) {}
 
-} // namespace frames
-} // namespace media
+}  // namespace frames
+}  // namespace media
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

@@ -23,32 +23,36 @@ namespace fastoplayer {
 namespace gui {
 namespace events {
 
-MouseStateChangeInfo::MouseStateChangeInfo(const SDL_Point &mouse_point,
-                                           bool cursor_visible)
+MouseStateChangeInfo::MouseStateChangeInfo(const SDL_Point& mouse_point, bool cursor_visible)
     : position(mouse_point), cursor_visible(cursor_visible) {}
 
-SDL_Point MouseStateChangeInfo::GetMousePoint() const { return position; }
+SDL_Point MouseStateChangeInfo::GetMousePoint() const {
+  return position;
+}
 
-bool MouseStateChangeInfo::IsCursorVisible() const { return cursor_visible; }
+bool MouseStateChangeInfo::IsCursorVisible() const {
+  return cursor_visible;
+}
 
-MouseMoveInfo::MouseMoveInfo(const SDL_MouseMotionEvent &event)
-    : mevent(event) {}
+MouseMoveInfo::MouseMoveInfo(const SDL_MouseMotionEvent& event) : mevent(event) {}
 
-SDL_Point MouseMoveInfo::GetMousePoint() const { return {mevent.x, mevent.y}; }
+SDL_Point MouseMoveInfo::GetMousePoint() const {
+  return {mevent.x, mevent.y};
+}
 
-MousePressInfo::MousePressInfo(const SDL_MouseButtonEvent &event)
-    : mevent(event) {}
+MousePressInfo::MousePressInfo(const SDL_MouseButtonEvent& event) : mevent(event) {}
 
-SDL_Point MousePressInfo::GetMousePoint() const { return {mevent.x, mevent.y}; }
+SDL_Point MousePressInfo::GetMousePoint() const {
+  return {mevent.x, mevent.y};
+}
 
-MouseReleaseInfo::MouseReleaseInfo(const SDL_MouseButtonEvent &event)
-    : mevent(event) {}
+MouseReleaseInfo::MouseReleaseInfo(const SDL_MouseButtonEvent& event) : mevent(event) {}
 
 SDL_Point MouseReleaseInfo::GetMousePoint() const {
   return {mevent.x, mevent.y};
 }
 
-} // namespace events
-} // namespace gui
+}  // namespace events
+}  // namespace gui
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

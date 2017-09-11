@@ -26,6 +26,6 @@ VideoStateHandler::VideoStateHandler() {}
 
 VideoStateHandler::~VideoStateHandler() {}
 
-} // namespace media
+}  // namespace media
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

@@ -18,33 +18,43 @@
 
 #include <player/media/app_options.h>
 
-#include <stddef.h> // for NULL
+#include <stddef.h>  // for NULL
 
-#include <player/media/ffmpeg_internal.h> // for HWAccelID::HWACCEL_NONE
+#include <player/media/ffmpeg_internal.h>  // for HWAccelID::HWACCEL_NONE
 
 namespace fastoplayer {
 
 namespace media {
 
 AppOptions::AppOptions()
-    : autorotate(true), framedrop(FRAME_DROP_AUTO), seek_by_bytes(SEEK_AUTO),
-      genpts(false), av_sync_type(AV_SYNC_AUDIO_MASTER), infinite_buffer(-1),
-      wanted_stream_spec(), lowres(0), fast(false), audio_codec_name(),
-      video_codec_name(), hwaccel_id(HWACCEL_NONE), hwaccel_device(),
-      hwaccel_output_format(), auto_exit(true), enable_video(true),
+    : autorotate(true),
+      framedrop(FRAME_DROP_AUTO),
+      seek_by_bytes(SEEK_AUTO),
+      genpts(false),
+      av_sync_type(AV_SYNC_AUDIO_MASTER),
+      infinite_buffer(-1),
+      wanted_stream_spec(),
+      lowres(0),
+      fast(false),
+      audio_codec_name(),
+      video_codec_name(),
+      hwaccel_id(HWACCEL_NONE),
+      hwaccel_device(),
+      hwaccel_output_format(),
+      auto_exit(true),
+      enable_video(true),
       enable_audio(true)
 #if CONFIG_AVFILTER
       ,
-      vfilters(), afilters()
+      vfilters(),
+      afilters()
 #endif
 {
 }
 
-ComplexOptions::ComplexOptions()
-    : sws_dict(NULL), swr_opts(NULL), format_opts(NULL), codec_opts(NULL) {}
+ComplexOptions::ComplexOptions() : sws_dict(NULL), swr_opts(NULL), format_opts(NULL), codec_opts(NULL) {}
 
-ComplexOptions::ComplexOptions(AVDictionary *sws_d, AVDictionary *swr_o,
-                               AVDictionary *format_o, AVDictionary *codec_o)
+ComplexOptions::ComplexOptions(AVDictionary* sws_d, AVDictionary* swr_o, AVDictionary* format_o, AVDictionary* codec_o)
     : sws_dict(NULL), swr_opts(NULL), format_opts(NULL), codec_opts(NULL) {
   if (sws_dict) {
     av_dict_copy(&sws_dict, sws_d, 0);
@@ -67,7 +77,7 @@ ComplexOptions::~ComplexOptions() {
   av_dict_free(&codec_opts);
 }
 
-ComplexOptions::ComplexOptions(const ComplexOptions &other)
+ComplexOptions::ComplexOptions(const ComplexOptions& other)
     : sws_dict(NULL), swr_opts(NULL), format_opts(NULL), codec_opts(NULL) {
   if (other.sws_dict) {
     av_dict_copy(&sws_dict, other.sws_dict, 0);
@@ -83,7 +93,7 @@ ComplexOptions::ComplexOptions(const ComplexOptions &other)
   }
 }
 
-ComplexOptions &ComplexOptions::operator=(const ComplexOptions &rhs) {
+ComplexOptions& ComplexOptions::operator=(const ComplexOptions& rhs) {
   av_dict_free(&swr_opts);
   av_dict_free(&sws_dict);
   av_dict_free(&format_opts);
@@ -104,6 +114,6 @@ ComplexOptions &ComplexOptions::operator=(const ComplexOptions &rhs) {
   return *this;
 }
 
-} // namespace media
+}  // namespace media
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

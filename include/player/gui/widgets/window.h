@@ -31,16 +31,14 @@ namespace fastoplayer {
 namespace gui {
 
 class Window : public gui::events::EventListener {
-public:
-  typedef std::function<void(Uint8 button, const SDL_Point &position)>
-      mouse_clicked_callback_t;
-  typedef std::function<void(Uint8 button, const SDL_Point &position)>
-      mouse_released_callback_t;
+ public:
+  typedef std::function<void(Uint8 button, const SDL_Point& position)> mouse_clicked_callback_t;
+  typedef std::function<void(Uint8 button, const SDL_Point& position)> mouse_released_callback_t;
   typedef std::function<void(bool focus)> focus_changed_callback_t;
   typedef std::function<void(bool enable)> enable_changed_callback_t;
 
   Window();
-  Window(const SDL_Color &back_ground_color);
+  Window(const SDL_Color& back_ground_color);
   virtual ~Window();
 
   void SetMouseClickedCallback(mouse_clicked_callback_t cb);
@@ -48,17 +46,17 @@ public:
   void SetFocusChangedCallback(focus_changed_callback_t cb);
   void SetEnableChangedCallback(enable_changed_callback_t cb);
 
-  void SetRect(const SDL_Rect &rect);
+  void SetRect(const SDL_Rect& rect);
   SDL_Rect GetRect() const;
 
   SDL_Color GetBackGroundColor() const;
-  void SetBackGroundColor(const SDL_Color &color);
+  void SetBackGroundColor(const SDL_Color& color);
 
   SDL_Color GetBorderColor() const;
-  void SetBorderColor(const SDL_Color &color);
+  void SetBorderColor(const SDL_Color& color);
 
   common::draw::Size GetMinimalSize() const;
-  void SetMinimalSize(const common::draw::Size &ms);
+  void SetMinimalSize(const common::draw::Size& ms);
 
   bool IsTransparent() const;
   void SetTransparent(bool t);
@@ -79,33 +77,32 @@ public:
   void Hide();
   void ToggleVisible();
 
-  virtual void Draw(SDL_Renderer *render);
+  virtual void Draw(SDL_Renderer* render);
 
   bool IsCanDraw() const;
   bool IsSizeEnough() const;
 
-protected:
-  virtual void HandleEvent(event_t *event) override;
-  virtual void HandleExceptionEvent(event_t *event, common::Error err) override;
+ protected:
+  virtual void HandleEvent(event_t* event) override;
+  virtual void HandleExceptionEvent(event_t* event, common::Error err) override;
 
-  virtual void HandleWindowResizeEvent(gui::events::WindowResizeEvent *event);
-  virtual void HandleWindowExposeEvent(gui::events::WindowExposeEvent *event);
-  virtual void HandleWindowCloseEvent(gui::events::WindowCloseEvent *event);
+  virtual void HandleWindowResizeEvent(gui::events::WindowResizeEvent* event);
+  virtual void HandleWindowExposeEvent(gui::events::WindowExposeEvent* event);
+  virtual void HandleWindowCloseEvent(gui::events::WindowCloseEvent* event);
 
-  virtual void
-  HandleMouseStateChangeEvent(gui::events::MouseStateChangeEvent *event);
-  virtual void HandleMousePressEvent(gui::events::MousePressEvent *event);
-  virtual void HandleMouseMoveEvent(gui::events::MouseMoveEvent *event);
-  virtual void HandleMouseReleaseEvent(events::MouseReleaseEvent *event);
+  virtual void HandleMouseStateChangeEvent(gui::events::MouseStateChangeEvent* event);
+  virtual void HandleMousePressEvent(gui::events::MousePressEvent* event);
+  virtual void HandleMouseMoveEvent(gui::events::MouseMoveEvent* event);
+  virtual void HandleMouseReleaseEvent(events::MouseReleaseEvent* event);
 
   virtual void OnEnabledChanged(bool enable);
   virtual void OnFocusChanged(bool focus);
-  virtual void OnMouseClicked(Uint8 button, const SDL_Point &position);
-  virtual void OnMouseReleased(Uint8 button, const SDL_Point &position);
+  virtual void OnMouseClicked(Uint8 button, const SDL_Point& position);
+  virtual void OnMouseReleased(Uint8 button, const SDL_Point& position);
 
-  bool IsPointInControlArea(const SDL_Point &point) const;
+  bool IsPointInControlArea(const SDL_Point& point) const;
 
-private:
+ private:
   void Init();
 
   SDL_Rect rect_;
@@ -125,6 +122,6 @@ private:
   enable_changed_callback_t enable_chaned_cb_;
 };
 
-} // namespace gui
+}  // namespace gui
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

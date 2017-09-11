@@ -24,26 +24,25 @@ namespace fastoplayer {
 namespace gui {
 
 class Button : public IconLabel {
-public:
+ public:
   typedef IconLabel base_class;
 
   Button();
-  Button(const SDL_Color &back_ground_color);
+  Button(const SDL_Color& back_ground_color);
   virtual ~Button();
 
   bool IsPressed() const;
 
-  virtual void Draw(SDL_Renderer *render) override;
+  virtual void Draw(SDL_Renderer* render) override;
 
-protected:
+ protected:
   virtual void OnFocusChanged(bool focus) override;
-  virtual void OnMouseClicked(Uint8 button, const SDL_Point &position) override;
-  virtual void OnMouseReleased(Uint8 button,
-                               const SDL_Point &position) override;
+  virtual void OnMouseClicked(Uint8 button, const SDL_Point& position) override;
+  virtual void OnMouseReleased(Uint8 button, const SDL_Point& position) override;
 
-private:
+ private:
   bool pressed_;
 };
 
-} // namespace gui
-} // namespace fastoplayer
+}  // namespace gui
+}  // namespace fastoplayer

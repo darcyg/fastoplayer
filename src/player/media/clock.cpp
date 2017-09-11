@@ -22,7 +22,9 @@ namespace fastoplayer {
 
 namespace media {
 
-Clock::Clock() : paused_(false), speed_(1.0) { SetClock(invalid_clock()); }
+Clock::Clock() : paused_(false), speed_(1.0) {
+  SetClock(invalid_clock());
+}
 
 void Clock::SetClockAt(clock64_t pts, clock64_t time) {
   pts_ = pts;
@@ -35,7 +37,9 @@ void Clock::SetClock(clock64_t pts) {
   SetClockAt(pts, time);
 }
 
-clock64_t Clock::GetPts() const { return pts_; }
+clock64_t Clock::GetPts() const {
+  return pts_;
+}
 
 clock64_t Clock::GetClock() const {
   if (paused_) {
@@ -46,10 +50,14 @@ clock64_t Clock::GetClock() const {
   return pts_drift_ + time - (time - last_updated_) * (1.0 - speed_);
 }
 
-clock64_t Clock::LastUpdated() const { return last_updated_; }
+clock64_t Clock::LastUpdated() const {
+  return last_updated_;
+}
 
-void Clock::SetPaused(bool paused) { paused_ = paused; }
+void Clock::SetPaused(bool paused) {
+  paused_ = paused;
+}
 
-} // namespace media
+}  // namespace media
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

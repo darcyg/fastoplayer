@@ -32,17 +32,16 @@ struct VideoFrame : public BaseFrame {
 
   int width;
   int height;
-  AVPixelFormat format; // pixel format in mostly AV_PIX_FMT_YUV420P
-  AVRational sar;       // aspect ratio
+  AVPixelFormat format;  // pixel format in mostly AV_PIX_FMT_YUV420P
+  AVRational sar;        // aspect ratio
 
-private:
+ private:
   DISALLOW_COPY_AND_ASSIGN(VideoFrame);
 };
 
-clock64_t CalcDurationBetweenVideoFrames(VideoFrame *vp, VideoFrame *nextvp,
-                                         clock64_t max_frame_duration);
+clock64_t CalcDurationBetweenVideoFrames(VideoFrame* vp, VideoFrame* nextvp, clock64_t max_frame_duration);
 
-} // namespace frames
-} // namespace media
+}  // namespace frames
+}  // namespace media
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

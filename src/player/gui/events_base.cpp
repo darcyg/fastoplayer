@@ -19,9 +19,7 @@
 #include <player/gui/events_base.h>
 
 namespace fastoplayer {
-
 namespace gui {
 namespace events {}
-} // namespace gui
-
-} // namespace fastoplayer
+}  // namespace gui
+}  // namespace fastoplayer

@@ -23,17 +23,18 @@
 namespace fastoplayer {
 
 class SimplePlayer : public ISimplePlayer {
-public:
-  SimplePlayer(const PlayerOptions &options);
+ public:
+  SimplePlayer(const PlayerOptions& options);
 
   virtual std::string GetCurrentUrlName() const override;
 
-  virtual void SetUrlLocation(stream_id sid, const common::uri::Url &uri,
+  virtual void SetUrlLocation(stream_id sid,
+                              const common::uri::Url& uri,
                               media::AppOptions opt,
                               media::ComplexOptions copt) override;
 
-private:
+ private:
   common::uri::Url stream_url_;
 };
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

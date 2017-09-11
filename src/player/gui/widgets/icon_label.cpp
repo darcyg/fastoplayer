@@ -18,27 +18,26 @@
 
 #include <player/gui/widgets/icon_label.h>
 
-#include <common/application/application.h>
-
 namespace fastoplayer {
 
 namespace gui {
 
-IconLabel::IconLabel()
-    : base_class(), icon_img_(nullptr), icon_size_(),
-      space_betwen_image_and_label_(default_space) {}
+IconLabel::IconLabel() : base_class(), icon_img_(nullptr), icon_size_(), space_betwen_image_and_label_(default_space) {}
 
-IconLabel::IconLabel(const SDL_Color &back_ground_color)
-    : base_class(back_ground_color), icon_img_(nullptr), icon_size_(),
-      space_betwen_image_and_label_(default_space) {}
+IconLabel::IconLabel(const SDL_Color& back_ground_color)
+    : base_class(back_ground_color), icon_img_(nullptr), icon_size_(), space_betwen_image_and_label_(default_space) {}
 
 IconLabel::~IconLabel() {}
 
-void IconLabel::SetSpace(int space) { space_betwen_image_and_label_ = space; }
+void IconLabel::SetSpace(int space) {
+  space_betwen_image_and_label_ = space;
+}
 
-int IconLabel::GetSpace() const { return space_betwen_image_and_label_; }
+int IconLabel::GetSpace() const {
+  return space_betwen_image_and_label_;
+}
 
-void IconLabel::Draw(SDL_Renderer *render) {
+void IconLabel::Draw(SDL_Renderer* render) {
   if (!IsCanDraw()) {
     base_class::Draw(render);
     return;
@@ -51,31 +50,34 @@ void IconLabel::Draw(SDL_Renderer *render) {
 
   FontWindow::Draw(render);
   SDL_Rect area_rect = GetRect();
-  SDL_Rect icon_rect = {area_rect.x, area_rect.y, icon_size_.height,
-                        icon_size_.width};
+  SDL_Rect icon_rect = {area_rect.x, area_rect.y, icon_size_.height, icon_size_.width};
 
   int shift = icon_size_.width + space_betwen_image_and_label_;
   DrawImage(render, icon_img_, icon_rect);
-  SDL_Rect text_rect = {area_rect.x + shift, area_rect.y, area_rect.w - shift,
-                        area_rect.h};
+  SDL_Rect text_rect = {area_rect.x + shift, area_rect.y, area_rect.w - shift, area_rect.h};
   base_class::DrawText(render, text_, text_rect, GetDrawType());
 }
 
-void IconLabel::DrawImage(SDL_Renderer *render, SDL_Texture *texture,
-                          const SDL_Rect &rect) {
+void IconLabel::DrawImage(SDL_Renderer* render, SDL_Texture* texture, const SDL_Rect& rect) {
   draw::DrawImage(render, texture, rect);
 }
 
-void IconLabel::SetIconSize(const common::draw::Size &icon_size) {
+void IconLabel::SetIconSize(const common::draw::Size& icon_size) {
   icon_size_ = icon_size;
 }
 
-common::draw::Size IconLabel::GetIconSize() const { return icon_size_; }
+common::draw::Size IconLabel::GetIconSize() const {
+  return icon_size_;
+}
 
-void IconLabel::SetIconTexture(SDL_Texture *icon_img) { icon_img_ = icon_img; }
+void IconLabel::SetIconTexture(SDL_Texture* icon_img) {
+  icon_img_ = icon_img;
+}
 
-SDL_Texture *IconLabel::GetIconTexture() const { return icon_img_; }
+SDL_Texture* IconLabel::GetIconTexture() const {
+  return icon_img_;
+}
 
-} // namespace gui
+}  // namespace gui
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

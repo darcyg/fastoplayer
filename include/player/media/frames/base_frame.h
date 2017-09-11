@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <stdint.h> // for int64_t
+#include <stdint.h>  // for int64_t
 
 extern "C" {
 #include <libavutil/frame.h>
@@ -36,21 +36,21 @@ namespace frames {
 struct BaseFrame {
   BaseFrame();
 
-  AVFrame *frame;
+  AVFrame* frame;
   clock64_t pts;      /* presentation timestamp for the frame */
   clock64_t duration; /* estimated duration of the frame */
   int64_t pos;        /* byte position of the frame in the input file */
 
   void ClearFrame();
 
-protected:
+ protected:
   ~BaseFrame();
 
-private:
+ private:
   DISALLOW_COPY_AND_ASSIGN(BaseFrame);
 };
 
-} // namespace frames
-} // namespace media
+}  // namespace frames
+}  // namespace media
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

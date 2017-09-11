@@ -18,30 +18,30 @@
 
 #pragma once
 
-#include <stdint.h> // for int64_t, uint8_t
+#include <stdint.h>  // for int64_t, uint8_t
 
 #include <condition_variable>
 #include <memory>
 #include <mutex>
-#include <string> // for string
+#include <string>  // for string
 
-#include <player/ffmpeg_config.h> // for CONFIG_AVFILTER
+#include <player/ffmpeg_config.h>  // for CONFIG_AVFILTER
 
 extern "C" {
-#include <libavfilter/avfilter.h> // for AVFilterContext, AVFilterGraph
-#include <libavformat/avformat.h> // for AVFormatContext
-#include <libavutil/avutil.h>     // for AVMediaType
-#include <libavutil/frame.h>      // for AVFrame
+#include <libavfilter/avfilter.h>  // for AVFilterContext, AVFilterGraph
+#include <libavformat/avformat.h>  // for AVFormatContext
+#include <libavutil/avutil.h>      // for AVMediaType
+#include <libavutil/frame.h>       // for AVFrame
 }
 
 #include <common/error.h>
-#include <common/threads/types.h> // for condition_variable, mutex
-#include <common/uri/url.h>       // for Uri
+#include <common/threads/types.h>  // for condition_variable, mutex
+#include <common/uri/url.h>        // for Uri
 
-#include <player/media/app_options.h>  // for AppOptions, ComplexOptions
-#include <player/media/audio_params.h> // for AudioParams
+#include <player/media/app_options.h>   // for AppOptions, ComplexOptions
+#include <player/media/audio_params.h>  // for AudioParams
 #include <player/media/stream_statistic.h>
-#include <player/media/types.h> // for clock64_t, AvSyncType
+#include <player/media/types.h>  // for clock64_t, AvSyncType
 #include <player/types.h>
 
 struct SwrContext;
@@ -49,9 +49,10 @@ struct InputStream;
 
 namespace common {
 namespace threads {
-template <typename RT> class Thread;
+template <typename RT>
+class Thread;
 }
-} // namespace common
+}  // namespace common
 
 /* no AV correction is done if too big error */
 #define VIDEO_PICTURE_QUEUE_SIZE 3
@@ -71,20 +72,21 @@ class VideoStream;
 namespace frames {
 struct AudioFrame;
 struct VideoFrame;
-template <size_t buffer_size> class AudioFrameQueue;
-template <size_t buffer_size> class VideoFrameQueue;
-} // namespace frames
+template <size_t buffer_size>
+class AudioFrameQueue;
+template <size_t buffer_size>
+class VideoFrameQueue;
+}  // namespace frames
 
 class VideoState {
-public:
+ public:
   typedef std::shared_ptr<Stats> stats_t;
   typedef frames::VideoFrameQueue<VIDEO_PICTURE_QUEUE_SIZE> video_frame_queue_t;
   typedef frames::AudioFrameQueue<SAMPLE_QUEUE_SIZE> audio_frame_queue_t;
 
   enum { invalid_stream_index = -1 };
-  VideoState(stream_id id, const common::uri::Url &uri, const AppOptions &opt,
-             const ComplexOptions &copt);
-  void SetHandler(VideoStateHandler *handler);
+  VideoState(stream_id id, const common::uri::Url& uri, const AppOptions& opt, const ComplexOptions& copt);
+  void SetHandler(VideoStateHandler* handler);
 
   int Exec() WARN_UNUSED_RESULT;
   void Abort();
@@ -95,7 +97,7 @@ public:
   bool IsAborted() const;
   bool IsStreamReady() const;
   stream_id GetId() const;
-  const common::uri::Url &GetUri() const;
+  const common::uri::Url& GetUri() const;
   virtual ~VideoState();
 
   void RefreshRequest();
@@ -111,21 +113,20 @@ public:
   void SeekMsec(clock64_t msec);
   void StreamCycleChannel(AVMediaType codec_type);
 
-  common::Error RequestVideo(int width, int height, int av_pixel_format,
-                             AVRational aspect_ratio) WARN_UNUSED_RESULT;
+  common::Error RequestVideo(int width, int height, int av_pixel_format, AVRational aspect_ratio) WARN_UNUSED_RESULT;
 
-  frames::VideoFrame *TryToGetVideoFrame();
-  void UpdateAudioBuffer(uint8_t *stream, int len, int audio_volume);
+  frames::VideoFrame* TryToGetVideoFrame();
+  void UpdateAudioBuffer(uint8_t* stream, int len, int audio_volume);
 
   stats_t GetStatistic() const;
   AVRational GetFrameRate() const;
 
-private:
-  static int decode_interrupt_callback(void *user_data);
+ private:
+  static int decode_interrupt_callback(void* user_data);
 
   void StreamSeek(int64_t pos, int64_t rel, bool seek_by_bytes);
-  frames::VideoFrame *GetVideoFrame();
-  frames::VideoFrame *SelectVideoFrame() const;
+  frames::VideoFrame* GetVideoFrame();
+  frames::VideoFrame* SelectVideoFrame() const;
 
   void ResetStats();
   void Close();
@@ -145,10 +146,8 @@ private:
   clock64_t GetMasterPts() const;
   clock64_t GetMasterClock() const;
 #if CONFIG_AVFILTER
-  int ConfigureVideoFilters(AVFilterGraph *graph, const std::string &vfilters,
-                            AVFrame *frame);
-  int ConfigureAudioFilters(const std::string &afilters,
-                            int force_output_format);
+  int ConfigureVideoFilters(AVFilterGraph* graph, const std::string& vfilters, AVFrame* frame);
+  int ConfigureAudioFilters(const std::string& afilters, int force_output_format);
 #endif
 
   /* return the wanted number of samples to get better sync if sync_type is
@@ -163,9 +162,8 @@ private:
    * value.
    */
   int AudioDecodeFrame();
-  int GetVideoFrame(AVFrame *frame);
-  int QueuePicture(AVFrame *src_frame, clock64_t pts, clock64_t duration,
-                   int64_t pos);
+  int GetVideoFrame(AVFrame* frame);
+  int QueuePicture(AVFrame* src_frame, clock64_t pts, clock64_t duration, int64_t pos);
 
   int ReadRoutine();
   int VideoThread();
@@ -179,17 +177,17 @@ private:
 
   bool force_refresh_;
   int read_pause_return_;
-  AVFormatContext *ic_;
+  AVFormatContext* ic_;
   bool realtime_;
 
-  VideoStream *vstream_;
-  AudioStream *astream_;
+  VideoStream* vstream_;
+  AudioStream* astream_;
 
-  VideoDecoder *viddec_;
-  AudioDecoder *auddec_;
+  VideoDecoder* viddec_;
+  AudioDecoder* auddec_;
 
-  video_frame_queue_t *video_frame_queue_;
-  audio_frame_queue_t *audio_frame_queue_;
+  video_frame_queue_t* video_frame_queue_;
+  audio_frame_queue_t* audio_frame_queue_;
 
   clock64_t audio_clock_;
   clock64_t audio_diff_cum_; /* used for AV difference average computation */
@@ -197,8 +195,8 @@ private:
   double audio_diff_threshold_;
   int audio_diff_avg_count_;
   int audio_hw_buf_size_;
-  uint8_t *audio_buf_;
-  uint8_t *audio_buf1_;
+  uint8_t* audio_buf_;
+  uint8_t* audio_buf1_;
   unsigned int audio_buf_size_; /* in bytes */
   unsigned int audio_buf1_size_;
   int audio_buf_index_; /* in bytes */
@@ -208,23 +206,23 @@ private:
   AudioParams audio_filter_src_;
 #endif
   AudioParams audio_tgt_;
-  struct SwrContext *swr_ctx_;
+  struct SwrContext* swr_ctx_;
 
   clock64_t frame_timer_;
   clock64_t frame_last_returned_time_;
   clock64_t frame_last_filter_delay_;
-  clock64_t max_frame_duration_; // maximum duration of a frame - above this, we
-                                 // consider the jump a
-                                 // timestamp discontinuity
+  clock64_t max_frame_duration_;  // maximum duration of a frame - above this, we
+                                  // consider the jump a
+                                  // timestamp discontinuity
 
   bool step_;
 
 #if CONFIG_AVFILTER
-  AVFilterContext *in_video_filter_;  // the first filter in the video chain
-  AVFilterContext *out_video_filter_; // the last filter in the video chain
-  AVFilterContext *in_audio_filter_;  // the first filter in the audio chain
-  AVFilterContext *out_audio_filter_; // the last filter in the audio chain
-  AVFilterGraph *agraph_;             // audio filter graph
+  AVFilterContext* in_video_filter_;   // the first filter in the video chain
+  AVFilterContext* out_video_filter_;  // the last filter in the video chain
+  AVFilterContext* in_audio_filter_;   // the first filter in the audio chain
+  AVFilterContext* out_audio_filter_;  // the last filter in the audio chain
+  AVFilterGraph* agraph_;              // audio filter graph
 #endif
 
   int last_video_stream_;
@@ -241,8 +239,8 @@ private:
   volatile bool abort_request_;
 
   stats_t stats_;
-  VideoStateHandler *handler_;
-  InputStream *input_st_;
+  VideoStateHandler* handler_;
+  InputStream* input_st_;
 
   bool seek_req_;
   int64_t seek_pos_;
@@ -253,6 +251,6 @@ private:
   std::mutex read_thread_mutex_;
 };
 
-} // namespace media
+}  // namespace media
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

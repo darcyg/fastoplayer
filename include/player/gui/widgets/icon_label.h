@@ -24,34 +24,33 @@ namespace fastoplayer {
 namespace gui {
 
 class IconLabel : public Label {
-public:
+ public:
   typedef Label base_class;
   enum { default_space = 1 };
 
   IconLabel();
-  IconLabel(const SDL_Color &back_ground_color);
+  IconLabel(const SDL_Color& back_ground_color);
   virtual ~IconLabel();
 
   void SetSpace(int space);
   int GetSpace() const;
 
-  void SetIconSize(const common::draw::Size &icon_size);
+  void SetIconSize(const common::draw::Size& icon_size);
   common::draw::Size GetIconSize() const;
 
-  void SetIconTexture(SDL_Texture *icon_img);
-  SDL_Texture *GetIconTexture() const;
+  void SetIconTexture(SDL_Texture* icon_img);
+  SDL_Texture* GetIconTexture() const;
 
-  virtual void Draw(SDL_Renderer *render) override;
+  virtual void Draw(SDL_Renderer* render) override;
 
-protected:
-  void DrawImage(SDL_Renderer *render, SDL_Texture *texture,
-                 const SDL_Rect &rect);
+ protected:
+  void DrawImage(SDL_Renderer* render, SDL_Texture* texture, const SDL_Rect& rect);
 
-private:
-  SDL_Texture *icon_img_;
+ private:
+  SDL_Texture* icon_img_;
   common::draw::Size icon_size_;
   int space_betwen_image_and_label_;
 };
 
-} // namespace gui
-} // namespace fastoplayer
+}  // namespace gui
+}  // namespace fastoplayer

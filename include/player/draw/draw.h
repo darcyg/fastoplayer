@@ -19,7 +19,7 @@
 #pragma once
 
 #include <SDL2/SDL_rect.h>
-#include <SDL2/SDL_render.h> // for SDL_Renderer, SDL_Texture
+#include <SDL2/SDL_render.h>  // for SDL_Renderer, SDL_Texture
 
 #include <common/draw/types.h>
 #include <common/error.h>
@@ -29,24 +29,24 @@
 namespace fastoplayer {
 namespace draw {
 
-common::Error CreateMainWindow(const common::draw::Size &size,
-                               bool is_full_screen, const std::string &title,
-                               SDL_Renderer **renderer,
-                               SDL_Window **window) WARN_UNUSED_RESULT;
+common::Error CreateMainWindow(const common::draw::Size& size,
+                               bool is_full_screen,
+                               const std::string& title,
+                               SDL_Renderer** renderer,
+                               SDL_Window** window) WARN_UNUSED_RESULT;
 
-common::Error CreateTexture(SDL_Renderer *renderer, Uint32 new_format,
-                            int new_width, int new_height,
-                            SDL_BlendMode blendmode, bool init_texture,
-                            SDL_Texture **texture_out) WARN_UNUSED_RESULT;
+common::Error CreateTexture(SDL_Renderer* renderer,
+                            Uint32 new_format,
+                            int new_width,
+                            int new_height,
+                            SDL_BlendMode blendmode,
+                            bool init_texture,
+                            SDL_Texture** texture_out) WARN_UNUSED_RESULT;
 
-common::Error SetRenderDrawColor(SDL_Renderer *render,
-                                 const SDL_Color &rgba) WARN_UNUSED_RESULT;
-common::Error FillRectColor(SDL_Renderer *render, const SDL_Rect &rect,
-                            const SDL_Color &rgba) WARN_UNUSED_RESULT;
-common::Error DrawBorder(SDL_Renderer *render, const SDL_Rect &rect,
-                         const SDL_Color &rgba) WARN_UNUSED_RESULT;
-common::Error FlushRender(SDL_Renderer *render,
-                          const SDL_Color &rgba) WARN_UNUSED_RESULT;
+common::Error SetRenderDrawColor(SDL_Renderer* render, const SDL_Color& rgba) WARN_UNUSED_RESULT;
+common::Error FillRectColor(SDL_Renderer* render, const SDL_Rect& rect, const SDL_Color& rgba) WARN_UNUSED_RESULT;
+common::Error DrawBorder(SDL_Renderer* render, const SDL_Rect& rect, const SDL_Color& rgba) WARN_UNUSED_RESULT;
+common::Error FlushRender(SDL_Renderer* render, const SDL_Color& rgba) WARN_UNUSED_RESULT;
 
-} // namespace draw
-} // namespace fastoplayer
+}  // namespace draw
+}  // namespace fastoplayer

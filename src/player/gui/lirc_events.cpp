@@ -18,19 +18,20 @@
 
 #include <player/gui/lirc_events.h>
 
-#include <common/macros.h> // for SIZEOFMASS
+#include <common/macros.h>  // for SIZEOFMASS
 
 namespace {
 
-const std::string g_lirc_types[] = {
-    "LIRC_KEY_OK",   "LIRC_KEY_LEFT", "LIRC_KEY_UP",  "LIRC_KEY_RIGHT",
-    "LIRC_KEY_DOWN", "LIRC_KEY_EXIT", "LIRC_KEY_MUTE"};
+const std::string g_lirc_types[] = {"LIRC_KEY_OK",   "LIRC_KEY_LEFT", "LIRC_KEY_UP",  "LIRC_KEY_RIGHT",
+                                    "LIRC_KEY_DOWN", "LIRC_KEY_EXIT", "LIRC_KEY_MUTE"};
 }
 
 namespace common {
-std::string ConvertToString(LircCode value) { return g_lirc_types[value]; }
+std::string ConvertToString(LircCode value) {
+  return g_lirc_types[value];
+}
 
-bool ConvertFromString(const std::string &from, LircCode *out) {
+bool ConvertFromString(const std::string& from, LircCode* out) {
   if (!out) {
     return false;
   }
@@ -44,12 +45,12 @@ bool ConvertFromString(const std::string &from, LircCode *out) {
 
   return false;
 }
-} // namespace common
+}  // namespace common
 
 namespace fastoplayer {
 
 namespace gui {
 namespace events {}
-} // namespace gui
+}  // namespace gui
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

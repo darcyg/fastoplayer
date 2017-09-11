@@ -25,21 +25,25 @@
 namespace fastoplayer {
 namespace draw {
 
-int CalcHeightFontPlaceByRowCount(const TTF_Font *font, int row);
-bool CaclTextSize(const std::string &text, TTF_Font *font, int *width,
-                  int *height);
-std::string DotText(std::string text, TTF_Font *font, int max_width);
-void DrawWrappedTextInRect(SDL_Renderer *render, const std::string &text,
-                           TTF_Font *font, SDL_Color text_color, SDL_Rect rect,
-                           SDL_Rect *text_rect = NULL);
-void DrawCenterTextInRect(SDL_Renderer *render, const std::string &text,
-                          TTF_Font *font, SDL_Color text_color, SDL_Rect rect,
-                          SDL_Rect *text_rect = NULL);
+int CalcHeightFontPlaceByRowCount(const TTF_Font* font, int row);
+bool CaclTextSize(const std::string& text, TTF_Font* font, int* width, int* height);
+std::string DotText(std::string text, TTF_Font* font, int max_width);
+void DrawWrappedTextInRect(SDL_Renderer* render,
+                           const std::string& text,
+                           TTF_Font* font,
+                           SDL_Color text_color,
+                           SDL_Rect rect,
+                           SDL_Rect* text_rect = NULL);
+void DrawCenterTextInRect(SDL_Renderer* render,
+                          const std::string& text,
+                          TTF_Font* font,
+                          SDL_Color text_color,
+                          SDL_Rect rect,
+                          SDL_Rect* text_rect = NULL);
 
-void DrawImage(SDL_Renderer *render, SDL_Texture *texture,
-               const SDL_Rect &rect);
+void DrawImage(SDL_Renderer* render, SDL_Texture* texture, const SDL_Rect& rect);
 
-bool GetTextSize(TTF_Font *font, const std::string &text, int *w, int *h);
+bool GetTextSize(TTF_Font* font, const std::string& text, int* w, int* h);
 
-} // namespace draw
-} // namespace fastoplayer
+}  // namespace draw
+}  // namespace fastoplayer

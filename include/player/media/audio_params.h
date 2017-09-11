@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <stdint.h> // for int64_t
+#include <stdint.h>  // for int64_t
 
 extern "C" {
 #include <libavutil/samplefmt.h>
@@ -40,6 +40,6 @@ struct AudioParams {
   int bytes_per_sec;
 };
 
-} // namespace media
+}  // namespace media
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

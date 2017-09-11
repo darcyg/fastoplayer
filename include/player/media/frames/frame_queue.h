@@ -18,9 +18,9 @@
 
 #pragma once
 
-#include <stdint.h> // for int64_t
+#include <stdint.h>  // for int64_t
 
-#include <player/media/frames/ring_buffer.h> // for RingBuffer
+#include <player/media/frames/ring_buffer.h>  // for RingBuffer
 
 namespace fastoplayer {
 
@@ -32,7 +32,7 @@ struct VideoFrame;
 
 template <typename T, size_t buffer_size>
 class BaseFrameQueue : public RingBuffer<T, buffer_size> {
-public:
+ public:
   typedef RingBuffer<T, buffer_size> base_class;
   typedef typename base_class::pointer_type pointer_type;
 
@@ -58,19 +58,19 @@ public:
 
 template <size_t buffer_size>
 class VideoFrameQueue : public BaseFrameQueue<frames::VideoFrame, buffer_size> {
-public:
+ public:
   typedef BaseFrameQueue<frames::VideoFrame, buffer_size> base_class;
   typedef typename base_class::pointer_type pointer_type;
 };
 
 template <size_t buffer_size>
 class AudioFrameQueue : public BaseFrameQueue<frames::AudioFrame, buffer_size> {
-public:
+ public:
   typedef BaseFrameQueue<frames::AudioFrame, buffer_size> base_class;
   typedef typename base_class::pointer_type pointer_type;
 };
 
-} // namespace frames
-} // namespace media
+}  // namespace frames
+}  // namespace media
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

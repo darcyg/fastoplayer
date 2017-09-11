@@ -18,20 +18,20 @@
 
 #pragma once
 
-#include <string> // for string
+#include <string>  // for string
 
 #include <player/ffmpeg_config.h>
 
 extern "C" {
-#include <libavutil/avutil.h> // for AVMediaType::AVMEDIA_TYPE_NB
-#include <libavutil/dict.h>   // for AVDictionary
+#include <libavutil/avutil.h>  // for AVMediaType::AVMEDIA_TYPE_NB
+#include <libavutil/dict.h>    // for AVDictionary
 }
 
 #include <common/macros.h>
 
-#include <player/media/types.h> // for AvSyncType
+#include <player/media/types.h>  // for AvSyncType
 
-#include "ffmpeg_internal.h" // for HWAccelID
+#include "ffmpeg_internal.h"  // for HWAccelID
 
 namespace fastoplayer {
 
@@ -41,16 +41,8 @@ namespace media {
 // 1280x720
 // 1920x1080
 
-enum FRAME_DROP_STRATEGY {
-  FRAME_DROP_AUTO = -1,
-  FRAME_DROP_OFF = 0,
-  FRAME_DROP_ON = 1
-};
-enum SEEK_STRATEGY {
-  SEEK_AUTO = -1,
-  SEEK_BY_BYTES_OFF = 0,
-  SEEK_BY_BYTES_ON = 1
-};
+enum FRAME_DROP_STRATEGY { FRAME_DROP_AUTO = -1, FRAME_DROP_OFF = 0, FRAME_DROP_ON = 1 };
+enum SEEK_STRATEGY { SEEK_AUTO = -1, SEEK_BY_BYTES_OFF = 0, SEEK_BY_BYTES_ON = 1 };
 
 struct AppOptions {
   AppOptions();
@@ -72,7 +64,7 @@ struct AppOptions {
   std::string hwaccel_device;
   std::string hwaccel_output_format;
 
-  bool auto_exit; // exit from stream if eos
+  bool auto_exit;  // exit from stream if eos
   bool enable_video;
   bool enable_audio;
 #if CONFIG_AVFILTER
@@ -83,19 +75,18 @@ struct AppOptions {
 
 struct ComplexOptions {
   ComplexOptions();
-  ComplexOptions(AVDictionary *sws_dict, AVDictionary *swr_opts,
-                 AVDictionary *format_opts, AVDictionary *codec_opts);
+  ComplexOptions(AVDictionary* sws_dict, AVDictionary* swr_opts, AVDictionary* format_opts, AVDictionary* codec_opts);
 
   ~ComplexOptions();
-  ComplexOptions(const ComplexOptions &other);
-  ComplexOptions &operator=(const ComplexOptions &rhs);
+  ComplexOptions(const ComplexOptions& other);
+  ComplexOptions& operator=(const ComplexOptions& rhs);
 
-  AVDictionary *sws_dict;
-  AVDictionary *swr_opts;
-  AVDictionary *format_opts;
-  AVDictionary *codec_opts;
+  AVDictionary* sws_dict;
+  AVDictionary* swr_opts;
+  AVDictionary* format_opts;
+  AVDictionary* codec_opts;
 };
 
-} // namespace media
+}  // namespace media
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

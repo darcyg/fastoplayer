@@ -23,10 +23,9 @@ namespace fastoplayer {
 namespace gui {
 namespace events {
 
-WindowResizeInfo::WindowResizeInfo(const common::draw::Size &size)
-    : size(size) {}
+WindowResizeInfo::WindowResizeInfo(const common::draw::Size& size) : size(size) {}
 
-} // namespace events
-} // namespace gui
+}  // namespace events
+}  // namespace gui
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

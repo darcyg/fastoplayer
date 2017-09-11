@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <common/types.h> // for time64_t
+#include <common/types.h>  // for time64_t
 
 #include <player/gui/events_base.h>
 
@@ -51,6 +51,6 @@ typedef EventBase<TIMER_EVENT, TimeInfo> TimerEvent;
 
 typedef EventBase<QUIT_EVENT, QuitInfo> QuitEvent;
 
-} // namespace events
-} // namespace gui
-} // namespace fastoplayer
+}  // namespace events
+}  // namespace gui
+}  // namespace fastoplayer

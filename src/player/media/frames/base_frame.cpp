@@ -30,9 +30,11 @@ BaseFrame::~BaseFrame() {
   av_frame_free(&frame);
 }
 
-void BaseFrame::ClearFrame() { av_frame_unref(frame); }
+void BaseFrame::ClearFrame() {
+  av_frame_unref(frame);
+}
 
-} // namespace frames
-} // namespace media
+}  // namespace frames
+}  // namespace media
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

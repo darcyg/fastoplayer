@@ -21,13 +21,13 @@
 #include <algorithm>
 
 extern "C" {
-#include <libavutil/avutil.h>         // for AV_NOPTS_VALUE
-#include <libavutil/channel_layout.h> // for av_get_channel_layout_nb_channels
+#include <libavutil/avutil.h>          // for AV_NOPTS_VALUE
+#include <libavutil/channel_layout.h>  // for av_get_channel_layout_nb_channels
 }
 
 #include <common/convert2string.h>
 #include <common/sprintf.h>
-#include <common/time.h> // for current_mstime
+#include <common/time.h>  // for current_mstime
 
 #include <player/media/ffmpeg_internal.h>
 
@@ -35,8 +35,7 @@ namespace fastoplayer {
 
 namespace media {
 
-bandwidth_t CalculateBandwidth(size_t total_downloaded_bytes,
-                               msec_t data_interval) {
+bandwidth_t CalculateBandwidth(size_t total_downloaded_bytes, msec_t data_interval) {
   if (data_interval == 0) {
     return 0;
   }
@@ -45,25 +44,34 @@ bandwidth_t CalculateBandwidth(size_t total_downloaded_bytes,
   return bytes_per_msec * 1000;
 }
 
-clock64_t invalid_clock() { return -1; }
+clock64_t invalid_clock() {
+  return -1;
+}
 
-bool IsValidClock(clock64_t clock) { return clock != invalid_clock(); }
+bool IsValidClock(clock64_t clock) {
+  return clock != invalid_clock();
+}
 
-clock64_t GetRealClockTime() { return GetCurrentMsec(); }
+clock64_t GetRealClockTime() {
+  return GetCurrentMsec();
+}
 
-msec_t ClockToMsec(clock64_t clock) { return clock; }
+msec_t ClockToMsec(clock64_t clock) {
+  return clock;
+}
 
-msec_t GetCurrentMsec() { return common::time::current_mstime(); }
+msec_t GetCurrentMsec() {
+  return common::time::current_mstime();
+}
 
 int64_t get_valid_channel_layout(int64_t channel_layout, int channels) {
-  if (channel_layout &&
-      av_get_channel_layout_nb_channels(channel_layout) == channels) {
+  if (channel_layout && av_get_channel_layout_nb_channels(channel_layout) == channels) {
     return channel_layout;
   }
   return 0;
 }
 
-std::string make_url(const common::uri::Url &uri) {
+std::string make_url(const common::uri::Url& uri) {
   if (uri.GetScheme() == common::uri::Url::file) {
     common::uri::Upath upath = uri.GetPath();
     return upath.GetPath();
@@ -72,16 +80,20 @@ std::string make_url(const common::uri::Url &uri) {
   return uri.GetUrl();
 }
 
-pts_t invalid_pts() { return AV_NOPTS_VALUE; }
+pts_t invalid_pts() {
+  return AV_NOPTS_VALUE;
+}
 
-bool IsValidPts(pts_t pts) { return pts != invalid_pts(); }
+bool IsValidPts(pts_t pts) {
+  return pts != invalid_pts();
+}
 
-} // namespace media
+}  // namespace media
 
-} // namespace fastoplayer
+}  // namespace fastoplayer
 
 namespace common {
-std::string ConvertToString(const fastoplayer::media::HWAccelID &value) {
+std::string ConvertToString(const fastoplayer::media::HWAccelID& value) {
   if (value == fastoplayer::media::HWACCEL_AUTO) {
     return "auto";
   } else if (value == fastoplayer::media::HWACCEL_NONE) {
@@ -97,15 +109,13 @@ std::string ConvertToString(const fastoplayer::media::HWAccelID &value) {
   return std::string();
 }
 
-bool ConvertFromString(const std::string &from,
-                       fastoplayer::media::HWAccelID *out) {
+bool ConvertFromString(const std::string& from, fastoplayer::media::HWAccelID* out) {
   if (from.empty() || !out) {
     return false;
   }
 
   std::string from_copy = from;
-  std::transform(from_copy.begin(), from_copy.end(), from_copy.begin(),
-                 ::tolower);
+  std::transform(from_copy.begin(), from_copy.end(), from_copy.begin(), ::tolower);
   if (from_copy == "auto") {
     *out = fastoplayer::media::HWACCEL_AUTO;
     return true;
@@ -123,4 +133,4 @@ bool ConvertFromString(const std::string &from,
   }
 }
 
-} // namespace common
+}  // namespace common

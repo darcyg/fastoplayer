@@ -22,4 +22,4 @@ namespace fastoplayer {
 
 namespace media {}
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

@@ -18,15 +18,15 @@
 
 #pragma once
 
-#include <player/ffmpeg_config.h> // for CONFIG_AVFILTER
+#include <player/ffmpeg_config.h>  // for CONFIG_AVFILTER
 
 extern "C" {
 #if CONFIG_AVFILTER
 #include <libavfilter/avfilter.h>
 #endif
-#include <libavformat/avformat.h> // for AVFormatContext, AVStream
-#include <libavutil/frame.h>      // for AVFrame
-#include <libavutil/rational.h>   // for AVRational
+#include <libavformat/avformat.h>  // for AVFormatContext, AVStream
+#include <libavutil/frame.h>       // for AVFrame
+#include <libavutil/rational.h>    // for AVRational
 }
 
 namespace fastoplayer {
@@ -35,16 +35,17 @@ namespace media {
 
 double q2d_diff(AVRational a);
 
-AVRational guess_sample_aspect_ratio(AVStream *stream, AVFrame *frame);
+AVRational guess_sample_aspect_ratio(AVStream* stream, AVFrame* frame);
 
-double get_rotation(AVStream *st);
+double get_rotation(AVStream* st);
 
-bool is_realtime(AVFormatContext *s);
+bool is_realtime(AVFormatContext* s);
 
 #if CONFIG_AVFILTER
-int configure_filtergraph(AVFilterGraph *graph, const char *filtergraph,
-                          AVFilterContext *source_ctx,
-                          AVFilterContext *sink_ctx);
+int configure_filtergraph(AVFilterGraph* graph,
+                          const char* filtergraph,
+                          AVFilterContext* source_ctx,
+                          AVFilterContext* sink_ctx);
 #endif
 
 /**
@@ -56,7 +57,7 @@ int configure_filtergraph(AVFilterGraph *graph, const char *filtergraph,
  *
  * @return 1 if the stream matches, 0 if it doesn't, <0 on error
  */
-int check_stream_specifier(AVFormatContext *s, AVStream *st, const char *spec);
+int check_stream_specifier(AVFormatContext* s, AVStream* st, const char* spec);
 
 /**
  * Filter out options for given codec.
@@ -72,9 +73,11 @@ int check_stream_specifier(AVFormatContext *s, AVStream *st, const char *spec);
  *              If null, the default one is looked up according to the codec id.
  * @return a pointer to the created dictionary
  */
-AVDictionary *filter_codec_opts(AVDictionary *opts, enum AVCodecID codec_id,
-                                AVFormatContext *s, AVStream *st,
-                                AVCodec *codec);
+AVDictionary* filter_codec_opts(AVDictionary* opts,
+                                enum AVCodecID codec_id,
+                                AVFormatContext* s,
+                                AVStream* st,
+                                AVCodec* codec);
 
 /**
  * Setup AVCodecContext options for avformat_find_stream_info().
@@ -87,9 +90,8 @@ AVDictionary *filter_codec_opts(AVDictionary *opts, enum AVCodecID codec_id,
  * @return pointer to the created array of dictionaries, NULL if it
  * cannot be created
  */
-AVDictionary **setup_find_stream_info_opts(AVFormatContext *s,
-                                           AVDictionary *codec_opts);
+AVDictionary** setup_find_stream_info_opts(AVFormatContext* s, AVDictionary* codec_opts);
 
-} // namespace media
+}  // namespace media
 
-} // namespace fastoplayer
+}  // namespace fastoplayer

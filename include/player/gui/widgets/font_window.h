@@ -25,32 +25,35 @@ namespace fastoplayer {
 namespace gui {
 
 class FontWindow : public Window {
-public:
+ public:
   typedef Window base_class;
   enum DrawType { WRAPPED_TEXT, CENTER_TEXT };
 
   FontWindow();
-  FontWindow(const SDL_Color &back_ground_color);
+  FontWindow(const SDL_Color& back_ground_color);
   virtual ~FontWindow();
 
   void SetDrawType(DrawType dt);
   DrawType GetDrawType() const;
 
-  void SetTextColor(const SDL_Color &color);
+  void SetTextColor(const SDL_Color& color);
   SDL_Color GetTextColor() const;
 
-  void SetFont(TTF_Font *font);
-  TTF_Font *GetFont() const;
+  void SetFont(TTF_Font* font);
+  TTF_Font* GetFont() const;
 
-protected:
-  void DrawText(SDL_Renderer *render, const std::string &text,
-                const SDL_Rect &rect, DrawType dt, SDL_Rect *text_rect = NULL);
+ protected:
+  void DrawText(SDL_Renderer* render,
+                const std::string& text,
+                const SDL_Rect& rect,
+                DrawType dt,
+                SDL_Rect* text_rect = NULL);
 
-private:
+ private:
   DrawType draw_type_;
   SDL_Color text_color_;
-  TTF_Font *font_;
+  TTF_Font* font_;
 };
 
-} // namespace gui
-} // namespace fastoplayer
+}  // namespace gui
+}  // namespace fastoplayer

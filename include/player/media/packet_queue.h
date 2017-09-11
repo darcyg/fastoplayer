@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <stdint.h> // for int64_t
+#include <stdint.h>  // for int64_t
 
 #include <atomic>
 #include <condition_variable>
@@ -28,27 +28,27 @@
 #include <player/ffmpeg_config.h>
 
 extern "C" {
-#include <libavcodec/avcodec.h> // for AVPacket
+#include <libavcodec/avcodec.h>  // for AVPacket
 }
 
-#include <common/macros.h> // for DISALLOW_COPY_AND_ASSIGN
+#include <common/macros.h>  // for DISALLOW_COPY_AND_ASSIGN
 #include <common/types.h>
 
 namespace fastoplayer {
 
 namespace media {
 
-class PacketQueue { // compressed queue data
-public:
+class PacketQueue {  // compressed queue data
+ public:
   PacketQueue();
   ~PacketQueue();
 
   void Flush();
   void Abort();
-  int Put(AVPacket *pkt);
+  int Put(AVPacket* pkt);
   int PutNullpacket(int stream_index);
   /* return < 0 if aborted, 0 if no packet and > 0 if packet.  */
-  bool Get(AVPacket *pkt);
+  bool Get(AVPacket* pkt);
   void Start();
 
   bool IsAborted();
@@ -56,9 +56,9 @@ public:
   int GetSize() const;
   int64_t GetDuration() const;
 
-private:
-  int PushFront(AVPacket *pkt);
-  int PushBack(AVPacket *pkt);
+ private:
+  int PushFront(AVPacket* pkt);
+  int PushBack(AVPacket* pkt);
   DISALLOW_COPY_AND_ASSIGN(PacketQueue);
 
   std::deque<AVPacket> queue_;
@@ -70,6 +70,6 @@ private:
   std::mutex mutex_;
 };
 
-} // namespace media
+}  // namespace media
 
-} // namespace fastoplayer
+}  // namespace fastoplayer
