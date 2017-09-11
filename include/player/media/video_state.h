@@ -25,7 +25,7 @@
 #include <mutex>
 #include <string>  // for string
 
-#include <player/ffmpeg_config.h>  // for CONFIG_AVFILTER
+#include <player/media/ffmpeg_config.h>  // for CONFIG_AVFILTER
 
 extern "C" {
 #include <libavfilter/avfilter.h>  // for AVFilterContext, AVFilterGraph
@@ -42,7 +42,6 @@ extern "C" {
 #include <player/media/audio_params.h>  // for AudioParams
 #include <player/media/stream_statistic.h>
 #include <player/media/types.h>  // for clock64_t, AvSyncType
-#include <player/types.h>
 
 struct SwrContext;
 struct InputStream;

@@ -26,7 +26,7 @@ std::string SimplePlayer::GetCurrentUrlName() const {
   return stream_url_.GetUrl();
 }
 
-void SimplePlayer::SetUrlLocation(stream_id sid,
+void SimplePlayer::SetUrlLocation(media::stream_id sid,
                                   const common::uri::Url& uri,
                                   media::AppOptions opt,
                                   media::ComplexOptions copt) {

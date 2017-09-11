@@ -20,7 +20,7 @@
 
 #include <common/draw/types.h>
 
-#include <player/types.h>
+#include <player/media/types.h>
 
 namespace fastoplayer {
 
@@ -33,8 +33,8 @@ struct PlayerOptions {
   common::draw::Size default_size;
   common::draw::Size screen_size;
 
-  audio_volume_t audio_volume;  // Range: 0 - 100
-  stream_id last_showed_channel_id;
+  media::audio_volume_t audio_volume;  // Range: 0 - 100
+  media::stream_id last_showed_channel_id;
 };
 
 }  // namespace fastoplayer

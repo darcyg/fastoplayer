@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <player/ffmpeg_config.h>  // for CONFIG_AVFILTER
+#include <player/media/ffmpeg_config.h>  // for CONFIG_AVFILTER
 
 extern "C" {
 #if CONFIG_AVFILTER

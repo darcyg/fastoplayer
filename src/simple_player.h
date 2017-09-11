@@ -28,7 +28,7 @@ class SimplePlayer : public ISimplePlayer {
 
   virtual std::string GetCurrentUrlName() const override;
 
-  virtual void SetUrlLocation(stream_id sid,
+  virtual void SetUrlLocation(media::stream_id sid,
                               const common::uri::Url& uri,
                               media::AppOptions opt,
                               media::ComplexOptions copt) override;

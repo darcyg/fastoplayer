@@ -23,12 +23,17 @@
 #include <common/types.h>  // for time64_t
 #include <common/uri/url.h>
 
+#include <common/bounded_value.h>
+
 #define DEFAULT_FRAME_PER_SEC 25
 
 namespace fastoplayer {
 namespace media {
 
 typedef size_t bandwidth_t;
+typedef common::BoundedValue<int8_t, 0, 100> audio_volume_t;
+typedef std::string stream_id;  // must be unique
+extern const stream_id invalid_stream_id;
 
 enum HWAccelID {
   HWACCEL_NONE = 0,

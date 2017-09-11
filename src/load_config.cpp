@@ -23,7 +23,7 @@
 #include <common/file_system.h>  // for ANSIFile, ascii_string_path
 #include <common/utils.h>
 
-#include <player/ffmpeg_config.h>          // for CONFIG_AVFILTER
+#include <player/media/ffmpeg_config.h>          // for CONFIG_AVFILTER
 #include <player/media/ffmpeg_internal.h>  // for HWAccelID
 
 #include "inih/ini.h"  // for ini_parse

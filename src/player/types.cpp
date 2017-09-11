@@ -18,8 +18,4 @@
 
 #include <player/types.h>
 
-namespace fastoplayer {
-
-const stream_id invalid_stream_id = stream_id();
-
-}  // namespace fastoplayer
+namespace fastoplayer {}  // namespace fastoplayer

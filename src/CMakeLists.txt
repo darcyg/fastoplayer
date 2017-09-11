@@ -247,7 +247,6 @@ ENDIF(OS_WINDOWS)
 
 FIND_PACKAGE(Common REQUIRED)
 FIND_PACKAGE(FFmpeg REQUIRED)
-FIND_PACKAGE(SDL2 REQUIRED)
 FIND_PACKAGE(OpenSSL REQUIRED)
 
 IF(FFMPEG_LIBAVFILTER)
@@ -275,43 +274,6 @@ IF(FFMPEG_LIBSWRESAMPLE)
   SET(CONFIG_SWRESAMPLE 1)
 ENDIF(FFMPEG_LIBSWRESAMPLE)
 
-SET_DESKTOP_TARGET()
-
-# Config
-SET(CONFIG_HWACCEL_METHOD "none" CACHE STRING "Hwaccel method")
-SET(CONFIG_WIDTH 0 CACHE STRING "Hwaccel method")
-SET(CONFIG_HEIGHT 0 CACHE STRING "Hwaccel method")
-SET(CONFIG_POWER_OFF_ON_EXIT OFF CACHE BOOL "Power off device on exit")
-
-SET(CONFIG_FILE_NAME ${PROJECT_NAME_LOWERCASE}.ini)
-IF(OS_WINDOWS)
-  SET(EXECUTABLE_FOLDER_PATH ${TARGET_INSTALL_DESTINATION})
-ELSEIF(OS_MACOSX)
-  SET(EXECUTABLE_FOLDER_PATH ${TARGET_INSTALL_DESTINATION})
-ELSEIF(OS_LINUX OR OS_FREEBSD)
-  SET(EXECUTABLE_FOLDER_PATH /usr/bin)
-ENDIF(OS_WINDOWS)
-
-#config file
-SET(CONFIG_FILE_GENERATED_PATH "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_FILE_NAME}")
-CONFIGURE_FILE("${CMAKE_SOURCE_DIR}/install/${PROJECT_NAME_LOWERCASE}/config.ini.in"
-  ${CONFIG_FILE_GENERATED_PATH} @ONLY IMMEDIATE)
-SET(CONFIG_FILE_PATH_RELATIVE ${SHARE_INSTALL_DESTINATION}/${CONFIG_FILE_NAME})
-
-SET(EXECUTABLE_PATH ${EXECUTABLE_FOLDER_PATH}/${PROJECT_NAME_LOWERCASE} CACHE INTERNAL
-  "Executable path: ${EXECUTABLE_PATH}") # used for (deb/rpm/xinitrc)
-
-SET(APPLICATION_DIR "~/.${PROJECT_NAME_LOWERCASE}")
-SET(LOG_FILE_NAME "${PROJECT_NAME_LOWERCASE}.log")
-
-ADD_DEFINITIONS(
-  -DLOG_FILE_NAME="${LOG_FILE_NAME}"
-  -DAPPLICATION_DIR="${APPLICATION_DIR}"
-
-  -DCONFIG_FILE_NAME="${CONFIG_FILE_NAME}"
-  -DCONFIG_FILE_PATH_RELATIVE="${CONFIG_FILE_PATH_RELATIVE}"
-)
-
 IF(VDPAU_FOUND)
   SET(BUILD_MEDIA_SOURCES ${BUILD_MEDIA_SOURCES} ${CMAKE_SOURCE_DIR}/src/player/media/hwaccels/ffmpeg_vdpau.cpp)
 ENDIF(VDPAU_FOUND)
@@ -328,33 +290,10 @@ IF(VIDEOTOOLBOX_FOUND)
   SET(BUILD_MEDIA_SOURCES ${BUILD_MEDIA_SOURCES} ${CMAKE_SOURCE_DIR}/src/player/media/hwaccels/ffmpeg_videotoolbox.cpp)
 ENDIF(VIDEOTOOLBOX_FOUND)
 
-SET(FFMPEG_CONFIG_GEN_PATH ${CMAKE_SOURCE_DIR}/include/player/ffmpeg_config.h)
+SET(FFMPEG_CONFIG_GEN_PATH ${CMAKE_SOURCE_DIR}/include/player/media/ffmpeg_config.h)
 CONFIGURE_FILE(ffmpeg_config.h.in ${FFMPEG_CONFIG_GEN_PATH} @ONLY IMMEDIATE)
 
-SET(PLAYER_LIB_HEADERS
-  ${CMAKE_SOURCE_DIR}/include/player/draw/draw.h
-  ${CMAKE_SOURCE_DIR}/include/player/draw/font.h
-  ${CMAKE_SOURCE_DIR}/include/player/draw/surface_saver.h
-  ${CMAKE_SOURCE_DIR}/include/player/draw/texture_saver.h
-  ${CMAKE_SOURCE_DIR}/include/player/draw/types.h
-
-  ${CMAKE_SOURCE_DIR}/include/player/gui/events/events.h
-  ${CMAKE_SOURCE_DIR}/include/player/gui/events/key_events.h
-  ${CMAKE_SOURCE_DIR}/include/player/gui/events/mouse_events.h
-  ${CMAKE_SOURCE_DIR}/include/player/gui/events/window_events.h
-  ${CMAKE_SOURCE_DIR}/include/player/gui/events_base.h
-  ${CMAKE_SOURCE_DIR}/include/player/gui/lirc_events.h
-  ${CMAKE_SOURCE_DIR}/include/player/gui/sdl2_application.h
-  ${CMAKE_SOURCE_DIR}/include/player/gui/stream_events.h
-
-  ${CMAKE_SOURCE_DIR}/include/player/gui/widgets/button.h
-  ${CMAKE_SOURCE_DIR}/include/player/gui/widgets/font_window.h
-  ${CMAKE_SOURCE_DIR}/include/player/gui/widgets/icon_label.h
-  ${CMAKE_SOURCE_DIR}/include/player/gui/widgets/label.h
-  ${CMAKE_SOURCE_DIR}/include/player/gui/widgets/line_edit.h
-  ${CMAKE_SOURCE_DIR}/include/player/gui/widgets/list_box.h
-  ${CMAKE_SOURCE_DIR}/include/player/gui/widgets/window.h
-
+SET(PLAYER_LIB_MEDIA_HEADERS
   ${CMAKE_SOURCE_DIR}/include/player/media/app_options.h
   ${CMAKE_SOURCE_DIR}/include/player/media/audio_params.h
   ${CMAKE_SOURCE_DIR}/include/player/media/av_utils.h
@@ -373,40 +312,8 @@ SET(PLAYER_LIB_HEADERS
   ${CMAKE_SOURCE_DIR}/include/player/media/types.h
   ${CMAKE_SOURCE_DIR}/include/player/media/video_state.h
   ${CMAKE_SOURCE_DIR}/include/player/media/video_state_handler.h
-
-  ${CMAKE_SOURCE_DIR}/include/player/av_sdl_utils.h
-  ${CMAKE_SOURCE_DIR}/include/player/config.h
-  ${CMAKE_SOURCE_DIR}/include/player/types.h
-  ${CMAKE_SOURCE_DIR}/include/player/ffmpeg_application.h
-  ${CMAKE_SOURCE_DIR}/include/player/isimple_player.h
-  ${CMAKE_SOURCE_DIR}/include/player/player_options.h
-  ${CMAKE_SOURCE_DIR}/include/player/sdl_utils.h
-  ${CMAKE_SOURCE_DIR}/include/player/stream_handler.h
 )
-
-SET(PLAYER_LIB_SOURCES
-  ${CMAKE_SOURCE_DIR}/src/player/draw/draw.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/draw/font.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/draw/surface_saver.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/draw/texture_saver.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/draw/types.cpp
-
-  ${CMAKE_SOURCE_DIR}/src/player/gui/events/events.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/gui/events/key_events.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/gui/events/mouse_events.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/gui/events/window_events.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/gui/events_base.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/gui/lirc_events.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/gui/sdl2_application.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/gui/stream_events.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/gui/widgets/button.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/gui/widgets/font_window.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/gui/widgets/icon_label.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/gui/widgets/label.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/gui/widgets/line_edit.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/gui/widgets/list_box.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/gui/widgets/window.cpp
-
+SET(PLAYER_LIB_MEDIA_SOURCES
   ${CMAKE_SOURCE_DIR}/src/player/media/app_options.cpp
   ${CMAKE_SOURCE_DIR}/src/player/media/audio_params.cpp
   ${CMAKE_SOURCE_DIR}/src/player/media/av_utils.cpp
@@ -426,23 +333,13 @@ SET(PLAYER_LIB_SOURCES
   ${CMAKE_SOURCE_DIR}/src/player/media/video_state.cpp
   ${CMAKE_SOURCE_DIR}/src/player/media/video_state_handler.cpp
 
-  ${CMAKE_SOURCE_DIR}/src/player/player_options.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/sdl_utils.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/stream_handler.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/av_sdl_utils.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/config.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/types.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/ffmpeg_application.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/isimple_player.cpp
-
   ${BUILD_MEDIA_SOURCES}
 )
 
-SET(PLAYER_LIBRARY fastoplayer)
-SET(PRIVATE_INCLUDE_DIRECTORIES)
-SET(PLAYER_LIBRARY_LIBS
+SET(PLAYER_MEDIA_LIBRARY ${PROJECT_NAME_LOWERCASE}_media)
+SET(MEDIA_PRIVATE_INCLUDE_DIRECTORIES)
+SET(PLAYER_MEDIA_LIBRARY_LIBS
   ${FFMPEG_LIBRARIES}
-  ${SDL2_LIBRARIES}
   ${DEPENDENS_LIBRARIES}
   ${COMMON_LIBRARIES}
   ${PLATFORM_LIBRARIES}
@@ -451,16 +348,141 @@ SET(PLAYER_LIBRARY_LIBS
   ${OPENSSL_LIBRARIES}
 )
 
-ADD_LIBRARY(${PLAYER_LIBRARY} ${PLAYER_LIB_HEADERS} ${PLAYER_LIB_SOURCES})
-TARGET_INCLUDE_DIRECTORIES(${PLAYER_LIBRARY}
-  PRIVATE ${PRIVATE_INCLUDE_DIRECTORIES}
+ADD_LIBRARY(${PLAYER_MEDIA_LIBRARY} ${PLAYER_LIB_MEDIA_HEADERS} ${PLAYER_LIB_MEDIA_SOURCES})
+TARGET_INCLUDE_DIRECTORIES(${PLAYER_MEDIA_LIBRARY}
+  PRIVATE ${MEDIA_PRIVATE_INCLUDE_DIRECTORIES}
   PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>
 )
 #SET_TARGET_PROPERTIES(${COMMON_PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${COMMON_HEADERS}")
-TARGET_LINK_LIBRARIES(${PLAYER_LIBRARY} PRIVATE ${PLAYER_LIBRARY_LIBS})
+TARGET_LINK_LIBRARIES(${PLAYER_MEDIA_LIBRARY} PRIVATE ${PLAYER_MEDIA_LIBRARY_LIBS})
 
-IF(BUILD_PLAYER)
+# player lib
+IF(BUILD_PLAYER_LIB)
+  FIND_PACKAGE(SDL2 REQUIRED)
+
+  SET(PLAYER_LIB_HEADERS
+    ${CMAKE_SOURCE_DIR}/include/player/draw/draw.h
+    ${CMAKE_SOURCE_DIR}/include/player/draw/font.h
+    ${CMAKE_SOURCE_DIR}/include/player/draw/surface_saver.h
+    ${CMAKE_SOURCE_DIR}/include/player/draw/texture_saver.h
+    ${CMAKE_SOURCE_DIR}/include/player/draw/types.h
+
+    ${CMAKE_SOURCE_DIR}/include/player/gui/events/events.h
+    ${CMAKE_SOURCE_DIR}/include/player/gui/events/key_events.h
+    ${CMAKE_SOURCE_DIR}/include/player/gui/events/mouse_events.h
+    ${CMAKE_SOURCE_DIR}/include/player/gui/events/window_events.h
+    ${CMAKE_SOURCE_DIR}/include/player/gui/events_base.h
+    ${CMAKE_SOURCE_DIR}/include/player/gui/lirc_events.h
+    ${CMAKE_SOURCE_DIR}/include/player/gui/sdl2_application.h
+    ${CMAKE_SOURCE_DIR}/include/player/gui/stream_events.h
+
+    ${CMAKE_SOURCE_DIR}/include/player/gui/widgets/button.h
+    ${CMAKE_SOURCE_DIR}/include/player/gui/widgets/font_window.h
+    ${CMAKE_SOURCE_DIR}/include/player/gui/widgets/icon_label.h
+    ${CMAKE_SOURCE_DIR}/include/player/gui/widgets/label.h
+    ${CMAKE_SOURCE_DIR}/include/player/gui/widgets/line_edit.h
+    ${CMAKE_SOURCE_DIR}/include/player/gui/widgets/list_box.h
+    ${CMAKE_SOURCE_DIR}/include/player/gui/widgets/window.h
+
+    ${CMAKE_SOURCE_DIR}/include/player/av_sdl_utils.h
+    ${CMAKE_SOURCE_DIR}/include/player/config.h
+    ${CMAKE_SOURCE_DIR}/include/player/types.h
+    ${CMAKE_SOURCE_DIR}/include/player/ffmpeg_application.h
+    ${CMAKE_SOURCE_DIR}/include/player/isimple_player.h
+    ${CMAKE_SOURCE_DIR}/include/player/player_options.h
+    ${CMAKE_SOURCE_DIR}/include/player/sdl_utils.h
+    ${CMAKE_SOURCE_DIR}/include/player/stream_handler.h
+  )
+
+  SET(PLAYER_LIB_SOURCES
+    ${CMAKE_SOURCE_DIR}/src/player/draw/draw.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/draw/font.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/draw/surface_saver.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/draw/texture_saver.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/draw/types.cpp
+
+    ${CMAKE_SOURCE_DIR}/src/player/gui/events/events.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/gui/events/key_events.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/gui/events/mouse_events.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/gui/events/window_events.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/gui/events_base.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/gui/lirc_events.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/gui/sdl2_application.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/gui/stream_events.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/gui/widgets/button.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/gui/widgets/font_window.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/gui/widgets/icon_label.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/gui/widgets/label.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/gui/widgets/line_edit.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/gui/widgets/list_box.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/gui/widgets/window.cpp
+
+    ${CMAKE_SOURCE_DIR}/src/player/player_options.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/sdl_utils.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/stream_handler.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/av_sdl_utils.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/config.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/types.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/ffmpeg_application.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/isimple_player.cpp
+  )
+
+  SET(PLAYER_LIBRARY ${PROJECT_NAME_LOWERCASE})
+  SET(PRIVATE_INCLUDE_DIRECTORIES)
+  SET(PLAYER_LIBRARY_LIBS
+    ${PLAYER_MEDIA_LIBRARY}
+    ${SDL2_LIBRARIES}
+  )
+
+  ADD_LIBRARY(${PLAYER_LIBRARY} ${PLAYER_LIB_HEADERS} ${PLAYER_LIB_SOURCES})
+  TARGET_INCLUDE_DIRECTORIES(${PLAYER_LIBRARY}
+    PRIVATE ${PRIVATE_INCLUDE_DIRECTORIES}
+    PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>
+  )
+  #SET_TARGET_PROPERTIES(${COMMON_PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${COMMON_HEADERS}")
+  TARGET_LINK_LIBRARIES(${PLAYER_LIBRARY} PRIVATE ${PLAYER_LIBRARY_LIBS})
+ENDIF(BUILD_PLAYER_LIB)
+
+IF(BUILD_PLAYER AND BUILD_PLAYER_LIB)
+  SET_DESKTOP_TARGET()
+
+  # Config
+  SET(CONFIG_HWACCEL_METHOD "none" CACHE STRING "Hwaccel method")
+  SET(CONFIG_WIDTH 0 CACHE STRING "Hwaccel method")
+  SET(CONFIG_HEIGHT 0 CACHE STRING "Hwaccel method")
+  SET(CONFIG_POWER_OFF_ON_EXIT OFF CACHE BOOL "Power off device on exit")
+
+  SET(CONFIG_FILE_NAME ${PROJECT_NAME_LOWERCASE}.ini)
+  IF(OS_WINDOWS)
+    SET(EXECUTABLE_FOLDER_PATH ${TARGET_INSTALL_DESTINATION})
+  ELSEIF(OS_MACOSX)
+    SET(EXECUTABLE_FOLDER_PATH ${TARGET_INSTALL_DESTINATION})
+  ELSEIF(OS_LINUX OR OS_FREEBSD)
+    SET(EXECUTABLE_FOLDER_PATH /usr/bin)
+  ENDIF(OS_WINDOWS)
+
+  #config file
+  SET(CONFIG_FILE_GENERATED_PATH "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_FILE_NAME}")
+  CONFIGURE_FILE("${CMAKE_SOURCE_DIR}/install/${PROJECT_NAME_LOWERCASE}/config.ini.in"
+    ${CONFIG_FILE_GENERATED_PATH} @ONLY IMMEDIATE)
+  SET(CONFIG_FILE_PATH_RELATIVE ${SHARE_INSTALL_DESTINATION}/${CONFIG_FILE_NAME})
+
+  SET(EXECUTABLE_PATH ${EXECUTABLE_FOLDER_PATH}/${PROJECT_NAME_LOWERCASE} CACHE INTERNAL
+    "Executable path: ${EXECUTABLE_PATH}") # used for (deb/rpm/xinitrc)
+
+  SET(APPLICATION_DIR "~/.${PROJECT_NAME_LOWERCASE}")
+  SET(LOG_FILE_NAME "${PROJECT_NAME_LOWERCASE}.log")
+
+  ADD_DEFINITIONS(
+    -DLOG_FILE_NAME="${LOG_FILE_NAME}"
+    -DAPPLICATION_DIR="${APPLICATION_DIR}"
+
+    -DCONFIG_FILE_NAME="${CONFIG_FILE_NAME}"
+    -DCONFIG_FILE_PATH_RELATIVE="${CONFIG_FILE_PATH_RELATIVE}"
+  )
+
   FIND_PACKAGE(PNG QUIET)
   SET(BUILD_PLAYER_SOURCES
     ${CMAKE_SOURCE_DIR}/src/load_config.h
@@ -677,10 +699,10 @@ IF(BUILD_PLAYER)
   ENDIF(OS_WINDOWS)
 
   INSTALL_RUNTIME_LIBRARIES()
-ENDIF(BUILD_PLAYER)
+ENDIF(BUILD_PLAYER AND BUILD_PLAYER_LIB)
 
 SET(HEADERS_INSTALL_LIB_DESTINATION include)
-INSTALL(TARGETS ${PLAYER_LIBRARY}
+INSTALL(TARGETS ${PLAYER_MEDIA_LIBRARY} ${PLAYER_LIBRARY}
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
 #   PUBLIC_HEADER DESTINATION include/player
@@ -689,13 +711,11 @@ INSTALL(DIRECTORY ${CMAKE_SOURCE_DIR}/include/player DESTINATION ${HEADERS_INSTA
 
 IF (DEVELOPER_CHECK_STYLE)
   SET(CHECK_SOURCES_PLAYER
-    ${PLAYER_LIB_HEADERS}
-    ${PLAYER_LIB_SOURCES}
-    ${EXE_PLAYER_SOURCES}
-    ${OTHER_PLAYER_SOURCES}
+    ${PLAYER_LIB_MEDIA_HEADERS} ${PLAYER_LIB_MEDIA_SOURCES}
+    ${PLAYER_LIB_HEADERS} ${PLAYER_LIB_SOURCES}
+    ${EXE_PLAYER_SOURCES} ${OTHER_PLAYER_SOURCES}
   )
   REGISTER_CHECK_STYLE_TARGET(check_style_player "${CHECK_SOURCES_PLAYER}")
-  REGISTER_CHECK_INCLUDES_TARGET(${PLAYER_LIBRARY})
 ENDIF(DEVELOPER_CHECK_STYLE)
 
 IF(DEVELOPER_ENABLE_TESTS)
@@ -707,11 +727,10 @@ IF(DEVELOPER_ENABLE_TESTS)
   )
   TARGET_INCLUDE_DIRECTORIES(${VIDEO_STATE_TEST} PRIVATE
     ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_BINARY_DIR}
     ${COMMON_INCLUDE_DIR}
   )
   TARGET_LINK_LIBRARIES(${VIDEO_STATE_TEST}
-    ${PLAYER_LIBRARY}
+    ${PLAYER_MEDIA_LIBRARY}
   )
 
   SET(PROJECT_VIDEO_PERFORMANCE_TEST video_performance_test)
@@ -721,7 +740,6 @@ IF(DEVELOPER_ENABLE_TESTS)
   )
   TARGET_INCLUDE_DIRECTORIES(${PROJECT_VIDEO_PERFORMANCE_TEST} PRIVATE
     ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_BINARY_DIR}
     ${COMMON_INCLUDE_DIR}
   )
   TARGET_LINK_LIBRARIES(${PROJECT_VIDEO_PERFORMANCE_TEST}

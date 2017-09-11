@@ -32,8 +32,9 @@ extern "C" {
 #include <player/media/ffmpeg_internal.h>
 
 namespace fastoplayer {
-
 namespace media {
+
+const stream_id invalid_stream_id = stream_id();
 
 bandwidth_t CalculateBandwidth(size_t total_downloaded_bytes, msec_t data_interval) {
   if (data_interval == 0) {
@@ -89,7 +90,6 @@ bool IsValidPts(pts_t pts) {
 }
 
 }  // namespace media
-
 }  // namespace fastoplayer
 
 namespace common {

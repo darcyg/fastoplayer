@@ -85,7 +85,7 @@ class ISimplePlayer : public StreamHandler, public gui::events::EventListener {
 
   PlayerOptions GetOptions() const;
 
-  virtual void SetUrlLocation(stream_id sid,
+  virtual void SetUrlLocation(media::stream_id sid,
                               const common::uri::Url& uri,
                               media::AppOptions opt,
                               media::ComplexOptions copt);
@@ -147,7 +147,7 @@ class ISimplePlayer : public StreamHandler, public gui::events::EventListener {
 
   bool IsMouseVisible() const;
 
-  virtual media::VideoState* CreateStream(stream_id sid,
+  virtual media::VideoState* CreateStream(media::stream_id sid,
                                           const common::uri::Url& uri,
                                           media::AppOptions opt,
                                           media::ComplexOptions copt);

@@ -25,6 +25,6 @@ PlayerOptions::PlayerOptions()
       default_size(width, height),
       screen_size(0, 0),
       audio_volume(volume),
-      last_showed_channel_id(invalid_stream_id) {}
+      last_showed_channel_id(media::invalid_stream_id) {}
 
 }  // namespace fastoplayer

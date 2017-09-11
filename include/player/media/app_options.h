@@ -20,7 +20,7 @@
 
 #include <string>  // for string
 
-#include <player/ffmpeg_config.h>
+#include <player/media/ffmpeg_config.h>
 
 extern "C" {
 #include <libavutil/avutil.h>  // for AVMediaType::AVMEDIA_TYPE_NB
