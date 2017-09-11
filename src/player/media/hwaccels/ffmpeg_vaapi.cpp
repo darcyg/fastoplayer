@@ -206,4 +206,5 @@ void vaapi_uninit(AVCodecContext* decoder_ctx) {
   ist->hwaccel_retrieve_data = NULL;
 }
 
-}}
+}  // namespace media
+}  // namespace fastoplayer

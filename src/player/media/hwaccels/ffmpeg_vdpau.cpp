@@ -169,5 +169,5 @@ void vdpau_uninit(AVCodecContext* decoder_ctx) {
   av_freep(&decoder_ctx->hwaccel_context);
 }
 
-}
-}
+}  // namespace media
+}  // namespace fastoplayer

@@ -18,13 +18,13 @@
 
 #include <player/media/video_state.h>
 
-#include <condition_variable>  // for cv_status, cv_status::...
 #include <errno.h>             // for ENOMEM, EINVAL, EAGAIN
 #include <inttypes.h>          // for PRIx64
 #include <math.h>              // for fabs, exp, log
 #include <stdio.h>             // for snprintf
 #include <stdlib.h>            // for NULL, abs, calloc, free
 #include <string.h>            // for memset, strcmp, strlen
+#include <condition_variable>  // for cv_status, cv_status::...
 
 extern "C" {
 #include <libavcodec/avcodec.h>        // for AVCodecContext, AVCode...
@@ -1591,8 +1591,9 @@ int VideoState::VideoThread() {
           "size:%dx%d format:%s "
           "serial:%d",
           last_w, last_h, static_cast<const char*>(av_x_if_null(av_get_pix_fmt_name(last_format), "none")), 0,
-          frame->width, frame->height, static_cast<const char*>(av_x_if_null(
-                                           av_get_pix_fmt_name(static_cast<AVPixelFormat>(frame->format)), "none")),
+          frame->width, frame->height,
+          static_cast<const char*>(
+              av_x_if_null(av_get_pix_fmt_name(static_cast<AVPixelFormat>(frame->format)), "none")),
           0);
       DEBUG_LOG() << mess;
       avfilter_graph_free(&graph);

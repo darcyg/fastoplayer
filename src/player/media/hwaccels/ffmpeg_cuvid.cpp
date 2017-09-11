@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "client/player/media/hwaccels/ffmpeg_cuvid.h"
+#include <player/media/hwaccels/ffmpeg_cuvid.h>
 
 #include <errno.h>   // for ENOMEM
 #include <stddef.h>  // for NULL
@@ -31,11 +31,9 @@ extern "C" {
 
 #include <common/logger.h>  // for COMPACT_LOG_ERROR, ERROR_LOG
 
-#include "client/player/media/ffmpeg_internal.h"
+#include <player/media/ffmpeg_internal.h>
 
-namespace fastotv {
-namespace client {
-namespace player {
+namespace fastoplayer {
 namespace media {
 
 int cuvid_init(AVCodecContext* decoder_ctx) {
@@ -83,6 +81,4 @@ void cuvid_uninit(AVCodecContext* decoder_ctx) {
 }
 
 }  // namespace media
-}  // namespace player
-}  // namespace client
-}  // namespace fastotv
+}  // namespace fastoplayer
