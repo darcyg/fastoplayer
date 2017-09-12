@@ -122,6 +122,7 @@ class VideoState {
 
  private:
   static int decode_interrupt_callback(void* user_data);
+  stream_format_t GetStreamFormat() const;
 
   void StreamSeek(int64_t pos, int64_t rel, bool seek_by_bytes);
   frames::VideoFrame* GetVideoFrame();

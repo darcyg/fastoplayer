@@ -93,6 +93,9 @@ int main_simple_player_application(int argc,
   av_dict_free(&sws_dict);
   av_dict_free(&format_opts);
   av_dict_free(&codec_opts);
+  // save config file
+  err = fastoplayer::save_config_file(config_absolute_path, &main_options);
+
   return res;
 }
 

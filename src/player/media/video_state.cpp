@@ -1031,18 +1031,17 @@ frames::VideoFrame* VideoState::TryToGetVideoFrame() {
     return nullptr;
   }
 
-  const bool is_video_open = vstream_->IsOpened();
-  const bool is_audio_open = astream_->IsOpened();
-  PacketQueue* video_packet_queue = vstream_->GetQueue();
-  PacketQueue* audio_packet_queue = astream_->GetQueue();
+  const stream_format_t fmt = GetStreamFormat();
 
   int aqsize = 0, vqsize = 0;
   bandwidth_t video_bandwidth = 0, audio_bandwidth = 0;
-  if (is_video_open) {
+  if (fmt & HAVE_VIDEO_STREAM) {
+    PacketQueue* video_packet_queue = vstream_->GetQueue();
     vqsize = video_packet_queue->GetSize();
     video_bandwidth = vstream_->Bandwidth();
   }
-  if (is_audio_open) {
+  if (fmt & HAVE_AUDIO_STREAM) {
+    PacketQueue* audio_packet_queue = astream_->GetQueue();
     aqsize = audio_packet_queue->GetSize();
     audio_bandwidth = astream_->Bandwidth();
   }
@@ -1051,16 +1050,14 @@ frames::VideoFrame* VideoState::TryToGetVideoFrame() {
   stats_->master_clock = GetMasterClock();
   stats_->video_clock = vstream_->GetClock();
   stats_->audio_clock = astream_->GetClock();
-  stats_->fmt = (is_audio_open && is_video_open)
-                    ? (HAVE_VIDEO_STREAM | HAVE_AUDIO_STREAM)
-                    : (is_video_open ? HAVE_VIDEO_STREAM : (is_audio_open ? HAVE_AUDIO_STREAM : UNKNOWN_STREAM));
+  stats_->fmt = fmt;
   stats_->audio_queue_size = aqsize;
   stats_->video_queue_size = vqsize;
   stats_->audio_bandwidth = audio_bandwidth;
   stats_->video_bandwidth = video_bandwidth;
   stats_->active_hwaccel = input_st_->active_hwaccel_id;
 
-  if (is_video_open && video_frame_queue_) {
+  if (fmt & HAVE_VIDEO_STREAM && video_frame_queue_) {
     frames::VideoFrame* fr = GetVideoFrame();
     force_refresh_ = false;
     return fr;
@@ -1312,16 +1309,29 @@ int VideoState::ReadRoutine() {
     }
   }
 
+  const stream_format_t fmt = GetStreamFormat();
   DesireBytesPerSec video_bandwidth_calc = video_stream->DesireBandwith();
-  if (video_stream->IsOpened()) {
-    if (video_bandwidth_calc.IsValid()) {
-      WARNING_LOG() << "Can't calculate bandwidth.";
+  if (fmt & HAVE_VIDEO_STREAM) {
+    if (!video_bandwidth_calc.IsValid()) {
+      WARNING_LOG() << "Can't calculate video bandwidth.";
     }
   }
   DesireBytesPerSec audio_bandwidth_calc = audio_stream->DesireBandwith();
-  if (audio_stream->IsOpened()) {
-    DCHECK(audio_bandwidth_calc.IsValid());
+  if (fmt & HAVE_AUDIO_STREAM) {
+    if (!audio_bandwidth_calc.IsValid()) {
+      WARNING_LOG() << "Can't calculate audio bandwidth.";
+    }
   }
+
+  if (fmt == (HAVE_VIDEO_STREAM | HAVE_AUDIO_STREAM)) {
+  } else if (fmt == HAVE_VIDEO_STREAM) {
+    opt_.av_sync_type = AV_SYNC_VIDEO_MASTER;
+  } else if (fmt == HAVE_AUDIO_STREAM) {
+    opt_.av_sync_type = AV_SYNC_AUDIO_MASTER;
+  } else {
+    DNOTREACHED();
+  }
+
   const DesireBytesPerSec band = video_bandwidth_calc + audio_bandwidth_calc;
   if (ic_->bit_rate) {
     bandwidth_t byte_per_sec = ic_->bit_rate / 8;
@@ -1445,6 +1455,14 @@ int VideoState::ReadRoutine() {
     handler_->HandleQuitStream(this, 0, common::Error());
   }
   return SUCCESS_RESULT_VALUE;
+}
+
+stream_format_t VideoState::GetStreamFormat() const {
+  const bool is_video_open = vstream_->IsOpened();
+  const bool is_audio_open = astream_->IsOpened();
+  return (is_audio_open && is_video_open)
+             ? (HAVE_VIDEO_STREAM | HAVE_AUDIO_STREAM)
+             : (is_video_open ? HAVE_VIDEO_STREAM : (is_audio_open ? HAVE_AUDIO_STREAM : UNKNOWN_STREAM));
 }
 
 int VideoState::decode_interrupt_callback(void* user_data) {
@@ -1591,9 +1609,8 @@ int VideoState::VideoThread() {
           "size:%dx%d format:%s "
           "serial:%d",
           last_w, last_h, static_cast<const char*>(av_x_if_null(av_get_pix_fmt_name(last_format), "none")), 0,
-          frame->width, frame->height,
-          static_cast<const char*>(
-              av_x_if_null(av_get_pix_fmt_name(static_cast<AVPixelFormat>(frame->format)), "none")),
+          frame->width, frame->height, static_cast<const char*>(av_x_if_null(
+                                           av_get_pix_fmt_name(static_cast<AVPixelFormat>(frame->format)), "none")),
           0);
       DEBUG_LOG() << mess;
       avfilter_graph_free(&graph);
