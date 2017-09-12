@@ -57,9 +57,12 @@ Sdl2Application::Sdl2Application(int argc, char** argv)
     : common::application::IApplication(argc, argv),
       dispatcher_(),
       update_display_timeout_msec_(event_timeout_wait_msec),
-      cursor_visible_(false) {}
+      cursor_visible_(false) {
+  CHECK(THREAD_MANAGER()->IsMainThread());
+}
 
 Sdl2Application::~Sdl2Application() {
+  CHECK(THREAD_MANAGER()->IsMainThread());
   THREAD_MANAGER()->FreeInstance();
 }
 

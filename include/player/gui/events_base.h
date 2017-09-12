@@ -20,7 +20,7 @@
 
 #include <common/event.h>
 
-#define EVENT_LOOP_ID 1
+#define EVENT_LOOP_ID 0
 
 enum EventsType : common::IEvent::event_id_t {
   PRE_EXEC_EVENT = 0,
@@ -58,8 +58,8 @@ struct event_traits<EventsType> {
   typedef IEventEx<EventsType> event_t;
   typedef IExceptionEvent<EventsType> ex_event_t;
   typedef IListenerEx<EventsType> listener_t;
-  static const unsigned max_count = COUNT_EVENTS;
-  static const unsigned id = EVENT_LOOP_ID;
+  static const common::events_size_t max_count = COUNT_EVENTS;
+  static const common::identifier_t id = EVENT_LOOP_ID;
 };
 
 }  // namespace common
