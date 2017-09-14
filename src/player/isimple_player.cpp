@@ -24,7 +24,7 @@
 #include <common/threads/thread_manager.h>
 
 #include <common/convert2string.h>
-#include <common/file_system.h>
+#include <common/file_system/string_path_utils.h>
 #include <common/utils.h>
 
 #include <player/av_sdl_utils.h>

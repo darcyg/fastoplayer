@@ -25,7 +25,8 @@ extern "C" {
 #include <libavfilter/avfilter.h>  // for avfilter_register_all
 }
 
-#include <common/file_system.h>  // for File, create_directory
+#include <common/file_system/string_path_utils.h>
+#include <common/file_system/file_system.h>  // for File, create_directory
 
 #include <player/ffmpeg_application.h>
 
