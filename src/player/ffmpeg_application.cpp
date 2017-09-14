@@ -28,6 +28,7 @@ extern "C" {
 
 #include <common/file_system/file_system.h>
 #include <common/file_system/string_path_utils.h>
+#include <common/string_util.h>
 
 #include <player/gui/events/events.h>
 

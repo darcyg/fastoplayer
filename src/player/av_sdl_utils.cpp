@@ -18,6 +18,8 @@
 
 #include <player/av_sdl_utils.h>
 
+#include <common/sprintf.h>
+
 namespace fastoplayer {
 
 SDL_Rect CalculateDisplayRect(int scr_xleft,

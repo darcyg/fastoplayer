@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <SDL2/SDL_ttf.h>  // for TTF_Font
 
 #include <common/uri/url.h>

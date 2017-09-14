@@ -22,6 +22,7 @@
 
 #include <common/file_system/file.h>  // for ANSIFile, ascii_string_path
 #include <common/file_system/string_path_utils.h>
+#include <common/string_util.h>
 #include <common/utils.h>
 
 #include <player/media/ffmpeg_config.h>    // for CONFIG_AVFILTER

@@ -52,9 +52,8 @@ extern "C" {
 #endif
 }
 
-#include <common/error.h>                   // for Error, make_error_valu...
-#include <common/logger.h>                  // for COMPACT_LOG_WARNING
-#include <common/macros.h>                  // for ERROR_RESULT_VALUE
+#include <common/error.h>  // for Error, make_error_valu...
+#include <common/sprintf.h>
 #include <common/threads/thread_manager.h>  // for THREAD_MANAGER
 #include <common/utils.h>                   // for freeifnotnull
 
@@ -1609,8 +1608,9 @@ int VideoState::VideoThread() {
           "size:%dx%d format:%s "
           "serial:%d",
           last_w, last_h, static_cast<const char*>(av_x_if_null(av_get_pix_fmt_name(last_format), "none")), 0,
-          frame->width, frame->height, static_cast<const char*>(av_x_if_null(
-                                           av_get_pix_fmt_name(static_cast<AVPixelFormat>(frame->format)), "none")),
+          frame->width, frame->height,
+          static_cast<const char*>(
+              av_x_if_null(av_get_pix_fmt_name(static_cast<AVPixelFormat>(frame->format)), "none")),
           0);
       DEBUG_LOG() << mess;
       avfilter_graph_free(&graph);
