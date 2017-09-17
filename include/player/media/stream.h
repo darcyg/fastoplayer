@@ -26,11 +26,11 @@ extern "C" {
 #include <libavutil/rational.h>    // for AVRational
 }
 
-#include <common/macros.h>  // for DISALLOW_COPY_AND_ASSIGN
-#include <common/types.h>   // for time64_t
+#include <common/macros.h>                      // for DISALLOW_COPY_AND_ASSIGN
+#include <common/types.h>                       // for time64_t
+#include <common/media/bandwidth_estimation.h>  // for DesireBytesPerSec
 
-#include <player/media/bandwidth_estimation.h>  // for DesireBytesPerSec
-#include <player/media/types.h>                 // for clock64_t
+#include <player/media/types.h>  // for clock64_t
 
 namespace fastoplayer {
 
@@ -67,14 +67,14 @@ class Stream {
   void SyncSerialClock();
 
   PacketQueue* GetQueue() const;
-  bandwidth_t Bandwidth() const;
-  DesireBytesPerSec DesireBandwith() const;
+  common::media::bandwidth_t Bandwidth() const;
+  common::media::DesireBytesPerSec DesireBandwith() const;
   size_t TotalDownloadedBytes() const;
   void RegisterPacket(const AVPacket* packet);
 
  protected:
   Stream();
-  void SetDesireBandwith(const DesireBytesPerSec& band);
+  void SetDesireBandwith(const common::media::DesireBytesPerSec& band);
 
   AVStream* stream_st_;
 
@@ -85,7 +85,7 @@ class Stream {
   Clock* clock_;
   int stream_index_;
 
-  DesireBytesPerSec bandwidth_;
+  common::media::DesireBytesPerSec bandwidth_;
   common::time64_t start_ts_;
   size_t total_downloaded_bytes_;
 };

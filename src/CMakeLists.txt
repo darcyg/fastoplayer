@@ -297,7 +297,6 @@ SET(PLAYER_LIB_MEDIA_HEADERS
   ${CMAKE_SOURCE_DIR}/include/player/media/app_options.h
   ${CMAKE_SOURCE_DIR}/include/player/media/audio_params.h
   ${CMAKE_SOURCE_DIR}/include/player/media/av_utils.h
-  ${CMAKE_SOURCE_DIR}/include/player/media/bandwidth_estimation.h
   ${CMAKE_SOURCE_DIR}/include/player/media/clock.h
   ${CMAKE_SOURCE_DIR}/include/player/media/decoder.h
   ${CMAKE_SOURCE_DIR}/include/player/media/ffmpeg_internal.h
@@ -317,7 +316,6 @@ SET(PLAYER_LIB_MEDIA_SOURCES
   ${CMAKE_SOURCE_DIR}/src/player/media/app_options.cpp
   ${CMAKE_SOURCE_DIR}/src/player/media/audio_params.cpp
   ${CMAKE_SOURCE_DIR}/src/player/media/av_utils.cpp
-  ${CMAKE_SOURCE_DIR}/src/player/media/bandwidth_estimation.cpp
   ${CMAKE_SOURCE_DIR}/src/player/media/clock.cpp
   ${CMAKE_SOURCE_DIR}/src/player/media/decoder.cpp
   ${CMAKE_SOURCE_DIR}/src/player/media/ffmpeg_internal.cpp

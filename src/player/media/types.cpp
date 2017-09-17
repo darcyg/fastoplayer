@@ -36,12 +36,12 @@ namespace media {
 
 const stream_id invalid_stream_id = stream_id();
 
-bandwidth_t CalculateBandwidth(size_t total_downloaded_bytes, msec_t data_interval) {
+common::media::bandwidth_t CalculateBandwidth(size_t total_downloaded_bytes, msec_t data_interval) {
   if (data_interval == 0) {
     return 0;
   }
 
-  bandwidth_t bytes_per_msec = total_downloaded_bytes / data_interval;
+  common::media::bandwidth_t bytes_per_msec = total_downloaded_bytes / data_interval;
   return bytes_per_msec * 1000;
 }
 

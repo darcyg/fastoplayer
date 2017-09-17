@@ -22,6 +22,7 @@
 
 #include <common/types.h>  // for time64_t
 #include <common/uri/url.h>
+#include <common/media/types.h>
 
 #include <common/bounded_value.h>
 
@@ -30,7 +31,6 @@
 namespace fastoplayer {
 namespace media {
 
-typedef size_t bandwidth_t;
 typedef common::BoundedValue<int8_t, 0, 100> audio_volume_t;
 typedef std::string stream_id;  // must be unique
 extern const stream_id invalid_stream_id;
@@ -51,7 +51,7 @@ typedef common::time64_t msec_t;
 typedef common::time64_t clock64_t;
 clock64_t invalid_clock();
 
-bandwidth_t CalculateBandwidth(size_t total_downloaded_bytes, msec_t data_interval);
+common::media::bandwidth_t CalculateBandwidth(size_t total_downloaded_bytes, msec_t data_interval);
 
 bool IsValidClock(clock64_t clock);
 clock64_t GetRealClockTime();  // msec

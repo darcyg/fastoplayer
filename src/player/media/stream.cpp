@@ -144,7 +144,7 @@ void Stream::RegisterPacket(const AVPacket* packet) {
   total_downloaded_bytes_ += packet_size;
 }
 
-bandwidth_t Stream::Bandwidth() const {
+common::media::bandwidth_t Stream::Bandwidth() const {
   common::time64_t cur_ts = common::time::current_mstime();
   const common::time64_t data_interval = cur_ts - start_ts_;
   return CalculateBandwidth(total_downloaded_bytes_, data_interval);
@@ -154,11 +154,11 @@ size_t Stream::TotalDownloadedBytes() const {
   return total_downloaded_bytes_;
 }
 
-DesireBytesPerSec Stream::DesireBandwith() const {
+common::media::DesireBytesPerSec Stream::DesireBandwith() const {
   return bandwidth_;
 }
 
-void Stream::SetDesireBandwith(const DesireBytesPerSec& band) {
+void Stream::SetDesireBandwith(const common::media::DesireBytesPerSec& band) {
   bandwidth_ = band;
 }
 
@@ -166,15 +166,16 @@ VideoStream::VideoStream() : Stream(), frame_rate_() {}
 
 bool VideoStream::Open(int index, AVStream* av_stream_st, AVRational frame_rate) {
   AVCodecParameters* codecpar = av_stream_st->codecpar;
-  DesireBytesPerSec band;
+  common::media::DesireBytesPerSec band;
   if (codecpar->bit_rate != 0) {
-    band = VideoBitrateAverage(codecpar->bit_rate / 8);
+    band = common::media::VideoBitrateAverage(codecpar->bit_rate / 8);
   } else {
     int profile = codecpar->profile;
     if (codecpar->codec_id == AV_CODEC_ID_H264) {
-      band = CalculateDesireH264BandwidthBytesPerSec(codecpar->width, codecpar->height, av_q2d(frame_rate), profile);
+      band = common::media::CalculateDesireH264BandwidthBytesPerSec(codecpar->width, codecpar->height,
+                                                                    av_q2d(frame_rate), profile);
     } else if (codecpar->codec_id == AV_CODEC_ID_MPEG2TS) {
-      band = CalculateDesireMPEGBandwidthBytesPerSec(codecpar->width, codecpar->height);
+      band = common::media::CalculateDesireMPEGBandwidthBytesPerSec(codecpar->width, codecpar->height);
     } else {
       NOTREACHED();
     }
@@ -210,14 +211,14 @@ AudioStream::AudioStream() : Stream() {}
 
 bool AudioStream::Open(int index, AVStream* av_stream_st) {
   AVCodecParameters* codecpar = av_stream_st->codecpar;
-  DesireBytesPerSec band;
+  common::media::DesireBytesPerSec band;
   if (codecpar->bit_rate != 0) {
-    band = AudioBitrateAverage(codecpar->bit_rate / 8);
+    band = common::media::AudioBitrateAverage(codecpar->bit_rate / 8);
   } else {
     if (codecpar->codec_id == AV_CODEC_ID_AAC || codecpar->codec_id == AV_CODEC_ID_AAC_LATM) {
-      band = CalculateDesireAACBandwidthBytesPerSec(codecpar->channels);
+      band = common::media::CalculateDesireAACBandwidthBytesPerSec(codecpar->channels);
     } else if (codecpar->codec_id == AV_CODEC_ID_MP2) {
-      band = CalculateDesireMP2BandwidthBytesPerSec(codecpar->channels);
+      band = common::media::CalculateDesireMP2BandwidthBytesPerSec(codecpar->channels);
     } else {
       NOTREACHED();
     }

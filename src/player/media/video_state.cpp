@@ -61,11 +61,10 @@ extern "C" {
 
 #include <player/media/app_options.h>  // for ComplexOptions, AppOpt...
 #include <player/media/av_utils.h>
-#include <player/media/bandwidth_estimation.h>  // for DesireBytesPerSec
-#include <player/media/decoder.h>               // for VideoDecoder, AudioDec...
-#include <player/media/packet_queue.h>          // for PacketQueue
-#include <player/media/stream.h>                // for AudioStream, VideoStream
-#include <player/media/types.h>                 // for clock64_t, IsValidClock
+#include <player/media/decoder.h>       // for VideoDecoder, AudioDec...
+#include <player/media/packet_queue.h>  // for PacketQueue
+#include <player/media/stream.h>        // for AudioStream, VideoStream
+#include <player/media/types.h>         // for clock64_t, IsValidClock
 #include <player/media/video_state_handler.h>
 
 #include <player/media/frames/audio_frame.h>  // for AudioFrame
@@ -1033,7 +1032,7 @@ frames::VideoFrame* VideoState::TryToGetVideoFrame() {
   const stream_format_t fmt = GetStreamFormat();
 
   int aqsize = 0, vqsize = 0;
-  bandwidth_t video_bandwidth = 0, audio_bandwidth = 0;
+  common::media::bandwidth_t video_bandwidth = 0, audio_bandwidth = 0;
   if (fmt & HAVE_VIDEO_STREAM) {
     PacketQueue* video_packet_queue = vstream_->GetQueue();
     vqsize = video_packet_queue->GetSize();
@@ -1309,13 +1308,13 @@ int VideoState::ReadRoutine() {
   }
 
   const stream_format_t fmt = GetStreamFormat();
-  DesireBytesPerSec video_bandwidth_calc = video_stream->DesireBandwith();
+  common::media::DesireBytesPerSec video_bandwidth_calc = video_stream->DesireBandwith();
   if (fmt & HAVE_VIDEO_STREAM) {
     if (!video_bandwidth_calc.IsValid()) {
       WARNING_LOG() << "Can't calculate video bandwidth.";
     }
   }
-  DesireBytesPerSec audio_bandwidth_calc = audio_stream->DesireBandwith();
+  common::media::DesireBytesPerSec audio_bandwidth_calc = audio_stream->DesireBandwith();
   if (fmt & HAVE_AUDIO_STREAM) {
     if (!audio_bandwidth_calc.IsValid()) {
       WARNING_LOG() << "Can't calculate audio bandwidth.";
@@ -1331,11 +1330,11 @@ int VideoState::ReadRoutine() {
     DNOTREACHED();
   }
 
-  const DesireBytesPerSec band = video_bandwidth_calc + audio_bandwidth_calc;
+  const common::media::DesireBytesPerSec band = video_bandwidth_calc + audio_bandwidth_calc;
   if (ic_->bit_rate) {
-    bandwidth_t byte_per_sec = ic_->bit_rate / 8;
-    if (!band.InRange(byte_per_sec)) {
-      WARNING_LOG() << "Stream bitrate is: " << byte_per_sec << " not in our calculation range(" << band.min << "/"
+    common::media::bandwidth_t bytes_per_sec = ic_->bit_rate / 8;
+    if (!band.InRange(bytes_per_sec)) {
+      WARNING_LOG() << "Stream bitrate is: " << bytes_per_sec << " not in our calculation range(" << band.min << "/"
                     << band.max << ").";
     }
   }
@@ -1608,9 +1607,8 @@ int VideoState::VideoThread() {
           "size:%dx%d format:%s "
           "serial:%d",
           last_w, last_h, static_cast<const char*>(av_x_if_null(av_get_pix_fmt_name(last_format), "none")), 0,
-          frame->width, frame->height,
-          static_cast<const char*>(
-              av_x_if_null(av_get_pix_fmt_name(static_cast<AVPixelFormat>(frame->format)), "none")),
+          frame->width, frame->height, static_cast<const char*>(av_x_if_null(
+                                           av_get_pix_fmt_name(static_cast<AVPixelFormat>(frame->format)), "none")),
           0);
       DEBUG_LOG() << mess;
       avfilter_graph_free(&graph);

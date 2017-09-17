@@ -46,8 +46,8 @@ struct Stats {  // stream realtime statistic
   int audio_queue_size;  // bytes
   int video_queue_size;  // bytes
 
-  bandwidth_t video_bandwidth;  // bytes/s
-  bandwidth_t audio_bandwidth;  // bytes/s
+  common::media::bandwidth_t video_bandwidth;  // bytes/s
+  common::media::bandwidth_t audio_bandwidth;  // bytes/s
   HWAccelID active_hwaccel;
 
  private:
