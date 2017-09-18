@@ -19,7 +19,6 @@
 #include <player/media/video_state_handler.h>
 
 namespace fastoplayer {
-
 namespace media {
 
 VideoStateHandler::VideoStateHandler() {}
@@ -27,5 +26,4 @@ VideoStateHandler::VideoStateHandler() {}
 VideoStateHandler::~VideoStateHandler() {}
 
 }  // namespace media
-
 }  // namespace fastoplayer

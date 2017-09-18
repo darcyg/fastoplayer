@@ -27,8 +27,8 @@ extern "C" {
 }
 
 #include <common/macros.h>                      // for DISALLOW_COPY_AND_ASSIGN
-#include <common/types.h>                       // for time64_t
 #include <common/media/bandwidth_estimation.h>  // for DesireBytesPerSec
+#include <common/types.h>                       // for time64_t
 
 #include <player/media/types.h>  // for clock64_t
 
