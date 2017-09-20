@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include <stdint.h>  // for int64_t
-
 extern "C" {
 #include <libavcodec/avcodec.h>  // for AVCodecContext, AVPacket
 #include <libavutil/avutil.h>    // for AVMediaType

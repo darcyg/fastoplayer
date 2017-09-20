@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include <string>  // for string
-
 #include <player/media/ffmpeg_config.h>
 
 extern "C" {
@@ -27,11 +25,9 @@ extern "C" {
 #include <libavutil/dict.h>    // for AVDictionary
 }
 
-#include <common/macros.h>
-
 #include <player/media/types.h>  // for AvSyncType
 
-#include "ffmpeg_internal.h"  // for HWAccelID
+#include <player/media/ffmpeg_internal.h>  // for HWAccelID
 
 namespace fastoplayer {
 

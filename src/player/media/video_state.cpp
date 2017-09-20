@@ -18,14 +18,6 @@
 
 #include <player/media/video_state.h>
 
-#include <errno.h>             // for ENOMEM, EINVAL, EAGAIN
-#include <inttypes.h>          // for PRIx64
-#include <math.h>              // for fabs, exp, log
-#include <stdio.h>             // for snprintf
-#include <stdlib.h>            // for NULL, abs, calloc, free
-#include <string.h>            // for memset, strcmp, strlen
-#include <condition_variable>  // for cv_status, cv_status::...
-
 extern "C" {
 #include <libavcodec/avcodec.h>        // for AVCodecContext, AVCode...
 #include <libavcodec/version.h>        // for FF_API_EMU_EDGE
@@ -52,7 +44,6 @@ extern "C" {
 #endif
 }
 
-#include <common/error.h>  // for Error, make_error_valu...
 #include <common/sprintf.h>
 #include <common/threads/thread_manager.h>  // for THREAD_MANAGER
 #include <common/utils.h>                   // for freeifnotnull

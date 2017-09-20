@@ -22,13 +22,18 @@
 
 namespace {
 
-const std::string g_lirc_types[] = {"LIRC_KEY_OK",   "LIRC_KEY_LEFT", "LIRC_KEY_UP",  "LIRC_KEY_RIGHT",
-                                    "LIRC_KEY_DOWN", "LIRC_KEY_EXIT", "LIRC_KEY_MUTE"};
+const std::string g_lirc_types[LIRC_NUM_CODES] = {"LIRC_KEY_OK",   "LIRC_KEY_LEFT", "LIRC_KEY_UP",  "LIRC_KEY_RIGHT",
+                                                  "LIRC_KEY_DOWN", "LIRC_KEY_EXIT", "LIRC_KEY_MUTE"};
 }
 
 namespace common {
 std::string ConvertToString(LircCode value) {
-  return g_lirc_types[value];
+  if (value >= 0 && value < LIRC_NUM_CODES) {
+    return g_lirc_types[value];
+  }
+
+  DNOTREACHED();
+  return "UNKNOWN";
 }
 
 bool ConvertFromString(const std::string& from, LircCode* out) {
@@ -36,7 +41,7 @@ bool ConvertFromString(const std::string& from, LircCode* out) {
     return false;
   }
 
-  for (uint32_t i = 0; i < SIZEOFMASS(g_lirc_types); ++i) {
+  for (uint32_t i = 0; i < LIRC_NUM_CODES; ++i) {
     if (from == g_lirc_types[i]) {
       *out = static_cast<LircCode>(i);
       return true;
@@ -48,9 +53,7 @@ bool ConvertFromString(const std::string& from, LircCode* out) {
 }  // namespace common
 
 namespace fastoplayer {
-
 namespace gui {
 namespace events {}
 }  // namespace gui
-
 }  // namespace fastoplayer

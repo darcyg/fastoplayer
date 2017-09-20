@@ -28,8 +28,6 @@
 #include <SDL2/SDL_ttf.h>       // for TTF_Init, TTF_Quit
 #include <SDL2/SDL_video.h>     // for ::SDL_WINDOWEVENT_CLOSE
 
-#include <common/logger.h>                  // for COMPACT_LOG_ERROR, COM...
-#include <common/macros.h>                  // for UNUSED, DNOTREACHED
 #include <common/threads/thread_manager.h>  // for THREAD_MANAGER
 
 #include <player/gui/events/events.h>  // for QuitEvent, QuitInfo

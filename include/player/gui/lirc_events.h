@@ -29,7 +29,8 @@ enum LircCode {
   LIRC_KEY_RIGHT,
   LIRC_KEY_DOWN,
   LIRC_KEY_EXIT,
-  LIRC_KEY_MUTE
+  LIRC_KEY_MUTE,
+  LIRC_NUM_CODES
 };
 
 namespace common {

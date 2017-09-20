@@ -18,13 +18,9 @@
 
 #pragma once
 
-#include <stdint.h>  // for int64_t
-
 extern "C" {
 #include <libavutil/frame.h>
 }
-
-#include <common/macros.h>
 
 #include <player/media/types.h>
 

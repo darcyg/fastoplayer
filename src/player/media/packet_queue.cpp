@@ -18,8 +18,6 @@
 
 #include <player/media/packet_queue.h>
 
-#include <stddef.h>  // for NULL
-
 namespace fastoplayer {
 
 namespace media {

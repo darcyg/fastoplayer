@@ -18,10 +18,6 @@
 
 #include <player/draw/font.h>
 
-#include <math.h>
-
-#include <common/utils.h>
-
 #include <player/draw/draw.h>
 
 namespace fastoplayer {

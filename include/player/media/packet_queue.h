@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include <stdint.h>  // for int64_t
-
 #include <atomic>
 #include <condition_variable>
 #include <mutex>
@@ -32,7 +30,6 @@ extern "C" {
 }
 
 #include <common/macros.h>  // for DISALLOW_COPY_AND_ASSIGN
-#include <common/types.h>
 
 namespace fastoplayer {
 

@@ -1,7 +1,5 @@
 #include <player/media/ffmpeg_internal.h>
 
-#include <stddef.h>  // for NULL
-
 #ifdef HAVE_VDPAU
 #include <player/media/hwaccels/ffmpeg_vdpau.h>
 #endif
@@ -49,7 +47,7 @@ const HWAccel hwaccels[] = {
     HWAccel()};
 
 size_t hwaccel_count() {
-  return FF_ARRAY_ELEMS(hwaccels) - 1;
+  return SIZEOFMASS(hwaccels) - 1;
 }
 
 const HWAccel* get_hwaccel(enum AVPixelFormat pix_fmt) {

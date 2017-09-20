@@ -22,12 +22,7 @@
 #include <condition_variable>
 #include <mutex>
 
-#include <common/logger.h>  // for COMPACT_LOG_FILE_CRIT
-#include <common/macros.h>  // for DCHECK
-#include <common/types.h>
-
 namespace fastoplayer {
-
 namespace media {
 namespace frames {
 
@@ -157,5 +152,4 @@ class RingBuffer {
 
 }  // namespace frames
 }  // namespace media
-
 }  // namespace fastoplayer

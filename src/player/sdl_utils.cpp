@@ -25,9 +25,6 @@ extern "C" {
 #include <libavutil/common.h>
 }
 
-#include <common/macros.h>
-#include <common/sprintf.h>
-
 #include <player/media/audio_params.h>  // for AudioParams
 
 /* Calculate actual buffer size keeping in mind not cause too frequent audio

@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include <stdint.h>  // for int64_t
-
 #include <player/media/frames/ring_buffer.h>  // for RingBuffer
 
 namespace fastoplayer {

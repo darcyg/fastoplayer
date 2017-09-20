@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include <stdint.h>  // for int64_t
-
 #include <common/media/types.h>
 #include <common/types.h>  // for time64_t
 #include <common/uri/url.h>

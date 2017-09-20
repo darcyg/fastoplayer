@@ -594,7 +594,7 @@ void ISimplePlayer::DrawPlayingStatus() {
   uint32_t mod = frames_per_sec * no_data_panic_sec;
   bool need_to_check_is_alive = video_frames_handled_ % mod == 0;
   if (need_to_check_is_alive) {
-    INFO_LOG() << "No data checkpoint.";
+    DEBUG_LOG() << "No data checkpoint.";
     media::VideoState::stats_t stats = stream_->GetStatistic();
     media::clock64_t cl = stats->master_pts;
     if (!stream_->IsPaused() && (last_pts_checkpoint_ == cl && cl != media::invalid_clock())) {

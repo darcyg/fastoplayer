@@ -18,16 +18,10 @@
 
 #include <player/media/decoder.h>
 
-#include <errno.h>   // for EAGAIN
-#include <stddef.h>  // for NULL
-
 extern "C" {
 #include <libavutil/error.h>        // for AVERROR, AVERROR_EOF
 #include <libavutil/mathematics.h>  // for av_rescale_q
 }
-
-#include <common/logger.h>  // for COMPACT_LOG_ERROR, COMPACT_LOG...
-#include <common/macros.h>  // for CHECK, NOTREACHED
 
 #include <player/media/packet_queue.h>  // for PacketQueue
 
