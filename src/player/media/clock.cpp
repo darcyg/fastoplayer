@@ -19,7 +19,6 @@
 #include <player/media/clock.h>
 
 namespace fastoplayer {
-
 namespace media {
 
 Clock::Clock() : paused_(false), speed_(1.0) {
@@ -59,5 +58,4 @@ void Clock::SetPaused(bool paused) {
 }
 
 }  // namespace media
-
 }  // namespace fastoplayer

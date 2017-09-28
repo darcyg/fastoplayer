@@ -20,10 +20,6 @@
 
 #include <SDL2/SDL_audio.h>
 
-extern "C" {
-#include <libavutil/rational.h>  // for AVRational
-}
-
 #include <common/macros.h>
 
 namespace fastoplayer {

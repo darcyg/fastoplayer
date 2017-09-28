@@ -25,7 +25,6 @@ extern "C" {
 #include <player/media/types.h>
 
 namespace fastoplayer {
-
 namespace media {
 namespace frames {
 
@@ -48,5 +47,4 @@ struct BaseFrame {
 
 }  // namespace frames
 }  // namespace media
-
 }  // namespace fastoplayer

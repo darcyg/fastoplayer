@@ -17,7 +17,6 @@
 #endif
 
 namespace fastoplayer {
-
 namespace media {
 
 AVBufferRef* hw_device_ctx = NULL;
@@ -60,5 +59,4 @@ const HWAccel* get_hwaccel(enum AVPixelFormat pix_fmt) {
 }
 
 }  // namespace media
-
 }  // namespace fastoplayer

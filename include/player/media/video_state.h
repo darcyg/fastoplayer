@@ -18,12 +18,9 @@
 
 #pragma once
 
-#include <stdint.h>  // for int64_t, uint8_t
-
 #include <condition_variable>
 #include <memory>
 #include <mutex>
-#include <string>  // for string
 
 #include <player/media/ffmpeg_config.h>  // for CONFIG_AVFILTER
 
@@ -58,7 +55,6 @@ class Thread;
 #define SAMPLE_QUEUE_SIZE 9
 
 namespace fastoplayer {
-
 namespace media {
 
 class VideoStateHandler;
@@ -252,5 +248,4 @@ class VideoState {
 };
 
 }  // namespace media
-
 }  // namespace fastoplayer

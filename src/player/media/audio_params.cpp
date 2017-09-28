@@ -19,7 +19,5 @@
 #include <player/media/audio_params.h>
 
 namespace fastoplayer {
-
 namespace media {}
-
 }  // namespace fastoplayer

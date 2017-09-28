@@ -21,7 +21,6 @@
 #include <player/media/types.h>  // for clock64_t
 
 namespace fastoplayer {
-
 namespace media {
 
 class Clock {
@@ -47,5 +46,4 @@ class Clock {
 };
 
 }  // namespace media
-
 }  // namespace fastoplayer

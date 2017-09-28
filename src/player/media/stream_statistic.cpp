@@ -26,7 +26,6 @@
 #define VIDEO_AUDIO_TEXT "A-V"
 
 namespace fastoplayer {
-
 namespace media {
 
 Stats::Stats()
@@ -80,5 +79,4 @@ std::string ConvertStreamFormatToString(stream_format_t fmt) {
 }
 
 }  // namespace media
-
 }  // namespace fastoplayer

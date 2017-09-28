@@ -18,10 +18,6 @@
 
 #pragma once
 
-#include <inttypes.h>  // for PRIx64
-#include <stdio.h>     // for snprintf
-#include <string>      // for string
-
 #include <player/media/ffmpeg_config.h>  // for CONFIG_AVDEVICE
 
 extern "C" {
@@ -33,7 +29,6 @@ extern "C" {
 }
 
 #include <common/convert2string.h>  // for ConvertFromString
-#include <common/macros.h>          // for DISALLOW_COPY_AND_ASSIGN
 
 void show_license();
 void show_version();

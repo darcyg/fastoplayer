@@ -33,7 +33,6 @@ extern "C" {
 #include <player/media/types.h>  // for clock64_t
 
 namespace fastoplayer {
-
 namespace media {
 
 class Clock;
@@ -115,5 +114,4 @@ class AudioStream : public Stream {
 };
 
 }  // namespace media
-
 }  // namespace fastoplayer

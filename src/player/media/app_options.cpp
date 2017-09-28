@@ -19,7 +19,6 @@
 #include <player/media/app_options.h>
 
 namespace fastoplayer {
-
 namespace media {
 
 AppOptions::AppOptions()
@@ -111,5 +110,4 @@ ComplexOptions& ComplexOptions::operator=(const ComplexOptions& rhs) {
 }
 
 }  // namespace media
-
 }  // namespace fastoplayer

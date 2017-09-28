@@ -104,9 +104,7 @@ int cmp_audio_fmts(enum AVSampleFormat fmt1, int64_t channel_count1, enum AVSamp
 }  // namespace
 
 namespace fastoplayer {
-
 namespace media {
-
 namespace {
 
 enum AVPixelFormat get_format(AVCodecContext* s, const enum AVPixelFormat* pix_fmts) {

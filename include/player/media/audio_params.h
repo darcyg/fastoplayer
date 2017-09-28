@@ -28,7 +28,6 @@ extern "C" {
 #define AUDIO_MIN_BUFFER_SIZE 512
 
 namespace fastoplayer {
-
 namespace media {
 
 struct AudioParams {
@@ -41,5 +40,4 @@ struct AudioParams {
 };
 
 }  // namespace media
-
 }  // namespace fastoplayer

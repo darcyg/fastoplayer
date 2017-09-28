@@ -21,7 +21,6 @@
 #include <player/media/types.h>  // for clock64_t
 
 namespace fastoplayer {
-
 namespace media {
 
 typedef uint32_t stream_format_t;
@@ -57,5 +56,4 @@ struct Stats {  // stream realtime statistic
 std::string ConvertStreamFormatToString(stream_format_t fmt);
 
 }  // namespace media
-
 }  // namespace fastoplayer

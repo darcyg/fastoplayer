@@ -24,11 +24,6 @@
 #include <winbase.h>
 #endif
 
-#include <errno.h>   // for EINVAL, ENOMEM, ENOSYS
-#include <stddef.h>  // for size_t
-#include <stdint.h>  // for int64_t, uint64_t, uint8_t, etc
-#include <string.h>  // for strcmp, strchr, strlen, etc
-
 #include <iostream>
 
 /* Include only the enabled headers since some compilers (namely, Sun

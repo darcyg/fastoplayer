@@ -19,7 +19,5 @@
 #include <player/media/frames/ring_buffer.h>
 
 namespace fastoplayer {
-
 namespace media {}  // namespace media
-
 }  // namespace fastoplayer

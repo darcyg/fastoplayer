@@ -19,7 +19,6 @@
 #include <player/media/packet_queue.h>
 
 namespace fastoplayer {
-
 namespace media {
 
 PacketQueue::PacketQueue() : queue_(), size_(0), duration_(0), abort_request_(true), cond_(), mutex_() {}
@@ -131,5 +130,4 @@ PacketQueue::~PacketQueue() {
 }
 
 }  // namespace media
-
 }  // namespace fastoplayer

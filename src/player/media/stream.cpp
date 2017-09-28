@@ -28,7 +28,6 @@
 #include <player/media/packet_queue.h>  // for PacketQueue
 
 namespace fastoplayer {
-
 namespace media {
 
 Stream::Stream()
@@ -229,5 +228,4 @@ bool AudioStream::Open(int index, AVStream* av_stream_st) {
 }
 
 }  // namespace media
-
 }  // namespace fastoplayer

@@ -32,7 +32,6 @@ extern "C" {
 #include <common/macros.h>  // for DISALLOW_COPY_AND_ASSIGN
 
 namespace fastoplayer {
-
 namespace media {
 
 class PacketQueue {  // compressed queue data
@@ -68,5 +67,4 @@ class PacketQueue {  // compressed queue data
 };
 
 }  // namespace media
-
 }  // namespace fastoplayer

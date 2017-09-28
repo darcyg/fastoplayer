@@ -26,7 +26,6 @@ extern "C" {
 #include <player/media/packet_queue.h>  // for PacketQueue
 
 namespace fastoplayer {
-
 namespace media {
 
 Decoder::Decoder(AVCodecContext* avctx, PacketQueue* queue) : avctx_(avctx), queue_(queue), finished_(false) {
@@ -186,5 +185,4 @@ int VideoDecoder::DecodeFrame(AVFrame* frame) {
 }
 
 }  // namespace media
-
 }  // namespace fastoplayer

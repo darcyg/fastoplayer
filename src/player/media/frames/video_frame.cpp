@@ -19,7 +19,6 @@
 #include <player/media/frames/video_frame.h>
 
 namespace fastoplayer {
-
 namespace media {
 namespace frames {
 
@@ -35,5 +34,4 @@ clock64_t CalcDurationBetweenVideoFrames(VideoFrame* vp, VideoFrame* nextvp, clo
 
 }  // namespace frames
 }  // namespace media
-
 }  // namespace fastoplayer

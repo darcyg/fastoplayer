@@ -21,7 +21,6 @@
 #include <player/media/frames/base_frame.h>
 
 namespace fastoplayer {
-
 namespace media {
 namespace frames {
 
@@ -36,5 +35,4 @@ struct AudioFrame : public BaseFrame {
 
 }  // namespace frames
 }  // namespace media
-
 }  // namespace fastoplayer

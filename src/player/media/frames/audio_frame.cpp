@@ -19,7 +19,6 @@
 #include <player/media/frames/audio_frame.h>
 
 namespace fastoplayer {
-
 namespace media {
 namespace frames {
 
@@ -27,5 +26,4 @@ AudioFrame::AudioFrame() : BaseFrame(), format(AV_SAMPLE_FMT_NONE) {}
 
 }  // namespace frames
 }  // namespace media
-
 }  // namespace fastoplayer
