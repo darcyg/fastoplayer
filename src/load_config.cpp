@@ -18,6 +18,8 @@
 
 #include "load_config.h"
 
+#include <algorithm>
+
 #include <common/file_system/file.h>  // for ANSIFile, ascii_string_path
 #include <common/file_system/string_path_utils.h>
 #include <common/string_util.h>

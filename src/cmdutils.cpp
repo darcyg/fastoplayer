@@ -24,6 +24,7 @@
 #include <winbase.h>
 #endif
 
+#include <algorithm>
 #include <iostream>
 
 /* Include only the enabled headers since some compilers (namely, Sun
