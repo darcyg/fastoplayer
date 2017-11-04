@@ -80,8 +80,8 @@ void avlog_cb(void*, int level, const char* sz_fmt, va_list varg) {
     return;
   }
 
-  static std::ostream& info_stream = common::logging::LogMessage(common::logging::LOG_LEVEL_INFO, false).Stream();
-  info_stream << ret;
+  static common::logging::LogMessage info_msg(common::logging::LOG_LEVEL_INFO, false);
+  info_msg.Stream() << ret;
   free(ret);
 }
 

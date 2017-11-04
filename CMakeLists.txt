@@ -1,5 +1,5 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0)
-PROJECT(FastoPlayer VERSION 1.0.0.0 LANGUAGES CXX C)
+PROJECT(FastoPlayer VERSION 1.1.0.0 LANGUAGES CXX C)
 SET(CMAKE_CXX_STANDARD 11)
 
 SET(PROJECT_NAME_TITLE ${PROJECT_NAME} CACHE STRING "Title for ${PROJECT_NAME}")
@@ -11,7 +11,7 @@ SET(PROJECT_MAINTAINER_MAIL "atopilski@fastogt.com" CACHE STRING "Internet mail 
 SET(PROJECT_MAINTAINER_NAME "Alexandr Topilski" CACHE STRING "Name of ${PROJECT_NAME} mainteiner")
 SET(PROJECT_GITHUB_FORK "www.github.com/fastogt/fastoplayer" CACHE STRING "Git fork of ${PROJECT_NAME}")
 SET(PROJECT_GITHUB_ISSUES "www.github.com/fastogt/fastoplayer/issues" CACHE STRING "Git issue link for ${PROJECT_NAME}")
-SET(PROJECT_BUILD_TYPE_VERSION "release") #alfa, beta, rc, release
+SET(PROJECT_BUILD_TYPE_VERSION "alfa") #alfa, beta, rc, release
 
 SET(PROJECT_SUMMARY "Cross-platform open source player."
   CACHE STRING "Short description of ${PROJECT_NAME}")
@@ -61,7 +61,6 @@ OPTION(BUILD_PLAYER "Build player" OFF)
 OPTION(DEVELOPER_ENABLE_TESTS "Enable tests for ${PROJECT_NAME_TITLE} project" OFF)
 OPTION(DEVELOPER_CHECK_STYLE "Enable check style for ${PROJECT_NAME_TITLE} project" OFF)
 OPTION(DEVELOPER_GENERATE_DOCS "Generate docs api for ${PROJECT_NAME_TITLE} project" OFF)
-OPTION(DEVELOPER_COVERALLS_UPLOAD "Upload the generated coveralls json" ON)
 OPTION(DCHECK_ALWAYS_ON "Enable dcheck in release." OFF)
 
 MESSAGE(STATUS "BUILD_64X: ${BUILD_64X}")
