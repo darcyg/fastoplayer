@@ -164,11 +164,13 @@ void Window::Draw(SDL_Renderer* render) {
   }
 
   if (!IsTransparent()) {
-    draw::FillRectColor(render, rect_, back_ground_color_);
+    common::Error err =draw::FillRectColor(render, rect_, back_ground_color_);
+    DCHECK(!err) << err->GetDescription();
   }
 
   if (IsBordered()) {
-    draw::DrawBorder(render, rect_, border_color_);
+    common::Error err = draw::DrawBorder(render, rect_, border_color_);
+    DCHECK(!err) << err->GetDescription();
   }
 }
 

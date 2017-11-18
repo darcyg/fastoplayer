@@ -80,7 +80,8 @@ void LineEdit::Draw(SDL_Renderer* render) {
       int width_pos = text_.empty() ? cursor_width : text_rect.w;
       int cursor_height = text_rect.h - cursor_width * 2;
       SDL_Rect cursor_rect = {width_pos, text_rect.y + cursor_width, cursor_width, cursor_height};
-      draw::FillRectColor(render, cursor_rect, draw::black_color);
+      common::Error err = draw::FillRectColor(render, cursor_rect, draw::black_color);
+      DCHECK(!err) << err->GetDescription();
     }
   }
 }

@@ -103,7 +103,8 @@ void IListBox::Draw(SDL_Renderer* render) {
     bool is_active_row = have_active_row && preselected_row_ == i;
     DrawRow(render, i, is_active_row, cell_rect);
     if (is_active_row && selection_ == SINGLE_ROW_SELECT) {
-      draw::FillRectColor(render, cell_rect, selection_color_);
+      common::Error err = draw::FillRectColor(render, cell_rect, selection_color_);
+      DCHECK(!err) << err->GetDescription();
     }
     drawed++;
   }
