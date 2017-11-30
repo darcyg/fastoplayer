@@ -93,7 +93,10 @@ std::string ffmpeg_errno_to_string(int err) {
   return errbuf;
 }
 
-int cmp_audio_fmts(enum AVSampleFormat fmt1, int64_t channel_count1, enum AVSampleFormat fmt2, int64_t channel_count2) {
+bool cmp_audio_fmts(enum AVSampleFormat fmt1,
+                    int64_t channel_count1,
+                    enum AVSampleFormat fmt2,
+                    int64_t channel_count2) {
   /* If channel count == 1, planar and non-planar formats are the same */
   if (channel_count1 == 1 && channel_count2 == 1) {
     return av_get_packed_sample_fmt(fmt1) != av_get_packed_sample_fmt(fmt2);
@@ -275,7 +278,7 @@ int VideoState::StreamComponentOpen(int stream_index) {
   const char* forced_codec_name = NULL;
 
   AVRational tb = stream->time_base;
-  av_codec_set_pkt_timebase(avctx, tb);
+  avctx->pkt_timebase = tb;
   AVCodec* codec = avcodec_find_decoder(avctx->codec_id);
 
   if (avctx->codec_type == AVMEDIA_TYPE_VIDEO) {
@@ -302,11 +305,11 @@ int VideoState::StreamComponentOpen(int stream_index) {
 
   int stream_lowres = opt_.lowres;
   avctx->codec_id = codec->id;
-  if (stream_lowres > av_codec_get_max_lowres(codec)) {
-    WARNING_LOG() << "The maximum value for lowres supported by the decoder is " << av_codec_get_max_lowres(codec);
-    stream_lowres = av_codec_get_max_lowres(codec);
+  if (stream_lowres > codec->max_lowres) {
+    WARNING_LOG() << "The maximum value for lowres supported by the decoder is " << codec->max_lowres;
+    stream_lowres = codec->max_lowres;
   }
-  av_codec_set_lowres(avctx, stream_lowres);
+  avctx->lowres = stream_lowres;
 
 #if FF_API_EMU_EDGE
   if (stream_lowres) {
@@ -857,13 +860,11 @@ int VideoState::AudioDecodeFrame() {
   audio_frame_queue_->Pop();
 
   const AVSampleFormat sample_fmt = static_cast<AVSampleFormat>(af->frame->format);
-  int data_size =
-      av_samples_get_buffer_size(NULL, av_frame_get_channels(af->frame), af->frame->nb_samples, sample_fmt, 1);
+  int data_size = av_samples_get_buffer_size(NULL, af->frame->channels, af->frame->nb_samples, sample_fmt, 1);
   int64_t dec_channel_layout =
-      (af->frame->channel_layout &&
-       av_frame_get_channels(af->frame) == av_get_channel_layout_nb_channels(af->frame->channel_layout))
+      (af->frame->channel_layout && af->frame->channels == av_get_channel_layout_nb_channels(af->frame->channel_layout))
           ? af->frame->channel_layout
-          : av_get_default_channel_layout(av_frame_get_channels(af->frame));
+          : av_get_default_channel_layout(af->frame->channels);
   int wanted_nb_samples = SynchronizeAudio(af->frame->nb_samples);
 
   if (af->frame->format != audio_src_.fmt || dec_channel_layout != audio_src_.channel_layout ||
@@ -873,14 +874,14 @@ int VideoState::AudioDecodeFrame() {
                                   sample_fmt, af->frame->sample_rate, 0, NULL);
     if (!swr_ctx_ || swr_init(swr_ctx_) < 0) {
       ERROR_LOG() << "Cannot create sample rate converter for conversion of " << af->frame->sample_rate << " Hz "
-                  << av_get_sample_fmt_name(sample_fmt) << " " << av_frame_get_channels(af->frame) << " channels to "
+                  << av_get_sample_fmt_name(sample_fmt) << " " << af->frame->channels << " channels to "
                   << audio_tgt_.freq << " Hz " << av_get_sample_fmt_name(audio_tgt_.fmt) << " " << audio_tgt_.channels
                   << " channels!";
       swr_free(&swr_ctx_);
       return ERROR_RESULT_VALUE;
     }
     audio_src_.channel_layout = dec_channel_layout;
-    audio_src_.channels = av_frame_get_channels(af->frame);
+    audio_src_.channels = af->frame->channels;
     audio_src_.freq = af->frame->sample_rate;
     audio_src_.fmt = sample_fmt;
   }
@@ -1480,12 +1481,12 @@ int VideoState::AudioThread() {
       AVRational tb = {1, frame->sample_rate};
 
 #if CONFIG_AVFILTER
-      int64_t dec_channel_layout = get_valid_channel_layout(frame->channel_layout, av_frame_get_channels(frame));
+      int64_t dec_channel_layout = get_valid_channel_layout(frame->channel_layout, frame->channels);
 
-      int reconfigure = cmp_audio_fmts(audio_filter_src_.fmt, audio_filter_src_.channels,
-                                       static_cast<AVSampleFormat>(frame->format), av_frame_get_channels(frame)) ||
-                        audio_filter_src_.channel_layout != dec_channel_layout ||
-                        audio_filter_src_.freq != frame->sample_rate;
+      bool reconfigure = cmp_audio_fmts(audio_filter_src_.fmt, audio_filter_src_.channels,
+                                        static_cast<AVSampleFormat>(frame->format), frame->channels) ||
+                         audio_filter_src_.channel_layout != dec_channel_layout ||
+                         audio_filter_src_.freq != frame->sample_rate;
 
       if (reconfigure) {
         char buf1[1024], buf2[1024];
@@ -1496,12 +1497,12 @@ int VideoState::AudioThread() {
             "to rate:%d ch:%d "
             "fmt:%s layout:%s serial:%d\n",
             audio_filter_src_.freq, audio_filter_src_.channels, av_get_sample_fmt_name(audio_filter_src_.fmt), buf1, 0,
-            frame->sample_rate, av_frame_get_channels(frame),
-            av_get_sample_fmt_name(static_cast<AVSampleFormat>(frame->format)), buf2, 0);
+            frame->sample_rate, frame->channels, av_get_sample_fmt_name(static_cast<AVSampleFormat>(frame->format)),
+            buf2, 0);
         DEBUG_LOG() << mess;
 
         audio_filter_src_.fmt = static_cast<AVSampleFormat>(frame->format);
-        audio_filter_src_.channels = av_frame_get_channels(frame);
+        audio_filter_src_.channels = frame->channels;
         audio_filter_src_.channel_layout = dec_channel_layout;
         audio_filter_src_.freq = frame->sample_rate;
 
@@ -1528,7 +1529,7 @@ int VideoState::AudioThread() {
         }
 
         af->pts = IsValidPts(frame->pts) ? frame->pts * q2d_diff(tb) : invalid_clock();
-        af->pos = av_frame_get_pkt_pos(frame);
+        af->pos = frame->pkt_pos;
         af->format = static_cast<AVSampleFormat>(frame->format);
         AVRational tmp = {frame->nb_samples, frame->sample_rate};
         af->duration = q2d_diff(tmp);
@@ -1645,7 +1646,7 @@ int VideoState::VideoThread() {
       AVRational fr = {frame_rate.den, frame_rate.num};
       clock64_t duration = (frame_rate.num && frame_rate.den ? q2d_diff(fr) : 0);
       clock64_t pts = IsValidPts(frame->pts) ? frame->pts * q2d_diff(tb) : invalid_clock();
-      ret = QueuePicture(frame, pts, duration, av_frame_get_pkt_pos(frame));
+      ret = QueuePicture(frame, pts, duration, frame->pkt_pos);
       av_frame_unref(frame);
 #if CONFIG_AVFILTER
     }

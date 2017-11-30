@@ -117,11 +117,17 @@ int AudioDecoder::DecodeFrame(AVFrame* frame) {
 
     AVRational tb = {1, frame->sample_rate};
     if (IsValidPts(frame->pts)) {
-      AVRational stb = av_codec_get_pkt_timebase(avctx_);
-      frame->pts = av_rescale_q(frame->pts, stb, tb);
+      frame->pts = av_rescale_q(frame->pts, avctx_->pkt_timebase, tb);
+    /*} else if (d->next_pts != AV_NOPTS_VALUE) {
+      frame->pts = av_rescale_q(d->next_pts, d->next_pts_tb, tb);*/
     } else {
       WARNING_LOG() << "Invalid audio pts: " << frame->pts;
     }
+    /*if (IsValidPts(frame->pts)) {
+      d->next_pts = frame->pts + frame->nb_samples;
+      d->next_pts_tb = tb;
+    }*/
+
     got_frame = 1;
   } while (!got_frame && !IsFinished());
 
@@ -177,7 +183,7 @@ int VideoDecoder::DecodeFrame(AVFrame* frame) {
       return -1;
     }
 
-    frame->pts = av_frame_get_best_effort_timestamp(frame);
+    frame->pts = frame->best_effort_timestamp;
     got_frame = 1;
   } while (!got_frame && !IsFinished());
 
