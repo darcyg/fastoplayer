@@ -644,7 +644,8 @@ void ISimplePlayer::DrawPlayingStatus() {
   bool flip_v = frame->frame->linesize[0] < 0;
 
   err = draw::FlushRender(renderer_, draw::black_color);
-  DCHECK(!err) << err->GetDescription();;
+  DCHECK(!err) << err->GetDescription();
+  ;
 
   SDL_Rect rect = CalculateDisplayRect(xleft_, ytop_, window_size_.width, window_size_.height, frame->width,
                                        frame->height, frame->sar);
@@ -660,7 +661,8 @@ void ISimplePlayer::DrawInitStatus() {
   }
 
   common::Error err = draw::FlushRender(renderer_, draw::black_color);
-  DCHECK(!err) << err->GetDescription();;
+  DCHECK(!err) << err->GetDescription();
+  ;
   DrawInfo();
   SDL_RenderPresent(renderer_);
 }

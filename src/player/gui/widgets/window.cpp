@@ -164,7 +164,7 @@ void Window::Draw(SDL_Renderer* render) {
   }
 
   if (!IsTransparent()) {
-    common::Error err =draw::FillRectColor(render, rect_, back_ground_color_);
+    common::Error err = draw::FillRectColor(render, rect_, back_ground_color_);
     DCHECK(!err) << err->GetDescription();
   }
 

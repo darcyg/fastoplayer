@@ -118,8 +118,8 @@ int AudioDecoder::DecodeFrame(AVFrame* frame) {
     AVRational tb = {1, frame->sample_rate};
     if (IsValidPts(frame->pts)) {
       frame->pts = av_rescale_q(frame->pts, avctx_->pkt_timebase, tb);
-    /*} else if (d->next_pts != AV_NOPTS_VALUE) {
-      frame->pts = av_rescale_q(d->next_pts, d->next_pts_tb, tb);*/
+      /*} else if (d->next_pts != AV_NOPTS_VALUE) {
+        frame->pts = av_rescale_q(d->next_pts, d->next_pts_tb, tb);*/
     } else {
       WARNING_LOG() << "Invalid audio pts: " << frame->pts;
     }
