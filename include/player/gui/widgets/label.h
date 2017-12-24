@@ -26,10 +26,13 @@ namespace gui {
 class Label : public FontWindow {
  public:
   typedef FontWindow base_class;
+  typedef std::function<void(const std::string& text)> text_changed_callback_t;
 
   Label();
   Label(const SDL_Color& back_ground_color);
   virtual ~Label();
+
+  void SetTextChangedCallback(text_changed_callback_t cb);
 
   void SetText(const std::string& text);
   std::string GetText() const;
@@ -39,8 +42,11 @@ class Label : public FontWindow {
 
  protected:
   void DrawLabel(SDL_Renderer* render, SDL_Rect* text_rect);
+  virtual void OnTextChanged(const std::string& text);
 
+ private:
   std::string text_;
+  text_changed_callback_t text_changed_cb_;
 };
 
 }  // namespace gui

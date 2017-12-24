@@ -24,8 +24,9 @@
 #include <player/draw/draw.h>
 
 namespace fastoplayer {
-
 namespace gui {
+
+LineEdit* LineEdit::last_actived_ = nullptr;
 
 LineEdit::LineEdit() : base_class(), active_(false), start_blink_ts_(0), show_cursor_(false) {
   Init();
@@ -36,7 +37,11 @@ LineEdit::LineEdit(const SDL_Color& back_ground_color)
   Init();
 }
 
-LineEdit::~LineEdit() {}
+LineEdit::~LineEdit() {
+  if (last_actived_ == this) {
+    last_actived_ = nullptr;
+  }
+}
 
 bool LineEdit::IsActived() const {
   return active_;
@@ -77,9 +82,10 @@ void LineEdit::Draw(SDL_Renderer* render) {
     }
 
     if (show_cursor_) {
-      int width_pos = text_.empty() ? cursor_width : text_rect.w;
+      const std::string text = GetText();
+      int width_pos = text.empty() ? cursor_width : text_rect.w;
       int cursor_height = text_rect.h - cursor_width * 2;
-      SDL_Rect cursor_rect = {width_pos, text_rect.y + cursor_width, cursor_width, cursor_height};
+      SDL_Rect cursor_rect = {text_rect.x + width_pos, text_rect.y + cursor_width, cursor_width, cursor_height};
       common::Error err = draw::FillRectColor(render, cursor_rect, draw::black_color);
       DCHECK(!err) << err->GetDescription();
     }
@@ -144,7 +150,11 @@ void LineEdit::HandleKeyPressEvent(gui::events::KeyPressEvent* event) {
   } else if (kinf.ks.scancode == SDL_SCANCODE_ESCAPE) {  // escape press
     SetActived(false);
   } else if (kinf.ks.scancode == SDL_SCANCODE_BACKSPACE) {
-    text_.pop_back();
+    std::string text = GetText();
+    if (!text.empty()) {
+      text.pop_back();
+    }
+    SetText(text);
   }
 }
 
@@ -181,9 +191,10 @@ void LineEdit::HandleTextInputEvent(gui::events::TextInputEvent* event) {
   int w = 0;
   int h = 0;
   SDL_Rect r = GetRect();
-  std::string can_be_text = text_ + tinf.text;
+  std::string text = GetText();
+  std::string can_be_text = text + tinf.text;
   if (draw::GetTextSize(GetFont(), can_be_text, &w, &h) && w < r.w) {
-    text_ = can_be_text;
+    SetText(can_be_text);
   }
 }
 
@@ -202,7 +213,9 @@ void LineEdit::HandleTextEditEvent(gui::events::TextEditEvent* event) {
   }
 
   gui::events::TextEditInfo tinf = event->GetInfo();
-  text_.append(tinf.text);
+  std::string text = GetText();
+  text.append(tinf.text);
+  SetText(text);
 }
 
 void LineEdit::Init() {
@@ -214,6 +227,14 @@ void LineEdit::Init() {
 
 void LineEdit::OnActiveChanged(bool active) {
   if (active) {
+    last_actived_ = this;
+  } else {
+    if (last_actived_ == this) {
+      last_actived_ = nullptr;
+    }
+  }
+
+  if (last_actived_) {
     SDL_StartTextInput();
   } else {
     SDL_StopTextInput();
@@ -221,5 +242,4 @@ void LineEdit::OnActiveChanged(bool active) {
 }
 
 }  // namespace gui
-
 }  // namespace fastoplayer

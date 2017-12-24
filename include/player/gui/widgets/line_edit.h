@@ -60,6 +60,7 @@ class LineEdit : public Label {
 
   common::time64_t start_blink_ts_;
   bool show_cursor_;
+  static LineEdit* last_actived_;
 };
 
 }  // namespace gui

@@ -22,14 +22,19 @@ namespace fastoplayer {
 
 namespace gui {
 
-Label::Label() : base_class(), text_() {}
+Label::Label() : base_class(), text_(), text_changed_cb_() {}
 
-Label::Label(const SDL_Color& back_ground_color) : base_class(back_ground_color), text_() {}
+Label::Label(const SDL_Color& back_ground_color) : base_class(back_ground_color), text_(), text_changed_cb_() {}
 
 Label::~Label() {}
 
+void Label::SetTextChangedCallback(text_changed_callback_t cb) {
+  text_changed_cb_ = cb;
+}
+
 void Label::SetText(const std::string& text) {
   text_ = text;
+  OnTextChanged(text);
 }
 
 std::string Label::GetText() const {
@@ -37,7 +42,7 @@ std::string Label::GetText() const {
 }
 
 void Label::ClearText() {
-  text_.clear();
+  SetText(std::string());
 }
 
 void Label::Draw(SDL_Renderer* render) {
@@ -52,6 +57,12 @@ void Label::Draw(SDL_Renderer* render) {
 void Label::DrawLabel(SDL_Renderer* render, SDL_Rect* text_rect) {
   base_class::Draw(render);
   base_class::DrawText(render, text_, GetRect(), GetDrawType(), text_rect);
+}
+
+void Label::OnTextChanged(const std::string& text) {
+  if (text_changed_cb_) {
+    text_changed_cb_(text);
+  }
 }
 
 }  // namespace gui

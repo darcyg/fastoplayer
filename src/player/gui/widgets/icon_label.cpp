@@ -55,7 +55,8 @@ void IconLabel::Draw(SDL_Renderer* render) {
   int shift = icon_size_.width + space_betwen_image_and_label_;
   DrawImage(render, icon_img_, icon_rect);
   SDL_Rect text_rect = {area_rect.x + shift, area_rect.y, area_rect.w - shift, area_rect.h};
-  base_class::DrawText(render, text_, text_rect, GetDrawType());
+  const std::string text = GetText();
+  base_class::DrawText(render, text, text_rect, GetDrawType());
 }
 
 void IconLabel::DrawImage(SDL_Renderer* render, SDL_Texture* texture, const SDL_Rect& rect) {
