@@ -36,6 +36,9 @@ class LineEdit : public Label {
   LineEdit(const SDL_Color& back_ground_color);
   virtual ~LineEdit();
 
+  void SetPlaceHolder(const std::string& text);
+  std::string GetPlaceHolder() const;
+
   bool IsActived() const;
   void SetActived(bool active);
 
@@ -61,6 +64,7 @@ class LineEdit : public Label {
   common::time64_t start_blink_ts_;
   bool show_cursor_;
   static LineEdit* last_actived_;
+  std::string placeholder_;
 };
 
 }  // namespace gui

@@ -28,12 +28,12 @@ namespace gui {
 
 LineEdit* LineEdit::last_actived_ = nullptr;
 
-LineEdit::LineEdit() : base_class(), active_(false), start_blink_ts_(0), show_cursor_(false) {
+LineEdit::LineEdit() : base_class(), active_(false), start_blink_ts_(0), show_cursor_(false), placeholder_() {
   Init();
 }
 
 LineEdit::LineEdit(const SDL_Color& back_ground_color)
-    : base_class(back_ground_color), active_(false), start_blink_ts_(0), show_cursor_(false) {
+    : base_class(back_ground_color), active_(false), start_blink_ts_(0), show_cursor_(false), placeholder_() {
   Init();
 }
 
@@ -41,6 +41,14 @@ LineEdit::~LineEdit() {
   if (last_actived_ == this) {
     last_actived_ = nullptr;
   }
+}
+
+void LineEdit::SetPlaceHolder(const std::string& text) {
+  placeholder_ = text;
+}
+
+std::string LineEdit::GetPlaceHolder() const {
+  return placeholder_;
 }
 
 bool LineEdit::IsActived() const {
@@ -66,6 +74,7 @@ void LineEdit::Draw(SDL_Renderer* render) {
     return;
   }
 
+  const std::string text = GetText();
   SDL_Rect text_rect = GetRect();
   base_class::DrawLabel(render, &text_rect);
 
@@ -82,13 +91,14 @@ void LineEdit::Draw(SDL_Renderer* render) {
     }
 
     if (show_cursor_) {
-      const std::string text = GetText();
       int width_pos = text.empty() ? cursor_width : text_rect.w;
       int cursor_height = text_rect.h - cursor_width * 2;
       SDL_Rect cursor_rect = {text_rect.x + width_pos, text_rect.y + cursor_width, cursor_width, cursor_height};
       common::Error err = draw::FillRectColor(render, cursor_rect, draw::black_color);
       DCHECK(!err) << err->GetDescription();
     }
+  } else if (text.empty() && !placeholder_.empty()) {
+    draw::DrawWrappedTextInRect(render, placeholder_, GetFont(), draw::gray_color, GetRect(), &text_rect);
   }
 }
 
