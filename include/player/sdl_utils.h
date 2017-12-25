@@ -22,6 +22,8 @@
 
 #include <common/macros.h>
 
+#define INVALID_AUDIO_DEVICE_ID 0
+
 namespace fastoplayer {
 
 namespace media {
@@ -39,6 +41,7 @@ bool audio_open(void* opaque,
                 int wanted_sample_rate,
                 SDL_AudioCallback cb,
                 media::AudioParams* audio_hw_params,
-                int* audio_buff_size) WARN_UNUSED_RESULT;
+                int* audio_buff_size,
+                SDL_AudioDeviceID* audio_dev) WARN_UNUSED_RESULT;
 
 }  // namespace fastoplayer

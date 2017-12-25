@@ -68,6 +68,7 @@ ISimplePlayer::ISimplePlayer(const PlayerOptions& options)
       options_(options),
       audio_params_(nullptr),
       audio_buff_size_(0),
+      audio_device_(INVALID_AUDIO_DEVICE_ID),
       window_(NULL),
       cursor_last_shown_(0),
       volume_label_(nullptr),
@@ -224,11 +225,11 @@ common::Error ISimplePlayer::HandleRequestAudio(media::VideoState* stream,
   media::AudioParams laudio_hw_params;
   int laudio_buff_size;
   if (!audio_open(this, wanted_channel_layout, wanted_nb_channels, wanted_sample_rate, sdl_audio_callback,
-                  &laudio_hw_params, &laudio_buff_size)) {
+                  &laudio_hw_params, &laudio_buff_size, &audio_device_)) {
     return common::make_error("Can't init audio system.");
   }
 
-  SDL_PauseAudio(0);
+  SDL_PauseAudioDevice(audio_device_, 0);
   audio_params_ = new media::AudioParams(laudio_hw_params);
   audio_buff_size_ = laudio_buff_size;
 
@@ -309,7 +310,8 @@ void ISimplePlayer::HandlePostExecEvent(gui::events::PostExecEvent* event) {
       font_ = NULL;
     }
 
-    SDL_CloseAudio();
+    SDL_CloseAudioDevice(audio_device_);
+    audio_device_ = INVALID_AUDIO_DEVICE_ID;
     destroy(&audio_params_);
 
     destroy(&render_texture_);

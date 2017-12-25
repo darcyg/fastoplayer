@@ -192,6 +192,7 @@ class ISimplePlayer : public StreamHandler, public gui::events::EventListener {
 
   media::AudioParams* audio_params_;
   int audio_buff_size_;
+  SDL_AudioDeviceID audio_device_;
 
   SDL_Window* window_;
 

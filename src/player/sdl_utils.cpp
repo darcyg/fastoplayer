@@ -66,8 +66,9 @@ bool audio_open(void* opaque,
                 int wanted_sample_rate,
                 SDL_AudioCallback cb,
                 media::AudioParams* audio_hw_params,
-                int* audio_buff_size) {
-  if (!audio_hw_params || !audio_buff_size) {
+                int* audio_buff_size,
+                SDL_AudioDeviceID* audio_dev) {
+  if (!audio_hw_params || !audio_buff_size || !audio_dev) {
     return false;
   }
 
@@ -102,7 +103,9 @@ bool audio_open(void* opaque,
   wanted_spec.samples = FFMAX(AUDIO_MIN_BUFFER_SIZE, abuff_size);  // Audio buffer size in samples
   wanted_spec.callback = cb;
   wanted_spec.userdata = opaque;
-  while (SDL_OpenAudio(&wanted_spec, &spec) < 0) {
+  SDL_AudioDeviceID laudio_dev;
+  while (!(laudio_dev = SDL_OpenAudioDevice(NULL, 0, &wanted_spec, &spec,
+                                            SDL_AUDIO_ALLOW_FREQUENCY_CHANGE | SDL_AUDIO_ALLOW_CHANNELS_CHANGE))) {
     WARNING_LOG() << "SDL_OpenAudio (" << static_cast<int>(wanted_spec.channels) << " channels, " << wanted_spec.freq
                   << " Hz): " << SDL_GetError();
     wanted_spec.channels = next_nb_channels[FFMIN(7, wanted_spec.channels)];
@@ -136,6 +139,7 @@ bool audio_open(void* opaque,
 
   *audio_hw_params = laudio_hw_params;
   *audio_buff_size = spec.size;
+  *audio_dev = laudio_dev;
   return true;
 }
 
