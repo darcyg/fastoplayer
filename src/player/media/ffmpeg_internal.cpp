@@ -29,7 +29,7 @@ const HWAccel hwaccels[] = {
     {"dxva2", dxva2_init, dxva2_uninit, HWACCEL_DXVA2, AV_PIX_FMT_DXVA2_VLD},
 #endif
 #if CONFIG_VDA
-    {"vda", videotoolbox_init, videotoolbox_uninit, HWACCEL_VDA, AV_PIX_FMT_VDA},
+    {"vda", videotoolbox_init, videotoolbox_uninit, HWACCEL_VDA, AV_PIX_FMT_VIDEOTOOLBOX},
 #endif
 #if CONFIG_VIDEOTOOLBOX
     {"videotoolbox", videotoolbox_init, videotoolbox_uninit, HWACCEL_VIDEOTOOLBOX, AV_PIX_FMT_VIDEOTOOLBOX},
