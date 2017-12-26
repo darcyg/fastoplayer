@@ -26,7 +26,6 @@
 
 #cmakedefine01 HAVE_UTGETOSTYPEFROMSTRING
 
-#cmakedefine01 CONFIG_VDA
 #cmakedefine01 HAVE_VIDEOTOOLBOX
 
 #cmakedefine01 CONFIG_OMX

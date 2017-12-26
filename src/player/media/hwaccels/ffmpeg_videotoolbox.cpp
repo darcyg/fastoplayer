@@ -25,12 +25,7 @@
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavutil/avutil.h>
-#if CONFIG_VDA
-#include <libavcodec/vda.h>
-#endif
-#if CONFIG_VIDEOTOOLBOX
 #include <libavcodec/videotoolbox.h>
-#endif
 #include <libavutil/imgutils.h>
 }
 
@@ -41,7 +36,9 @@ extern "C" {
 namespace fastoplayer {
 namespace media {
 
-typedef struct VTContext { AVFrame* tmp_frame; } VTContext;
+typedef struct VTContext {
+  AVFrame* tmp_frame;
+} VTContext;
 
 char* videotoolbox_pixfmt;
 
@@ -121,7 +118,6 @@ int videotoolbox_init(AVCodecContext* s) {
   if (!vt)
     return AVERROR(ENOMEM);
 
-  const char* dec = ist->hwaccel_id == HWACCEL_VIDEOTOOLBOX ? "Videotoolbox" : "VDA";
   ist->hwaccel_ctx = vt;
   ist->hwaccel_uninit = videotoolbox_uninit;
   ist->hwaccel_retrieve_data = videotoolbox_retrieve_data;
@@ -132,55 +128,28 @@ int videotoolbox_init(AVCodecContext* s) {
     goto fail;
   }
 
-  if (ist->hwaccel_id == HWACCEL_VIDEOTOOLBOX) {
-#if CONFIG_VIDEOTOOLBOX
-    if (!videotoolbox_pixfmt) {
-      ret = av_videotoolbox_default_init(s);
-    } else {
-      AVVideotoolboxContext* vtctx = av_videotoolbox_alloc_context();
-      CFStringRef pixfmt_str =
-          CFStringCreateWithCString(kCFAllocatorDefault, videotoolbox_pixfmt, kCFStringEncodingUTF8);
-#if HAVE_UTGETOSTYPEFROMSTRING
-      vtctx->cv_pix_fmt_type = UTGetOSTypeFromString(pixfmt_str);
-#else
-      WARNING_LOG() << "UTGetOSTypeFromString() is not available "
-                       "on this platform, "
-                    << videotoolbox_pixfmt
-                    << " pixel format can not be honored from "
-                       "the command line";
-#endif
-      ret = av_videotoolbox_default_init2(s, vtctx);
-      CFRelease(pixfmt_str);
-    }
-#endif
+  if (!videotoolbox_pixfmt) {
+    ret = av_videotoolbox_default_init(s);
   } else {
-#if CONFIG_VDA
-    if (!videotoolbox_pixfmt) {
-      ret = av_vda_default_init(s);
-    } else {
-      AVVDAContext* vdactx = av_vda_alloc_context();
-      CFStringRef pixfmt_str =
-          CFStringCreateWithCString(kCFAllocatorDefault, videotoolbox_pixfmt, kCFStringEncodingUTF8);
+    AVVideotoolboxContext* vtctx = av_videotoolbox_alloc_context();
+    CFStringRef pixfmt_str = CFStringCreateWithCString(kCFAllocatorDefault, videotoolbox_pixfmt, kCFStringEncodingUTF8);
 #if HAVE_UTGETOSTYPEFROMSTRING
-      vdactx->cv_pix_fmt_type = UTGetOSTypeFromString(pixfmt_str);
+    vtctx->cv_pix_fmt_type = UTGetOSTypeFromString(pixfmt_str);
 #else
-      WARNING_LOG() << "UTGetOSTypeFromString() is not available "
-                       "on this platform, "
-                    << videotoolbox_pixfmt
-                    << " pixel format can not be honored from "
-                       "the command line";
+    WARNING_LOG() << "UTGetOSTypeFromString() is not available "
+                     "on this platform, "
+                  << videotoolbox_pixfmt
+                  << " pixel format can not be honored from "
+                     "the command line";
 #endif
-      ret = av_vda_default_init2(s, vdactx);
-      CFRelease(pixfmt_str);
-    }
-#endif
+    ret = av_videotoolbox_default_init2(s, vtctx);
+    CFRelease(pixfmt_str);
   }
   if (ret < 0) {
-    ERROR_LOG() << "Error creating " << dec << " decoder.";
+    ERROR_LOG() << "Error creating Videotoolbox decoder.";
     goto fail;
   }
 
-  INFO_LOG() << "Using " << dec << " to decode input stream.";
   return 0;
 fail:
   videotoolbox_uninit(s);
@@ -196,17 +165,9 @@ void videotoolbox_uninit(AVCodecContext* s) {
 
   av_frame_free(&vt->tmp_frame);
 
-  if (ist->hwaccel_id == HWACCEL_VIDEOTOOLBOX) {
-#if CONFIG_VIDEOTOOLBOX
-    av_videotoolbox_default_free(s);
-#endif
-  } else {
-#if CONFIG_VDA
-    av_vda_default_free(s);
-#endif
-  }
+  av_videotoolbox_default_free(s);
   av_freep(&ist->hwaccel_ctx);
 }
 
 }  // namespace media
-}  // namespace fasto
+}  // namespace fastoplayer
