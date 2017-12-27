@@ -20,7 +20,7 @@
 
 namespace fastoplayer {
 
-SimplePlayer::SimplePlayer(const PlayerOptions& options) : ISimplePlayer(options), stream_url_() {}
+SimplePlayer::SimplePlayer(const PlayerOptions& options) : ISimplePlayer(options, RELATIVE_SOURCE_DIR), stream_url_() {}
 
 std::string SimplePlayer::GetCurrentUrlName() const {
   return stream_url_.GetUrl();

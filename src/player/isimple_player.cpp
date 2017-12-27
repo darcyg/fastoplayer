@@ -61,7 +61,7 @@ const AVRational ISimplePlayer::min_fps = {25, 1};
 const SDL_Color ISimplePlayer::stream_statistic_color = {171, 217, 98, Uint8(SDL_ALPHA_OPAQUE * 0.5)};
 const SDL_Color ISimplePlayer::volume_color = stream_statistic_color;
 
-ISimplePlayer::ISimplePlayer(const PlayerOptions& options)
+ISimplePlayer::ISimplePlayer(const PlayerOptions& options, const std::string& relative_source_dir)
     : StreamHandler(),
       renderer_(NULL),
       font_(NULL),
@@ -85,7 +85,8 @@ ISimplePlayer::ISimplePlayer(const PlayerOptions& options)
       render_texture_(NULL),
       update_video_timer_interval_msec_(0),
       last_pts_checkpoint_(media::invalid_clock()),
-      video_frames_handled_(0) {
+      video_frames_handled_(0),
+      relative_source_dir_(relative_source_dir) {
   UpdateDisplayInterval(min_fps);
 
   fApp->Subscribe(this, gui::events::PostExecEvent::EventType);
@@ -281,7 +282,7 @@ void ISimplePlayer::HandleQuitStreamEvent(gui::events::QuitStreamEvent* event) {
 void ISimplePlayer::HandlePreExecEvent(gui::events::PreExecEvent* event) {
   gui::events::PreExecInfo inf = event->GetInfo();
   if (inf.code == EXIT_SUCCESS) {
-    const std::string absolute_source_dir = common::file_system::absolute_path_from_relative(RELATIVE_SOURCE_DIR);
+    const std::string absolute_source_dir = common::file_system::absolute_path_from_relative(relative_source_dir_);
     render_texture_ = new draw::TextureSaver;
 
     const std::string font_path = common::file_system::make_path(absolute_source_dir, MAIN_FONT_PATH_RELATIVE);

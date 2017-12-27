@@ -93,7 +93,7 @@ class ISimplePlayer : public StreamHandler, public gui::events::EventListener {
                               media::ComplexOptions copt);
 
  protected:
-  explicit ISimplePlayer(const PlayerOptions& options);
+  ISimplePlayer(const PlayerOptions& options, const std::string& relative_source_dir);
 
   virtual void HandleEvent(event_t* event) override;
   virtual void HandleExceptionEvent(event_t* event, common::Error err) override;
@@ -221,6 +221,7 @@ class ISimplePlayer : public StreamHandler, public gui::events::EventListener {
 
   media::clock64_t last_pts_checkpoint_;
   size_t video_frames_handled_;
+  const std::string relative_source_dir_;
 };
 
 }  // namespace fastoplayer
