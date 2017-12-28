@@ -1,5 +1,23 @@
-#ifndef FFMPEG_CONFIG_H
-#define FFMPEG_CONFIG_H
+/*  Copyright (C) 2014-2017 FastoGT. All right reserved.
+
+    This file is part of FastoTV.
+
+    FastoTV is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    FastoTV is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#pragma once
+
 #cmakedefine01 CONFIG_AVFILTER
 #cmakedefine01 CONFIG_AVDEVICE
 #cmakedefine01 CONFIG_AVUTIL
@@ -35,4 +53,3 @@
 
 #define FFMPEG_CONFIGURATION ""
 #define CC_IDENT "@CMAKE_CXX_COMPILER_ID@ @CMAKE_CXX_COMPILER_VERSION_MAJOR@.@CMAKE_CXX_COMPILER_VERSION_MINOR@.@CMAKE_CXX_COMPILER_VERSION_PATCH@ (@CMAKE_SYSTEM@)"
-#endif /* GPU_PLAYER_CONFIG_H */

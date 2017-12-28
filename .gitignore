@@ -1,1 +1,2 @@
 include/player/media/ffmpeg_config.h
+include/player/player_config.h

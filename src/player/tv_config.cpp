@@ -16,7 +16,7 @@
     along with FastoTV. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <player/config.h>
+#include <player/tv_config.h>
 
 namespace fastoplayer {
 

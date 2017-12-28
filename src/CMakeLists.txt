@@ -286,7 +286,10 @@ IF(VIDEOTOOLBOX_FOUND)
 ENDIF(VIDEOTOOLBOX_FOUND)
 
 SET(FFMPEG_CONFIG_GEN_PATH ${CMAKE_SOURCE_DIR}/include/player/media/ffmpeg_config.h)
-CONFIGURE_FILE(ffmpeg_config.h.in ${FFMPEG_CONFIG_GEN_PATH} @ONLY IMMEDIATE)
+CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/src/player/media/ffmpeg_config.h.in ${FFMPEG_CONFIG_GEN_PATH} @ONLY IMMEDIATE)
+
+SET(PLAYER_CONFIG_GEN_PATH ${CMAKE_SOURCE_DIR}/include/player/player_config.h)
+CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/src/player/player_config.h.in ${PLAYER_CONFIG_GEN_PATH} @ONLY IMMEDIATE)
 
 SET(PLAYER_LIB_MEDIA_HEADERS
   ${CMAKE_SOURCE_DIR}/include/player/media/app_options.h
@@ -306,6 +309,7 @@ SET(PLAYER_LIB_MEDIA_HEADERS
   ${CMAKE_SOURCE_DIR}/include/player/media/types.h
   ${CMAKE_SOURCE_DIR}/include/player/media/video_state.h
   ${CMAKE_SOURCE_DIR}/include/player/media/video_state_handler.h
+  ${FFMPEG_CONFIG_GEN_PATH}
 )
 SET(PLAYER_LIB_MEDIA_SOURCES
   ${CMAKE_SOURCE_DIR}/src/player/media/app_options.cpp
@@ -379,13 +383,15 @@ IF(BUILD_PLAYER_LIB)
     ${CMAKE_SOURCE_DIR}/include/player/gui/widgets/window.h
 
     ${CMAKE_SOURCE_DIR}/include/player/av_sdl_utils.h
-    ${CMAKE_SOURCE_DIR}/include/player/config.h
+    ${CMAKE_SOURCE_DIR}/include/player/tv_config.h
     ${CMAKE_SOURCE_DIR}/include/player/types.h
     ${CMAKE_SOURCE_DIR}/include/player/ffmpeg_application.h
     ${CMAKE_SOURCE_DIR}/include/player/isimple_player.h
     ${CMAKE_SOURCE_DIR}/include/player/player_options.h
     ${CMAKE_SOURCE_DIR}/include/player/sdl_utils.h
     ${CMAKE_SOURCE_DIR}/include/player/stream_handler.h
+
+    ${PLAYER_CONFIG_GEN_PATH}
   )
 
   SET(PLAYER_LIB_SOURCES
@@ -415,7 +421,7 @@ IF(BUILD_PLAYER_LIB)
     ${CMAKE_SOURCE_DIR}/src/player/sdl_utils.cpp
     ${CMAKE_SOURCE_DIR}/src/player/stream_handler.cpp
     ${CMAKE_SOURCE_DIR}/src/player/av_sdl_utils.cpp
-    ${CMAKE_SOURCE_DIR}/src/player/config.cpp
+    ${CMAKE_SOURCE_DIR}/src/player/tv_config.cpp
     ${CMAKE_SOURCE_DIR}/src/player/types.cpp
     ${CMAKE_SOURCE_DIR}/src/player/ffmpeg_application.cpp
     ${CMAKE_SOURCE_DIR}/src/player/isimple_player.cpp
