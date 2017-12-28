@@ -59,6 +59,7 @@ extern "C" {
 #include <libswscale/version.h>        // for LIBSWSCALE_VERSION_MAJOR, etc
 }
 
+#include <common/config.h>
 #include <common/log_levels.h>  // for LOG_LEVEL::LOG_LEVEL_INFO, etc
 #include <common/sprintf.h>     // for MemSPrintf
 
@@ -237,6 +238,7 @@ void print_all_libs_info(int flags) {
 void print_program_info(int flags) {
   const char* indent = (flags & INDENT) ? "  " : "";
   std::cout << PROJECT_VERSION_HUMAN << std::endl;
+  std::cout << COMMON_VERSION_HUMAN << std::endl;
   if (flags & SHOW_COPYRIGHT) {
     std::cout << " " PROJECT_COPYRIGHT << std::endl;
   }
