@@ -697,7 +697,7 @@ SDL_Rect ISimplePlayer::GetDisplayRect() const {
 }
 
 void ISimplePlayer::DrawStatistic() {
-  if (!statistic_label_->IsVisible() || !font_) {
+  if (!font_) {
     return;
   }
 
@@ -756,6 +756,10 @@ void ISimplePlayer::DrawStatistic() {
 }
 
 void ISimplePlayer::DrawVolume() {
+  if (!font_) {
+    return;
+  }
+
   const SDL_Rect volume_rect = GetVolumeRect();
   int padding_left = volume_rect.w / 4;
   SDL_Rect sdl_volume_rect = {volume_rect.x + padding_left, volume_rect.y, volume_rect.w - padding_left * 2,
