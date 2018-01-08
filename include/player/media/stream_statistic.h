@@ -47,7 +47,7 @@ struct Stats {  // stream realtime statistic
 
   common::media::bandwidth_t video_bandwidth;  // bytes/s
   common::media::bandwidth_t audio_bandwidth;  // bytes/s
-  HWAccelID active_hwaccel;
+  HWDeviceType active_hwaccel;
 
  private:
   const common::time64_t start_ts_;

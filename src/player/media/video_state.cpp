@@ -52,7 +52,8 @@ extern "C" {
 
 #include <player/media/app_options.h>  // for ComplexOptions, AppOpt...
 #include <player/media/av_utils.h>
-#include <player/media/decoder.h>       // for VideoDecoder, AudioDec...
+#include <player/media/decoder.h>  // for VideoDecoder, AudioDec...
+#include <player/media/hwaccels/ffmpeg_hw.h>
 #include <player/media/packet_queue.h>  // for PacketQueue
 #include <player/media/stream.h>        // for AudioStream, VideoStream
 #include <player/media/types.h>         // for clock64_t, IsValidClock
@@ -113,29 +114,66 @@ namespace {
 enum AVPixelFormat get_format(AVCodecContext* s, const enum AVPixelFormat* pix_fmts) {
   InputStream* ist = static_cast<InputStream*>(s->opaque);
   const enum AVPixelFormat* p;
-  for (p = pix_fmts; *p != -1; p++) {
+  for (p = pix_fmts; *p != AV_PIX_FMT_NONE; p++) {
     const AVPixFmtDescriptor* desc = av_pix_fmt_desc_get(*p);
+    const AVCodecHWConfig* config = NULL;
+    int i;
 
     if (!(desc->flags & AV_PIX_FMT_FLAG_HWACCEL)) {
       break;
     }
 
-    const HWAccel* hwaccel = get_hwaccel(*p);
-    if (!hwaccel || (ist->active_hwaccel_id && ist->active_hwaccel_id != hwaccel->id) ||
-        (ist->hwaccel_id != HWACCEL_AUTO && ist->hwaccel_id != hwaccel->id)) {
-      continue;
+    if (ist->hwaccel_id == HWACCEL_GENERIC || ist->hwaccel_id == HWACCEL_AUTO) {
+      for (i = 0;; i++) {
+        config = avcodec_get_hw_config(s->codec, i);
+        if (!config) {
+          break;
+        }
+        if (!(config->methods & AV_CODEC_HW_CONFIG_METHOD_HW_DEVICE_CTX)) {
+          continue;
+        }
+        if (config->pix_fmt == *p) {
+          break;
+        }
+      }
     }
 
-    int ret = hwaccel->init(s);
-    if (ret < 0) {
-      if (ist->hwaccel_id == hwaccel->id) {
-#if EXIT_LOOKUP_IF_HWACCEL_FAILED
-        return AV_PIX_FMT_NONE;
-#else
+    if (config) {
+      if (config->device_type != ist->hwaccel_device_type) {
+        // Different hwaccel offered, ignore.
         continue;
-#endif
       }
-      continue;
+
+      int ret = hwaccel_decode_init(s);
+      if (ret < 0) {
+        if (ist->hwaccel_id == HWACCEL_GENERIC) {
+#if EXIT_LOOKUP_IF_HWACCEL_FAILED
+          return AV_PIX_FMT_NONE;
+#else
+          continue;
+#endif
+        }
+        continue;
+      }
+      ist->active_hwaccel_id = config->device_type;
+    } else {
+      const HWAccel* hwaccel = get_hwaccel(*p);
+      if (!hwaccel || (ist->hwaccel_id != HWACCEL_AUTO && ist->hwaccel_id != hwaccel->id)) {
+        continue;
+      }
+
+      int ret = hwaccel->init(s);
+      if (ret < 0) {
+        if (ist->hwaccel_id == hwaccel->id) {
+#if EXIT_LOOKUP_IF_HWACCEL_FAILED
+          return AV_PIX_FMT_NONE;
+#else
+          continue;
+#endif
+        }
+        continue;
+      }
+      ist->active_hwaccel_id = hwaccel->hid;
     }
 
     if (ist->hw_frames_ctx) {
@@ -149,7 +187,6 @@ enum AVPixelFormat get_format(AVCodecContext* s, const enum AVPixelFormat* pix_f
       }
     }
 
-    ist->active_hwaccel_id = hwaccel->id;
     ist->hwaccel_pix_fmt = *p;
     break;
   }
@@ -234,6 +271,7 @@ VideoState::VideoState(stream_id id, const common::uri::Url& uri, const AppOptio
 
   input_st_->hwaccel_id = opt_.hwaccel_id;
   input_st_->hwaccel_device = common::utils::strdupornull(opt_.hwaccel_device);
+  input_st_->hwaccel_device_type = static_cast<AVHWDeviceType>(opt_.hwaccel_device_type);
   if (!opt_.hwaccel_output_format.empty()) {
     const char* hwaccel_output_format = opt_.hwaccel_output_format.c_str();
     input_st_->hwaccel_output_format = av_get_pix_fmt(hwaccel_output_format);
@@ -341,6 +379,14 @@ int VideoState::StreamComponentOpen(int stream_index) {
   }
   if (avctx->codec_type == AVMEDIA_TYPE_VIDEO || avctx->codec_type == AVMEDIA_TYPE_AUDIO) {
     av_dict_set(&opts, "refcounted_frames", "1", 0);
+  }
+  if (avctx->codec_type == AVMEDIA_TYPE_VIDEO) {
+    ret = hw_device_setup_for_decode(avctx);
+    if (ret < 0) {
+      avcodec_free_context(&avctx);
+      av_dict_free(&opts);
+      return ret;
+    }
   }
   ret = avcodec_open2(avctx, codec, &opts);
   if (ret < 0) {
@@ -1043,7 +1089,7 @@ frames::VideoFrame* VideoState::TryToGetVideoFrame() {
   stats_->video_queue_size = vqsize;
   stats_->audio_bandwidth = audio_bandwidth;
   stats_->video_bandwidth = video_bandwidth;
-  stats_->active_hwaccel = input_st_->active_hwaccel_id;
+  stats_->active_hwaccel = static_cast<HWDeviceType>(input_st_->active_hwaccel_id);
 
   if (fmt & HAVE_VIDEO_STREAM && video_frame_queue_) {
     frames::VideoFrame* fr = GetVideoFrame();

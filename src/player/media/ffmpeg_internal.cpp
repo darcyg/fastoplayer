@@ -22,23 +22,14 @@ namespace media {
 AVBufferRef* hw_device_ctx = NULL;
 
 const HWAccel hwaccels[] = {
-#if HAVE_VDPAU_X11
-    {"vdpau", vdpau_init, vdpau_uninit, HWACCEL_VDPAU, AV_PIX_FMT_VDPAU},
-#endif
-#if HAVE_DXVA2_LIB
-    {"dxva2", dxva2_init, dxva2_uninit, HWACCEL_DXVA2, AV_PIX_FMT_DXVA2_VLD},
-#endif
 #if CONFIG_VIDEOTOOLBOX
-    {"videotoolbox", videotoolbox_init, videotoolbox_uninit, HWACCEL_VIDEOTOOLBOX, AV_PIX_FMT_VIDEOTOOLBOX},
+    {"videotoolbox", videotoolbox_init, videotoolbox_uninit, HWACCEL_VIDEOTOOLBOX, AV_HWDEVICE_TYPE_VIDEOTOOLBOX, AV_PIX_FMT_VIDEOTOOLBOX},
 #endif
 #if CONFIG_LIBMFX
-    {"qsv", qsv_init, qsv_uninit, HWACCEL_QSV, AV_PIX_FMT_QSV},
-#endif
-#if HAVE_VAAPI_X11
-    {"vaapi", vaapi_init, vaapi_uninit, HWACCEL_VAAPI, AV_PIX_FMT_VAAPI},
+    {"qsv", qsv_init, qsv_uninit, HWACCEL_QSV, AV_HWDEVICE_TYPE_QSV, AV_PIX_FMT_QSV},
 #endif
 #if CONFIG_CUVID
-    {"cuvid", cuvid_init, cuvid_uninit, HWACCEL_CUVID, AV_PIX_FMT_CUDA},
+    {"cuvid", cuvid_init, cuvid_uninit, HWACCEL_CUVID, AV_HWDEVICE_TYPE_CUDA, AV_PIX_FMT_CUDA},
 #endif
     HWAccel()};
 

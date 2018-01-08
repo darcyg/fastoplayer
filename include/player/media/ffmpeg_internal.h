@@ -45,9 +45,10 @@ struct InputStream {
   hw_uninit_callback_t* hwaccel_uninit;
   hw_get_buffer_callback_t* hwaccel_get_buffer;
   hw_retrieve_data_callback_t* hwaccel_retrieve_data;
+  AVHWDeviceType hwaccel_device_type;
   char* hwaccel_device;
   AVPixelFormat hwaccel_pix_fmt;
-  HWAccelID active_hwaccel_id;
+  AVHWDeviceType active_hwaccel_id;
   HWAccelID hwaccel_id;
   AVBufferRef* hw_frames_ctx;
   AVPixelFormat hwaccel_output_format;
@@ -59,7 +60,14 @@ struct HWAccel {
   int (*init)(AVCodecContext* s);
   void (*uninit)(AVCodecContext* s);
   HWAccelID id;
+  AVHWDeviceType hid;
   AVPixelFormat pix_fmt;
+};
+
+struct HWDevice {
+  char* name;
+  enum AVHWDeviceType type;
+  AVBufferRef* device_ref;
 };
 
 extern const HWAccel hwaccels[];

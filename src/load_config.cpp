@@ -262,8 +262,10 @@ int ini_handler_fasto(void* user, const char* section, const char* name, const c
     return 1;
   } else if (MATCH(CONFIG_APP_OPTIONS, CONFIG_APP_OPTIONS_HWACCEL_FIELD)) {
     media::HWAccelID hwid;
-    if (common::ConvertFromString(value, &hwid)) {
+    media::HWDeviceType dtype;
+    if (common::ConvertFromString(value, &hwid, &dtype)) {
       pconfig->app_options.hwaccel_id = hwid;
+      pconfig->app_options.hwaccel_device_type = dtype;
     }
     return 1;
   } else if (MATCH(CONFIG_APP_OPTIONS, CONFIG_APP_OPTIONS_HWACCEL_DEVICE_FIELD)) {

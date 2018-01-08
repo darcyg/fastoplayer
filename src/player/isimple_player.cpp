@@ -34,6 +34,7 @@
 #include <player/media/frames/audio_frame.h>  // for AudioFrame
 #include <player/media/frames/video_frame.h>  // for VideoFrame
 #include <player/media/video_state.h>         // for VideoState
+#include <player/media/hwaccels/ffmpeg_hw.h>
 
 #include <player/gui/sdl2_application.h>
 #include <player/gui/widgets/label.h>
@@ -140,6 +141,7 @@ ISimplePlayer::~ISimplePlayer() {
     av_buffer_unref(&media::hw_device_ctx);
     media::hw_device_ctx = NULL;
   }
+  media::hw_device_free_all();
   fApp->UnSubscribe(this);
 }
 

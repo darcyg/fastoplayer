@@ -41,7 +41,7 @@ Stats::Stats()
       video_queue_size(0),
       video_bandwidth(0),
       audio_bandwidth(0),
-      active_hwaccel(HWACCEL_NONE),
+      active_hwaccel(HWDEVICE_TYPE_NONE),
       start_ts_(common::time::current_mstime()) {}
 
 clock64_t Stats::GetDiffStreams() const {

@@ -33,15 +33,18 @@ typedef common::BoundedValue<int8_t, 0, 100> audio_volume_t;
 typedef std::string stream_id;  // must be unique
 extern const stream_id invalid_stream_id;
 
-enum HWAccelID {
-  HWACCEL_NONE = 0,
-  HWACCEL_AUTO,
-  HWACCEL_VDPAU,
-  HWACCEL_DXVA2,
-  HWACCEL_VIDEOTOOLBOX,
-  HWACCEL_QSV,  // mfx
-  HWACCEL_VAAPI,
-  HWACCEL_CUVID
+enum HWAccelID { HWACCEL_NONE = 0, HWACCEL_AUTO, HWACCEL_GENERIC, HWACCEL_VIDEOTOOLBOX, HWACCEL_QSV, HWACCEL_CUVID };
+enum HWDeviceType {
+  HWDEVICE_TYPE_NONE,
+  HWDEVICE_TYPE_VDPAU,
+  HWDEVICE_TYPE_CUDA,
+  HWDEVICE_TYPE_VAAPI,
+  HWDEVICE_TYPE_DXVA2,
+  HWDEVICE_TYPE_QSV,
+  HWDEVICE_TYPE_VIDEOTOOLBOX,
+  HWDEVICE_TYPE_D3D11VA,
+  HWDEVICE_TYPE_DRM,
+  HWDEVICE_TYPE_OPENCL
 };
 
 typedef common::time64_t msec_t;
@@ -74,5 +77,7 @@ int64_t get_valid_channel_layout(int64_t channel_layout, int channels);
 
 namespace common {
 std::string ConvertToString(const fastoplayer::media::HWAccelID& value);
-bool ConvertFromString(const std::string& from, fastoplayer::media::HWAccelID* out);
+bool ConvertFromString(const std::string& from,
+                       fastoplayer::media::HWAccelID* out,
+                       fastoplayer::media::HWDeviceType* dtype);
 }  // namespace common

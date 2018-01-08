@@ -34,6 +34,7 @@ AppOptions::AppOptions()
       audio_codec_name(),
       video_codec_name(),
       hwaccel_id(HWACCEL_NONE),
+      hwaccel_device_type(HWDEVICE_TYPE_NONE),
       hwaccel_device(),
       hwaccel_output_format(),
       auto_exit(true),

@@ -27,8 +27,17 @@ extern "C" {
 namespace fastoplayer {
 namespace media {
 
-int vaapi_init(AVCodecContext* decoder_ctx);
-void vaapi_uninit(AVCodecContext* decoder_ctx);
+struct HWDevice;
+struct InputStream;
+
+HWDevice* hw_device_get_by_name(const char* name);
+
+int hw_device_init_from_string(const char* arg, HWDevice** dev_out);
+
+void hw_device_free_all(void);
+
+int hw_device_setup_for_decode(AVCodecContext* avctx);
+int hwaccel_decode_init(AVCodecContext* avctx);
 
 }  // namespace media
 }  // namespace fastoplayer

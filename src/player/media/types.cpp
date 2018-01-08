@@ -96,6 +96,8 @@ std::string ConvertToString(const fastoplayer::media::HWAccelID& value) {
     return "auto";
   } else if (value == fastoplayer::media::HWACCEL_NONE) {
     return "none";
+  } else if (value == fastoplayer::media::HWACCEL_GENERIC) {
+    return "generic";
   }
 
   for (size_t i = 0; i < fastoplayer::media::hwaccel_count(); i++) {
@@ -107,8 +109,10 @@ std::string ConvertToString(const fastoplayer::media::HWAccelID& value) {
   return std::string();
 }
 
-bool ConvertFromString(const std::string& from, fastoplayer::media::HWAccelID* out) {
-  if (from.empty() || !out) {
+bool ConvertFromString(const std::string& from,
+                       fastoplayer::media::HWAccelID* out,
+                       fastoplayer::media::HWDeviceType* dtype) {
+  if (from.empty() || !out || !dtype) {
     return false;
   }
 
@@ -116,16 +120,28 @@ bool ConvertFromString(const std::string& from, fastoplayer::media::HWAccelID* o
   std::transform(from_copy.begin(), from_copy.end(), from_copy.begin(), ::tolower);
   if (from_copy == "auto") {
     *out = fastoplayer::media::HWACCEL_AUTO;
+    *dtype = fastoplayer::media::HWDEVICE_TYPE_NONE;
     return true;
   } else if (from_copy == "none") {
     *out = fastoplayer::media::HWACCEL_NONE;
+    *dtype = fastoplayer::media::HWDEVICE_TYPE_NONE;
     return true;
   } else {
+    const char* from_copy_ptr = from.c_str();
     for (size_t i = 0; i < fastoplayer::media::hwaccel_count(); i++) {
-      if (strcmp(fastoplayer::media::hwaccels[i].name, from.c_str()) == 0) {
+      if (strcmp(fastoplayer::media::hwaccels[i].name, from_copy_ptr) == 0) {
         *out = fastoplayer::media::hwaccels[i].id;
+        *dtype = fastoplayer::media::HWDEVICE_TYPE_NONE;
         return true;
       }
+    }
+
+    AVHWDeviceType type = av_hwdevice_find_type_by_name(from_copy_ptr);
+    fastoplayer::media::HWDeviceType ctype = static_cast<fastoplayer::media::HWDeviceType>(type);
+    if (ctype != fastoplayer::media::HWDEVICE_TYPE_NONE) {
+      *out = fastoplayer::media::HWACCEL_GENERIC;
+      *dtype = ctype;
+      return true;
     }
     return false;
   }

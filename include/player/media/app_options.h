@@ -55,7 +55,8 @@ struct AppOptions {
   bool fast;
   std::string audio_codec_name;
   std::string video_codec_name;
-  enum HWAccelID hwaccel_id;
+  HWAccelID hwaccel_id;
+  HWDeviceType hwaccel_device_type;
   std::string hwaccel_device;
   std::string hwaccel_output_format;
 
