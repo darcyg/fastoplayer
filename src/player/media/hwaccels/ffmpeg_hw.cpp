@@ -283,9 +283,8 @@ static HWDevice* hw_device_match_by_codec(const AVCodec* codec) {
   }
 }
 
-int hw_device_setup_for_decode(AVCodecContext* avctx) {
+int hw_device_setup_for_decode(AVCodecContext* avctx, AVCodec* codec) {
   InputStream* ist = static_cast<InputStream*>(avctx->opaque);
-  AVCodec* codec = avcodec_find_decoder(avctx->codec_id);
 
   const AVCodecHWConfig* config;
   enum AVHWDeviceType type;

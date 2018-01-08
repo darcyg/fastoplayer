@@ -301,32 +301,19 @@ int VideoState::StreamComponentOpen(int stream_index) {
     return AVERROR(EINVAL);
   }
 
-  AVCodecContext* avctx = avcodec_alloc_context3(NULL);
-  if (!avctx) {
-    return AVERROR(ENOMEM);
-  }
-
   AVStream* stream = ic_->streams[stream_index];
-  int ret = avcodec_parameters_to_context(avctx, stream->codecpar);
-  if (ret < 0) {
-    avcodec_free_context(&avctx);
-    return ret;
-  }
-
   const char* forced_codec_name = NULL;
+  AVCodecParameters* par = stream->codecpar;
+  enum AVCodecID codec_id = par->codec_id;
+  AVCodec* codec = avcodec_find_decoder(codec_id);
 
-  AVRational tb = stream->time_base;
-  avctx->pkt_timebase = tb;
-  AVCodec* codec = avcodec_find_decoder(avctx->codec_id);
-
-  if (avctx->codec_type == AVMEDIA_TYPE_VIDEO) {
+  if (par->codec_type == AVMEDIA_TYPE_VIDEO) {
     last_video_stream_ = stream_index;
     forced_codec_name = opt_.video_codec_name.empty() ? NULL : opt_.video_codec_name.c_str();
-  } else if (avctx->codec_type == AVMEDIA_TYPE_AUDIO) {
+  } else if (par->codec_type == AVMEDIA_TYPE_AUDIO) {
     last_audio_stream_ = stream_index;
     forced_codec_name = opt_.audio_codec_name.empty() ? NULL : opt_.audio_codec_name.c_str();
   }
-
   if (forced_codec_name) {
     codec = avcodec_find_decoder_by_name(forced_codec_name);
   }
@@ -334,12 +321,24 @@ int VideoState::StreamComponentOpen(int stream_index) {
     if (forced_codec_name) {
       WARNING_LOG() << "No codec could be found with name '" << forced_codec_name << "'";
     } else {
-      WARNING_LOG() << "No codec could be found with id " << avctx->codec_id;
+      WARNING_LOG() << "No codec could be found with id " << codec_id;
     }
-    ret = AVERROR(EINVAL);
+    return AVERROR(EINVAL);
+  }
+
+  AVCodecContext* avctx = avcodec_alloc_context3(codec);
+  if (!avctx) {
+    return AVERROR(ENOMEM);
+  }
+
+  int ret = avcodec_parameters_to_context(avctx, par);
+  if (ret < 0) {
     avcodec_free_context(&avctx);
     return ret;
   }
+
+  AVRational tb = stream->time_base;
+  avctx->pkt_timebase = tb;
 
   int stream_lowres = opt_.lowres;
   avctx->codec_id = codec->id;
@@ -380,14 +379,16 @@ int VideoState::StreamComponentOpen(int stream_index) {
   if (avctx->codec_type == AVMEDIA_TYPE_VIDEO || avctx->codec_type == AVMEDIA_TYPE_AUDIO) {
     av_dict_set(&opts, "refcounted_frames", "1", 0);
   }
+
   if (avctx->codec_type == AVMEDIA_TYPE_VIDEO) {
-    ret = hw_device_setup_for_decode(avctx);
+    ret = hw_device_setup_for_decode(avctx, codec);
     if (ret < 0) {
       avcodec_free_context(&avctx);
       av_dict_free(&opts);
       return ret;
     }
   }
+
   ret = avcodec_open2(avctx, codec, &opts);
   if (ret < 0) {
     avcodec_free_context(&avctx);

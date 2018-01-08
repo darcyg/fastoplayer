@@ -36,7 +36,7 @@ int hw_device_init_from_string(const char* arg, HWDevice** dev_out);
 
 void hw_device_free_all(void);
 
-int hw_device_setup_for_decode(AVCodecContext* avctx);
+int hw_device_setup_for_decode(AVCodecContext* avctx, AVCodec* codec);
 int hwaccel_decode_init(AVCodecContext* avctx);
 
 }  // namespace media

@@ -72,12 +72,7 @@ enum AvSyncType {
 
 int64_t get_valid_channel_layout(int64_t channel_layout, int channels);
 
+std::string HWAccelIDToString(const HWAccelID& value, HWDeviceType dtype);
+bool HWAccelIDFromString(const std::string& from, HWAccelID* out, HWDeviceType* dtype);
 }  // namespace media
 }  // namespace fastoplayer
-
-namespace common {
-std::string ConvertToString(const fastoplayer::media::HWAccelID& value);
-bool ConvertFromString(const std::string& from,
-                       fastoplayer::media::HWAccelID* out,
-                       fastoplayer::media::HWDeviceType* dtype);
-}  // namespace common

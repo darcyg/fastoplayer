@@ -87,31 +87,23 @@ bool IsValidPts(pts_t pts) {
   return pts != invalid_pts();
 }
 
-}  // namespace media
-}  // namespace fastoplayer
-
-namespace common {
-std::string ConvertToString(const fastoplayer::media::HWAccelID& value) {
-  if (value == fastoplayer::media::HWACCEL_AUTO) {
+std::string HWAccelIDToString(const HWAccelID& value, HWDeviceType dtype) {
+  if (value == HWACCEL_AUTO) {
     return "auto";
-  } else if (value == fastoplayer::media::HWACCEL_NONE) {
+  } else if (value == HWACCEL_NONE) {
     return "none";
-  } else if (value == fastoplayer::media::HWACCEL_GENERIC) {
-    return "generic";
   }
 
-  for (size_t i = 0; i < fastoplayer::media::hwaccel_count(); i++) {
-    if (value == fastoplayer::media::hwaccels[i].id) {
-      return fastoplayer::media::hwaccels[i].name;
+  for (size_t i = 0; i < hwaccel_count(); i++) {
+    if (value == hwaccels[i].id) {
+      return hwaccels[i].name;
     }
   }
 
-  return std::string();
+  return av_hwdevice_get_type_name(static_cast<AVHWDeviceType>(dtype));
 }
 
-bool ConvertFromString(const std::string& from,
-                       fastoplayer::media::HWAccelID* out,
-                       fastoplayer::media::HWDeviceType* dtype) {
+bool HWAccelIDFromString(const std::string& from, HWAccelID* out, HWDeviceType* dtype) {
   if (from.empty() || !out || !dtype) {
     return false;
   }
@@ -119,32 +111,33 @@ bool ConvertFromString(const std::string& from,
   std::string from_copy = from;
   std::transform(from_copy.begin(), from_copy.end(), from_copy.begin(), ::tolower);
   if (from_copy == "auto") {
-    *out = fastoplayer::media::HWACCEL_AUTO;
-    *dtype = fastoplayer::media::HWDEVICE_TYPE_NONE;
+    *out = HWACCEL_AUTO;
+    *dtype = HWDEVICE_TYPE_NONE;
     return true;
   } else if (from_copy == "none") {
-    *out = fastoplayer::media::HWACCEL_NONE;
-    *dtype = fastoplayer::media::HWDEVICE_TYPE_NONE;
+    *out = HWACCEL_NONE;
+    *dtype = HWDEVICE_TYPE_NONE;
     return true;
-  } else {
-    const char* from_copy_ptr = from.c_str();
-    for (size_t i = 0; i < fastoplayer::media::hwaccel_count(); i++) {
-      if (strcmp(fastoplayer::media::hwaccels[i].name, from_copy_ptr) == 0) {
-        *out = fastoplayer::media::hwaccels[i].id;
-        *dtype = fastoplayer::media::HWDEVICE_TYPE_NONE;
-        return true;
-      }
-    }
+  }
 
-    AVHWDeviceType type = av_hwdevice_find_type_by_name(from_copy_ptr);
-    fastoplayer::media::HWDeviceType ctype = static_cast<fastoplayer::media::HWDeviceType>(type);
-    if (ctype != fastoplayer::media::HWDEVICE_TYPE_NONE) {
-      *out = fastoplayer::media::HWACCEL_GENERIC;
-      *dtype = ctype;
+  const char* from_copy_ptr = from.c_str();
+  for (size_t i = 0; i < hwaccel_count(); i++) {
+    if (strcmp(hwaccels[i].name, from_copy_ptr) == 0) {
+      *out = hwaccels[i].id;
+      *dtype = HWDEVICE_TYPE_NONE;
       return true;
     }
-    return false;
   }
+
+  AVHWDeviceType type = av_hwdevice_find_type_by_name(from_copy_ptr);
+  HWDeviceType ctype = static_cast<HWDeviceType>(type);
+  if (ctype != HWDEVICE_TYPE_NONE) {
+    *out = HWACCEL_GENERIC;
+    *dtype = ctype;
+    return true;
+  }
+  return false;
 }
 
-}  // namespace common
+}  // namespace media
+}  // namespace fastoplayer

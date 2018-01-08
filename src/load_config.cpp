@@ -263,7 +263,7 @@ int ini_handler_fasto(void* user, const char* section, const char* name, const c
   } else if (MATCH(CONFIG_APP_OPTIONS, CONFIG_APP_OPTIONS_HWACCEL_FIELD)) {
     media::HWAccelID hwid;
     media::HWDeviceType dtype;
-    if (common::ConvertFromString(value, &hwid, &dtype)) {
+    if (HWAccelIDFromString(value, &hwid, &dtype)) {
       pconfig->app_options.hwaccel_id = hwid;
       pconfig->app_options.hwaccel_device_type = dtype;
     }
@@ -349,8 +349,9 @@ common::ErrnoError save_config_file(const std::string& config_absolute_path, TVC
 #endif
   config_save_file.WriteFormated(CONFIG_APP_OPTIONS_ACODEC_FIELD "=%s\n", options->app_options.audio_codec_name);
   config_save_file.WriteFormated(CONFIG_APP_OPTIONS_VCODEC_FIELD "=%s\n", options->app_options.video_codec_name);
-  config_save_file.WriteFormated(CONFIG_APP_OPTIONS_HWACCEL_FIELD "=%s\n",
-                                 common::ConvertToString(options->app_options.hwaccel_id));
+  config_save_file.WriteFormated(
+      CONFIG_APP_OPTIONS_HWACCEL_FIELD "=%s\n",
+      HWAccelIDToString(options->app_options.hwaccel_id, options->app_options.hwaccel_device_type));
   config_save_file.WriteFormated(CONFIG_APP_OPTIONS_HWACCEL_DEVICE_FIELD "=%s\n", options->app_options.hwaccel_device);
   config_save_file.WriteFormated(CONFIG_APP_OPTIONS_HWACCEL_OUTPUT_FORMAT_FIELD "=%s\n",
                                  options->app_options.hwaccel_output_format);
