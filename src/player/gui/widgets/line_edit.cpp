@@ -106,7 +106,7 @@ void LineEdit::HandleEvent(event_t* event) {
   if (event->GetEventType() == gui::events::KeyPressEvent::EventType) {
     gui::events::KeyPressEvent* key_press_event = static_cast<gui::events::KeyPressEvent*>(event);
     HandleKeyPressEvent(key_press_event);
-  } else if (event->GetEventType() == gui::events::KeyPressEvent::EventType) {
+  } else if (event->GetEventType() == gui::events::KeyReleaseEvent::EventType) {
     gui::events::KeyReleaseEvent* key_rel_event = static_cast<gui::events::KeyReleaseEvent*>(event);
     HandleKeyReleaseEvent(key_rel_event);
   } else if (event->GetEventType() == gui::events::TextInputEvent::EventType) {

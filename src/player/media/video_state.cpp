@@ -116,15 +116,13 @@ enum AVPixelFormat get_format(AVCodecContext* s, const enum AVPixelFormat* pix_f
   const enum AVPixelFormat* p;
   for (p = pix_fmts; *p != AV_PIX_FMT_NONE; p++) {
     const AVPixFmtDescriptor* desc = av_pix_fmt_desc_get(*p);
-    const AVCodecHWConfig* config = NULL;
-    int i;
-
     if (!(desc->flags & AV_PIX_FMT_FLAG_HWACCEL)) {
       break;
     }
 
+    const AVCodecHWConfig* config = NULL;
     if (ist->hwaccel_id == HWACCEL_GENERIC || ist->hwaccel_id == HWACCEL_AUTO) {
-      for (i = 0;; i++) {
+      for (int i = 0;; i++) {
         config = avcodec_get_hw_config(s->codec, i);
         if (!config) {
           break;

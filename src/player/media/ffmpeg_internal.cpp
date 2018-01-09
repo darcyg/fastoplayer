@@ -1,14 +1,5 @@
 #include <player/media/ffmpeg_internal.h>
 
-#ifdef HAVE_VDPAU
-#include <player/media/hwaccels/ffmpeg_vdpau.h>
-#endif
-#if HAVE_DXVA2_LIB
-#include <player/media/hwaccels/ffmpeg_dxva2.h>
-#endif
-#if CONFIG_VAAPI
-#include <player/media/hwaccels/ffmpeg_vaapi.h>
-#endif
 #if CONFIG_CUVID
 #include <player/media/hwaccels/ffmpeg_cuvid.h>
 #endif

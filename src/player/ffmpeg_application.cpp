@@ -85,32 +85,6 @@ void avlog_cb(void*, int level, const char* sz_fmt, va_list varg) {
   free(ret);
 }
 
-int lockmgr(void** mtx, enum AVLockOp op) {
-  std::mutex* lmtx = static_cast<std::mutex*>(*mtx);
-  switch (op) {
-    case AV_LOCK_CREATE: {
-      *mtx = new std::mutex;
-      if (!*mtx) {
-        return 1;
-      }
-      return 0;
-    }
-    case AV_LOCK_OBTAIN: {
-      lmtx->lock();
-      return 0;
-    }
-    case AV_LOCK_RELEASE: {
-      lmtx->unlock();
-      return 0;
-    }
-    case AV_LOCK_DESTROY: {
-      delete lmtx;
-      return 0;
-    }
-  }
-  return 1;
-}
-
 }  // namespace
 
 namespace fastoplayer {
@@ -126,16 +100,10 @@ FFmpegApplication::FFmpegApplication(int argc, char** argv) : base_class(argc, a
 }
 
 FFmpegApplication::~FFmpegApplication() {
-  av_lockmgr_register(NULL);
   avformat_network_deinit();
 }
 
 int FFmpegApplication::PreExecImpl() {
-  if (av_lockmgr_register(lockmgr)) {
-    ERROR_LOG() << "Could not initialize lock manager!";
-    return EXIT_FAILURE;
-  }
-
   int pre_exec = base_class::PreExecImpl();
   gui::events::PreExecInfo inf(pre_exec);
   gui::events::PreExecEvent* pre_event = new gui::events::PreExecEvent(this, inf);

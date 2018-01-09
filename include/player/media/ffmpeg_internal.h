@@ -64,12 +64,6 @@ struct HWAccel {
   AVPixelFormat pix_fmt;
 };
 
-struct HWDevice {
-  char* name;
-  enum AVHWDeviceType type;
-  AVBufferRef* device_ref;
-};
-
 extern const HWAccel hwaccels[];
 
 size_t hwaccel_count();

@@ -27,6 +27,12 @@ namespace media {
 
 namespace {
 
+struct HWDevice {
+  char* name;
+  enum AVHWDeviceType type;
+  AVBufferRef* device_ref;
+};
+
 int nb_hw_devices;
 HWDevice** hw_devices = nullptr;
 }  // namespace
@@ -44,7 +50,7 @@ static HWDevice* hw_device_get_by_type(enum AVHWDeviceType type) {
   return found;
 }
 
-HWDevice* hw_device_get_by_name(const char* name) {
+static HWDevice* hw_device_get_by_name(const char* name) {
   for (int i = 0; i < nb_hw_devices; i++) {
     if (!strcmp(hw_devices[i]->name, name)) {
       return hw_devices[i];
@@ -88,134 +94,6 @@ static char* hw_device_default_name(enum AVHWDeviceType type) {
     return NULL;
   }
   return name;
-}
-
-int hw_device_init_from_string(const char* arg, HWDevice** dev_out) {
-  // "type=name:device,key=value,key2=value2"
-  // "type:device,key=value,key2=value2"
-  // -> av_hwdevice_ctx_create()
-  // "type=name@name"
-  // "type@name"
-  // -> av_hwdevice_ctx_create_derived()
-
-  AVDictionary* options = NULL;
-  char *type_name = NULL, *name = NULL, *device = NULL;
-  enum AVHWDeviceType type;
-  HWDevice *dev, *src;
-  AVBufferRef* device_ref = NULL;
-  int err;
-  const char *errmsg, *p, *q;
-  size_t k;
-
-  k = strcspn(arg, ":=@");
-  p = arg + k;
-
-  type_name = av_strndup(arg, k);
-  if (!type_name) {
-    err = AVERROR(ENOMEM);
-    goto fail;
-  }
-  type = av_hwdevice_find_type_by_name(type_name);
-  if (type == AV_HWDEVICE_TYPE_NONE) {
-    errmsg = "unknown device type";
-    goto invalid;
-  }
-
-  if (*p == '=') {
-    k = strcspn(p + 1, ":@");
-
-    name = av_strndup(p + 1, k);
-    if (!name) {
-      err = AVERROR(ENOMEM);
-      goto fail;
-    }
-    if (hw_device_get_by_name(name)) {
-      errmsg = "named device already exists";
-      goto invalid;
-    }
-
-    p += 1 + k;
-  } else {
-    name = hw_device_default_name(type);
-    if (!name) {
-      err = AVERROR(ENOMEM);
-      goto fail;
-    }
-  }
-
-  if (!*p) {
-    // New device with no parameters.
-    err = av_hwdevice_ctx_create(&device_ref, type, NULL, NULL, 0);
-    if (err < 0)
-      goto fail;
-
-  } else if (*p == ':') {
-    // New device with some parameters.
-    ++p;
-    q = strchr(p, ',');
-    if (q) {
-      device = av_strndup(p, q - p);
-      if (!device) {
-        err = AVERROR(ENOMEM);
-        goto fail;
-      }
-      err = av_dict_parse_string(&options, q + 1, "=", ",", 0);
-      if (err < 0) {
-        errmsg = "failed to parse options";
-        goto invalid;
-      }
-    }
-
-    err = av_hwdevice_ctx_create(&device_ref, type, device ? device : p, options, 0);
-    if (err < 0)
-      goto fail;
-
-  } else if (*p == '@') {
-    // Derive from existing device.
-
-    src = hw_device_get_by_name(p + 1);
-    if (!src) {
-      errmsg = "invalid source device name";
-      goto invalid;
-    }
-
-    err = av_hwdevice_ctx_create_derived(&device_ref, type, src->device_ref, 0);
-    if (err < 0)
-      goto fail;
-  } else {
-    errmsg = "parse error";
-    goto invalid;
-  }
-
-  dev = hw_device_add();
-  if (!dev) {
-    err = AVERROR(ENOMEM);
-    goto fail;
-  }
-
-  dev->name = name;
-  dev->type = type;
-  dev->device_ref = device_ref;
-
-  if (dev_out)
-    *dev_out = dev;
-
-  name = NULL;
-  err = 0;
-done:
-  av_freep(&type_name);
-  av_freep(&name);
-  av_freep(&device);
-  av_dict_free(&options);
-  return err;
-invalid:
-  ERROR_LOG() << "Invalid device specification \"" << arg << "\": " << errmsg;
-  err = AVERROR(EINVAL);
-  goto done;
-fail:
-  ERROR_LOG() << "Device creation failed: " << err << ".";
-  av_buffer_unref(&device_ref);
-  goto done;
 }
 
 static int hw_device_init_from_type(enum AVHWDeviceType type, const char* device, HWDevice** dev_out) {
@@ -268,26 +146,28 @@ void hw_device_free_all(void) {
 }
 
 static HWDevice* hw_device_match_by_codec(const AVCodec* codec) {
-  const AVCodecHWConfig* config;
   HWDevice* dev;
-  int i;
-  for (i = 0;; i++) {
-    config = avcodec_get_hw_config(codec, i);
-    if (!config)
+  for (int i = 0;; i++) {
+    const AVCodecHWConfig* config = avcodec_get_hw_config(codec, i);
+    if (!config) {
       return NULL;
-    if (!(config->methods & AV_CODEC_HW_CONFIG_METHOD_HW_DEVICE_CTX))
+    }
+    if (!(config->methods & AV_CODEC_HW_CONFIG_METHOD_HW_DEVICE_CTX)) {
       continue;
+    }
     dev = hw_device_get_by_type(config->device_type);
-    if (dev)
+    if (dev) {
       return dev;
+    }
   }
+  return NULL;
 }
 
 int hw_device_setup_for_decode(AVCodecContext* avctx, AVCodec* codec) {
   InputStream* ist = static_cast<InputStream*>(avctx->opaque);
 
   const AVCodecHWConfig* config;
-  enum AVHWDeviceType type;
+  enum AVHWDeviceType type = AV_HWDEVICE_TYPE_NONE;
   HWDevice* dev = NULL;
   int err, auto_device = 0;
 
