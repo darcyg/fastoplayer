@@ -23,7 +23,8 @@ AVBufferRef* hw_device_ctx = NULL;
 
 const HWAccel hwaccels[] = {
 #if CONFIG_VIDEOTOOLBOX
-    {"videotoolbox", videotoolbox_init, videotoolbox_uninit, HWACCEL_VIDEOTOOLBOX, AV_HWDEVICE_TYPE_VIDEOTOOLBOX, AV_PIX_FMT_VIDEOTOOLBOX},
+    {"videotoolbox", videotoolbox_init, videotoolbox_uninit, HWACCEL_VIDEOTOOLBOX, AV_HWDEVICE_TYPE_VIDEOTOOLBOX,
+     AV_PIX_FMT_VIDEOTOOLBOX},
 #endif
 #if CONFIG_LIBMFX
     {"qsv", qsv_init, qsv_uninit, HWACCEL_QSV, AV_HWDEVICE_TYPE_QSV, AV_PIX_FMT_QSV},
