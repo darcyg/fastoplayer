@@ -383,9 +383,10 @@ int VideoState::StreamComponentOpen(int stream_index) {
   if (avctx->codec_type == AVMEDIA_TYPE_VIDEO) {
     ret = hw_device_setup_for_decode(avctx, codec);
     if (ret < 0) {
-      avcodec_free_context(&avctx);
+      input_st_->hwaccel_id = HWACCEL_NONE;
+      /*avcodec_free_context(&avctx);
       av_dict_free(&opts);
-      return ret;
+      return ret;*/
     }
   }
 
@@ -1644,9 +1645,8 @@ int VideoState::VideoThread() {
           "size:%dx%d format:%s "
           "serial:%d",
           last_w, last_h, static_cast<const char*>(av_x_if_null(av_get_pix_fmt_name(last_format), "none")), 0,
-          frame->width, frame->height,
-          static_cast<const char*>(
-              av_x_if_null(av_get_pix_fmt_name(static_cast<AVPixelFormat>(frame->format)), "none")),
+          frame->width, frame->height, static_cast<const char*>(av_x_if_null(
+                                           av_get_pix_fmt_name(static_cast<AVPixelFormat>(frame->format)), "none")),
           0);
       DEBUG_LOG() << mess;
       avfilter_graph_free(&graph);
