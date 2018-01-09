@@ -100,7 +100,7 @@ std::string HWAccelIDToString(const HWAccelID& value, HWDeviceType dtype) {
     }
   }
 
-  return av_hwdevice_get_type_name(static_cast<AVHWDeviceType>(dtype));
+  return common::ConvertToString(dtype);
 }
 
 bool HWAccelIDFromString(const std::string& from, HWAccelID* out, HWDeviceType* dtype) {
@@ -129,9 +129,8 @@ bool HWAccelIDFromString(const std::string& from, HWAccelID* out, HWDeviceType* 
     }
   }
 
-  AVHWDeviceType type = av_hwdevice_find_type_by_name(from_copy_ptr);
-  HWDeviceType ctype = static_cast<HWDeviceType>(type);
-  if (ctype != HWDEVICE_TYPE_NONE) {
+  HWDeviceType ctype;
+  if (common::ConvertFromString(from, &ctype) && ctype != HWDEVICE_TYPE_NONE) {
     *out = HWACCEL_GENERIC;
     *dtype = ctype;
     return true;
@@ -141,3 +140,26 @@ bool HWAccelIDFromString(const std::string& from, HWAccelID* out, HWDeviceType* 
 
 }  // namespace media
 }  // namespace fastoplayer
+
+namespace common {
+
+std::string ConvertToString(fastoplayer::media::HWDeviceType value) {
+  const char* ptr = av_hwdevice_get_type_name(static_cast<AVHWDeviceType>(value));
+  if (ptr) {
+    return ptr;
+  }
+  return "none";
+}
+
+bool ConvertFromString(const std::string& from, fastoplayer::media::HWDeviceType* out) {
+  if (from.empty() || !out) {
+    return false;
+  }
+
+  const char* from_copy_ptr = from.c_str();
+  AVHWDeviceType type = av_hwdevice_find_type_by_name(from_copy_ptr);
+  *out = static_cast<fastoplayer::media::HWDeviceType>(type);
+  return true;
+}
+
+}  // namespace common

@@ -76,3 +76,8 @@ std::string HWAccelIDToString(const HWAccelID& value, HWDeviceType dtype);
 bool HWAccelIDFromString(const std::string& from, HWAccelID* out, HWDeviceType* dtype);
 }  // namespace media
 }  // namespace fastoplayer
+
+namespace common {
+std::string ConvertToString(fastoplayer::media::HWDeviceType value);
+bool ConvertFromString(const std::string& from, fastoplayer::media::HWDeviceType* out);
+}  // namespace common
