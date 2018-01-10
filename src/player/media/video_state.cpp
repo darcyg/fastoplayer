@@ -1442,6 +1442,7 @@ int VideoState::ReadRoutine() {
       }
       if ((!is_audio_dec_ready || (is_audio_dec_ready && is_audio_not_finished_but_empty)) &&
           (!is_video_dec_ready || (is_video_dec_ready && is_video_not_finished_but_empty)) && opt_.auto_exit) {
+        INFO_LOG() << "EOF is_audio_dec_ready: " << is_audio_dec_ready << ", is_video_dec_ready: " << is_video_dec_ready;
         int errn = AVERROR_EOF;
         std::string err_str = ffmpeg_errno_to_string(errn);
         common::Error err = common::make_error(err_str);

@@ -29,7 +29,7 @@ extern "C" {
 
 /* Calculate actual buffer size keeping in mind not cause too frequent audio
  * callbacks */
-#define SDL_AUDIO_MAX_CALLBACKS_PER_SEC 10
+#define SDL_AUDIO_MAX_CALLBACKS_PER_SEC 30
 #define SDL_AUDIO_MIN_BUFFER_SIZE 512
 
 namespace fastoplayer {

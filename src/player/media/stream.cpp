@@ -173,6 +173,9 @@ bool VideoStream::Open(int index, AVStream* av_stream_st, AVRational frame_rate)
     if (codecpar->codec_id == AV_CODEC_ID_H264) {
       band = common::media::CalculateDesireH264BandwidthBytesPerSec(codecpar->width, codecpar->height,
                                                                     av_q2d(frame_rate), profile);
+    } else if (codecpar->codec_id == AV_CODEC_ID_HEVC) {
+      band = common::media::CalculateDesireH264BandwidthBytesPerSec(codecpar->width, codecpar->height,
+                                                                    av_q2d(frame_rate), profile);
     } else if (codecpar->codec_id == AV_CODEC_ID_MPEG2TS) {
       band = common::media::CalculateDesireMPEGBandwidthBytesPerSec(codecpar->width, codecpar->height);
     } else {
