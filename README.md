@@ -1,4 +1,4 @@
-# fasto_player
+# fastoplayer
 Crossplatform player like ffplay but with hardware support.
 
 Build
@@ -20,7 +20,7 @@ Android
 License
 =======
 
-Copyright (C) 2014-2017 FastoGT (http://www.fastogt.com)
+Copyright (C) 2014-2018 FastoGT (http://www.fastogt.com)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License version 3 as 
