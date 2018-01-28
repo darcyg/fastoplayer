@@ -1442,7 +1442,8 @@ int VideoState::ReadRoutine() {
       }
       if ((!is_audio_dec_ready || (is_audio_dec_ready && is_audio_not_finished_but_empty)) &&
           (!is_video_dec_ready || (is_video_dec_ready && is_video_not_finished_but_empty)) && opt_.auto_exit) {
-        INFO_LOG() << "EOF is_audio_dec_ready: " << is_audio_dec_ready << ", is_video_dec_ready: " << is_video_dec_ready;
+        INFO_LOG() << "EOF is_audio_dec_ready: " << is_audio_dec_ready
+                   << ", is_video_dec_ready: " << is_video_dec_ready;
         int errn = AVERROR_EOF;
         std::string err_str = ffmpeg_errno_to_string(errn);
         common::Error err = common::make_error(err_str);
@@ -1647,9 +1648,8 @@ int VideoState::VideoThread() {
           "size:%dx%d format:%s "
           "serial:%d",
           last_w, last_h, static_cast<const char*>(av_x_if_null(av_get_pix_fmt_name(last_format), "none")), 0,
-          frame->width, frame->height,
-          static_cast<const char*>(
-              av_x_if_null(av_get_pix_fmt_name(static_cast<AVPixelFormat>(frame->format)), "none")),
+          frame->width, frame->height, static_cast<const char*>(av_x_if_null(
+                                           av_get_pix_fmt_name(static_cast<AVPixelFormat>(frame->format)), "none")),
           0);
       DEBUG_LOG() << mess;
       avfilter_graph_free(&graph);
