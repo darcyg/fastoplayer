@@ -435,10 +435,10 @@ int VideoState::StreamComponentOpen(int stream_index) {
         av_dict_free(&opts);
         return ret;
       }
-      AVFilterLink* link = out_audio_filter_->inputs[0];
-      sample_rate = link->sample_rate;
-      nb_channels = avfilter_link_get_channels(link);
-      channel_layout = link->channel_layout;
+      AVFilterContext *sink = out_audio_filter_;
+      sample_rate = av_buffersink_get_sample_rate(sink);
+      nb_channels = av_buffersink_get_channels(sink);
+      channel_layout = av_buffersink_get_channel_layout(sink);
     }
 #else
     sample_rate = avctx->sample_rate;
@@ -1648,8 +1648,9 @@ int VideoState::VideoThread() {
           "size:%dx%d format:%s "
           "serial:%d",
           last_w, last_h, static_cast<const char*>(av_x_if_null(av_get_pix_fmt_name(last_format), "none")), 0,
-          frame->width, frame->height, static_cast<const char*>(av_x_if_null(
-                                           av_get_pix_fmt_name(static_cast<AVPixelFormat>(frame->format)), "none")),
+          frame->width, frame->height,
+          static_cast<const char*>(
+              av_x_if_null(av_get_pix_fmt_name(static_cast<AVPixelFormat>(frame->format)), "none")),
           0);
       DEBUG_LOG() << mess;
       avfilter_graph_free(&graph);
