@@ -1,4 +1,8 @@
-1.2.0 /
+1.2.2 /
+[Alexandr Topilski]
+- Fix sound Up/Down
+
+1.2.0 / February 18, 2018
 [Alexandr Topilski]
 - FFmpeg hwaccels
 

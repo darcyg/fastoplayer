@@ -36,7 +36,9 @@ namespace fastoplayer {
 
 int ConvertToSDLVolume(int val) {
   val = stable_value_in_range(val, 0, 100);
-  return stable_value_in_range(SDL_MIX_MAXVOLUME * val / 100, 0, SDL_MIX_MAXVOLUME);
+  int max = SDL_MIX_MAXVOLUME * val / 100;
+  int sdl_val = stable_value_in_range(max, 0, SDL_MIX_MAXVOLUME);
+  return sdl_val;
 }
 
 bool init_audio_params(int64_t wanted_channel_layout, int freq, int channels, media::AudioParams* audio_hw_params) {

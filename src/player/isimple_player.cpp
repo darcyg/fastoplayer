@@ -242,7 +242,8 @@ common::Error ISimplePlayer::HandleRequestAudio(media::VideoState* stream,
 }
 
 void ISimplePlayer::HanleAudioMix(uint8_t* audio_stream_ptr, const uint8_t* src, uint32_t len, int volume) {
-  SDL_MixAudio(audio_stream_ptr, src, len, ConvertToSDLVolume(volume));
+  int sdl_volume = ConvertToSDLVolume(volume);
+  SDL_MixAudioFormat(audio_stream_ptr, src, AUDIO_S16SYS, len, sdl_volume);
 }
 
 common::Error ISimplePlayer::HandleRequestVideo(media::VideoState* stream,
@@ -634,8 +635,9 @@ void ISimplePlayer::DrawPlayingStatus() {
 
     ERROR_LOG() << "Error: the video system does not support an image\n"
                    "size of "
-                << width << "x" << height << " pixels. Try using -lowres or -vf \"scale=w:h\"\n"
-                                             "to reduce the image size.";
+                << width << "x" << height
+                << " pixels. Try using -lowres or -vf \"scale=w:h\"\n"
+                   "to reduce the image size.";
     return;
   }
 
