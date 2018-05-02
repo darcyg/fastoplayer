@@ -38,4 +38,5 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 .clang_format
 cmake -DCHECK_STYLE=ON
 make check_style
+
 **Note: need clang-tidy**
