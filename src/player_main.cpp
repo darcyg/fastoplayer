@@ -42,7 +42,9 @@ void init_ffmpeg() {
 #if CONFIG_AVFILTER
   avfilter_register_all();
 #endif
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
   av_register_all();
+#endif
 }
 
 int main_simple_player_application(int argc,
@@ -127,6 +129,12 @@ int main(int argc, char** argv) {
       return EXIT_SUCCESS;
     } else if (strcmp(argv[i], "-devices") == 0) {
       show_devices();
+      return EXIT_SUCCESS;
+    } else if (strcmp(argv[i], "-muxers") == 0) {
+      show_muxers();
+      return EXIT_SUCCESS;
+    } else if (strcmp(argv[i], "-demuxers") == 0) {
+      show_demuxers();
       return EXIT_SUCCESS;
     } else if (strcmp(argv[i], "-codecs") == 0) {
       show_codecs();

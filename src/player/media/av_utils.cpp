@@ -103,7 +103,7 @@ bool is_realtime(AVFormatContext* s) {
     return true;
   }
 
-  if (s->pb && (!strncmp(s->filename, "rtp:", 4) || !strncmp(s->filename, "udp:", 4))) {
+  if (s->pb && (!strncmp(s->url, "rtp:", 4) || !strncmp(s->url, "udp:", 4))) {
     return true;
   }
   return false;
