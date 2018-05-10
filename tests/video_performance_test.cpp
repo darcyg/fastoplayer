@@ -8,9 +8,9 @@ extern "C" {
 
 #include <player/gui/stream_events.h>
 
-#include <player/sdl_utils.h>
 #include <player/media/video_state.h>
 #include <player/media/video_state_handler.h>
+#include <player/sdl_utils.h>
 
 using namespace fastoplayer;
 using namespace fastoplayer::gui;
@@ -106,18 +106,25 @@ class FakeHandler : public VideoStateHandler {
   }
 };
 
+void init_ffmpeg() {
+/* register all codecs, demux and protocols */
+#if CONFIG_AVDEVICE
+  avdevice_register_all();
+#endif
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
+#if CONFIG_AVFILTER
+  avfilter_register_all();
+#endif
+  av_register_all();
+#endif
+}
+
 class FakeApplication : public common::application::IApplication {
  public:
   FakeApplication(int argc, char** argv) : common::application::IApplication(argc, argv), stop_(false) {}
 
   virtual int PreExecImpl() override { /* register all codecs, demux and protocols */
-#if CONFIG_AVDEVICE
-    avdevice_register_all();
-#endif
-#if CONFIG_AVFILTER
-    avfilter_register_all();
-#endif
-    av_register_all();
+    init_ffmpeg();
     return EXIT_SUCCESS;
   }
 

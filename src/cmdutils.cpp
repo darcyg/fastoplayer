@@ -937,15 +937,6 @@ void show_help_player(const std::string& topic) {
   show_help(topic, true);
 }
 
-void init_dynload(void) {
-#ifdef _WIN32
-  /* Calling SetDllDirectory with the empty string (but not NULL) removes the
-   * current working directory from the DLL search path as a security
-   * pre-caution. */
-  SetDllDirectory("");
-#endif
-}
-
 bool parse_bool(const std::string& bool_str, bool* result) {
   if (bool_str.empty()) {
     WARNING_LOG() << "Can't parse value(bool) invalid arguments!";

@@ -190,8 +190,9 @@ int hw_device_setup_for_decode(AVCodecContext* avctx, AVCodec* codec) {
       } else if (ist->hwaccel_device_type != dev->type) {
         ERROR_LOG() << "Invalid hwaccel device "
                        "specified for decoder: device "
-                    << dev->name << " of type " << av_hwdevice_get_type_name(dev->type) << " is not "
-                                                                                           "usable with hwaccel "
+                    << dev->name << " of type " << av_hwdevice_get_type_name(dev->type)
+                    << " is not "
+                       "usable with hwaccel "
                     << av_hwdevice_get_type_name(ist->hwaccel_device_type) << ".";
 
         return AVERROR(EINVAL);

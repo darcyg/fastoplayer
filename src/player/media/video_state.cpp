@@ -435,7 +435,7 @@ int VideoState::StreamComponentOpen(int stream_index) {
         av_dict_free(&opts);
         return ret;
       }
-      AVFilterContext *sink = out_audio_filter_;
+      AVFilterContext* sink = out_audio_filter_;
       sample_rate = av_buffersink_get_sample_rate(sink);
       nb_channels = av_buffersink_get_channels(sink);
       channel_layout = av_buffersink_get_channel_layout(sink);
